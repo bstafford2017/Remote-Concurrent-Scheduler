@@ -9,11 +9,10 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAIL
 } from './'
-import { IUser, IConfigHeaders } from '../types'
+import { returnErrors } from './errorActions'
+import { ILogin, IUser, IConfigHeaders } from '../types'
 
-// Check token & load user
 export const loadUser = () => (dispatch: Function, getState: Function) => {
-  // User loading
   dispatch({ type: USER_LOADING })
 
   axios
@@ -25,32 +24,22 @@ export const loadUser = () => (dispatch: Function, getState: Function) => {
       })
     )
     .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status))
+      dispatch(returnErrors(err.response.data))
       dispatch({
         type: AUTH_ERROR
       })
     })
 }
 
-export const register = ({
-  username,
-  password,
-  fname,
-  lname,
-  admin
-}: IUser) => (dispatch: Function) => {
-  // Headers
+export const register = (user: IUser) => (dispatch: Function) => {
   const config = {
     headers: {
       'Content-Type': 'application/json'
     }
   }
 
-  // Request body
-  const body = JSON.stringify({ name, email, password })
-
   axios
-    .post('/api/auth/register', body, config)
+    .post('/api/auth/register', user, config)
     .then((res) =>
       dispatch({
         type: REGISTER_SUCCESS,
@@ -58,28 +47,22 @@ export const register = ({
       })
     )
     .catch((err) => {
-      dispatch(
-        returnErrors(err.response.data, err.response.status, 'REGISTER_FAIL')
-      )
+      dispatch(returnErrors(err.response.data))
       dispatch({
         type: REGISTER_FAIL
       })
     })
 }
 
-export const login = ({ username, password }: ILogin) => (
-  dispatch: Function
-) => {
+export const login = (creds: ILogin) => (dispatch: Function) => {
   const config = {
     headers: {
       'Content-Type': 'application/json'
     }
   }
 
-  const body = JSON.stringify({ username, password })
-
   axios
-    .post('/api/auth/login', body, config)
+    .post('/api/auth/login', creds, config)
     .then((res) =>
       dispatch({
         type: LOGIN_SUCCESS,
@@ -87,9 +70,7 @@ export const login = ({ username, password }: ILogin) => (
       })
     )
     .catch((err) => {
-      dispatch(
-        returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL')
-      )
+      dispatch(returnErrors(err.response.data))
       dispatch({
         type: LOGIN_FAIL
       })

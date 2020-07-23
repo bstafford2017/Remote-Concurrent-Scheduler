@@ -47,3 +47,8 @@ export interface IConfigHeaders {
     [index: string]: string
   }
 }
+
+export interface IAction {
+  type: string
+  payload?: any
+}

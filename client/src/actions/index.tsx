@@ -8,3 +8,7 @@ export const AUTH_ERROR = 'AUTH_ERROR'
 
 export const REGISTER_FAIL = 'REGISTER_FAIL'
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS'
+
+// Error
+export const CLEAR_ERRORS = 'CLEAR_ERRORS'
+export const GET_ERRORS = 'GET_ERRORS'
