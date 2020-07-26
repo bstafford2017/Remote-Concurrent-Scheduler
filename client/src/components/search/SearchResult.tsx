@@ -1,12 +1,12 @@
 import React from 'react'
-import { formatDate, timeConversion } from '../utils'
-import { IEvent } from '../types'
+import { formatDate, timeConversion } from '../../utils'
+import { IEvent } from '../../types'
 
 const SearchResult = (props: IEvent) => {
   const event = props
 
   return (
-    <tr id='${event.id}'>
+    <tr id={event.id?.toString()}>
       <td>{event.title}</td>
       <td>{formatDate(event.date)}</td>
       <td>{timeConversion(event.startTime)}</td>
