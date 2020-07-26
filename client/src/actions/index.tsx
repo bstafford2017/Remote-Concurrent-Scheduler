@@ -1,14 +1,39 @@
 // Authentication
-export const USER_LOADING = 'USER_LOADING'
-export const USER_LOADED = 'USER_LOADED'
 export const LOGIN_FAIL = 'LOGIN_FAIL'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
 export const AUTH_ERROR = 'AUTH_ERROR'
-
 export const REGISTER_FAIL = 'REGISTER_FAIL'
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS'
 
 // Error
 export const CLEAR_ERRORS = 'CLEAR_ERRORS'
 export const GET_ERRORS = 'GET_ERRORS'
+
+// Buildings
+export const BUILDINGS_LOADING = 'BUILDINGS_LOADING'
+export const BUILDINGS_LOADED = 'BUILDINGS_LOADED'
+export const CREATE_BUILDING = 'CREATE_BUILDING'
+export const UPDATE_BUILDING = 'UPDATE_BUILDING'
+export const DELETE_BUILDING = 'DELETE_BUILDING'
+
+// Rooms
+export const ROOMS_LOADING = 'ROOMS_LOADING'
+export const ROOMS_LOADED = 'ROOMS_LOADED'
+export const CREATE_ROOM = 'CREATE_ROOM'
+export const UPDATE_ROOM = 'UPDATE_ROOM'
+export const DELETE_ROOM = 'DELETE_ROOM'
+
+// Users
+export const USER_LOADING = 'USER_LOADING'
+export const USER_LOADED = 'USER_LOADED'
+export const CREATE_USER = 'CREATE_USER'
+export const UPDATE_USER = 'UPDATE_USER'
+export const DELETE_USER = 'DELETE_USER'
+
+// Events
+export const EVENTS_LOADING = 'EVENTS_LOADING'
+export const EVENTS_LOADED = 'EVENTS_LOADED'
+export const CREATE_EVENT = 'CREATE_EVENT'
+export const UPDATE_EVENT = 'UPDATE_EVENT'
+export const DELETE_EVENT = 'DELETE_EVENT'

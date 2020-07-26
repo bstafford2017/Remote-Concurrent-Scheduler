@@ -1,6 +1,12 @@
 import { combineReducers } from 'redux'
-import authReducer from './authReducer'
+import buildingReducer from './buildingReducer'
+import roomReducer from './roomReducer'
+import userReducer from './userReducer'
+import eventReducer from './eventReducer'
 
 export default combineReducers({
-  auth: authReducer
+  building: buildingReducer,
+  room: roomReducer,
+  user: userReducer,
+  event: eventReducer
 })

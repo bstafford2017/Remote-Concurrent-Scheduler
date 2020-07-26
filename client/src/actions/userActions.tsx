@@ -1,16 +1,35 @@
 import axios from 'axios'
+import { returnErrors } from './errorActions'
 import {
-  USER_LOADED,
-  USER_LOADING,
   AUTH_ERROR,
+  USER_LOADING,
+  USER_LOADED,
+  CREATE_USER,
+  UPDATE_USER,
+  DELETE_USER,
+  REGISTER_SUCCESS,
+  REGISTER_FAIL,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
-  LOGOUT_SUCCESS,
-  REGISTER_SUCCESS,
-  REGISTER_FAIL
+  LOGOUT_SUCCESS
 } from './'
-import { returnErrors } from './errorActions'
 import { ILogin, IUser, IConfigHeaders } from '../types'
+
+const tokenConfig = (getState: Function) => {
+  const token = getState().auth.token
+
+  const config: IConfigHeaders = {
+    headers: {
+      'Content-type': 'application/json'
+    }
+  }
+
+  if (token) {
+    config.headers['x-auth-token'] = token
+  }
+
+  return config
+}
 
 export const loadUser = () => (dispatch: Function, getState: Function) => {
   dispatch({ type: USER_LOADING })
@@ -31,7 +50,7 @@ export const loadUser = () => (dispatch: Function, getState: Function) => {
     })
 }
 
-export const register = (user: IUser) => (dispatch: Function) => {
+export const createUser = (user: IUser) => (dispatch: Function) => {
   const config = {
     headers: {
       'Content-Type': 'application/json'
@@ -53,6 +72,9 @@ export const register = (user: IUser) => (dispatch: Function) => {
       })
     })
 }
+export const updateUser = () => {}
+
+export const deleteUser = () => {}
 
 export const login = (creds: ILogin) => (dispatch: Function) => {
   const config = {
@@ -81,20 +103,4 @@ export const logout = () => {
   return {
     type: LOGOUT_SUCCESS
   }
-}
-
-export const tokenConfig = (getState: Function) => {
-  const token = getState().auth.token
-
-  const config: IConfigHeaders = {
-    headers: {
-      'Content-type': 'application/json'
-    }
-  }
-
-  if (token) {
-    config.headers['x-auth-token'] = token
-  }
-
-  return config
 }
