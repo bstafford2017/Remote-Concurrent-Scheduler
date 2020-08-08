@@ -1,47 +1,46 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import { Input, Button } from 'reactstrap'
+import { IUser } from '../../types'
 
 const User = (props: any) => {
-  const { user } = props
+  const { user }: { user: IUser } = props
   return (
-    <tr className='user' id={user.id}>
+    <tr id={user.id?.toString() ?? 'user'}>
       <td>
-        <input
-          type='text'
-          className='username form-control'
-          value={user.username}
-        />
+        <input type='text' value={user.username} />
       </td>
       <td>
-        <input
-          type='password'
-          className='password form-control'
-          value={user.password}
-        />
+        <input type='password' value={user.password} />
       </td>
       <td>
-        <input type='text' className='fname form-control' value={user.fname} />
+        <input type='text' value={user.fname} />
       </td>
       <td>
-        <input type='text' className='lname form-control' value={user.lname} />
+        <input type='text' value={user.lname} />
       </td>
       <td>
-        <select className='admin user-cell form-control' id='manage-admin'>
-          <option value='0' selected={user.admin === 0 ? true : false}>
+        <Input type='select'>
+          <option value='0' selected={!user.admin ? true : false}>
             False
           </option>
-          <option value='1' selected={user.admin === 1 ? true : false}>
+          <option value='1' selected={user.admin ? true : false}>
             True
           </option>
-        </select>
+        </Input>
       </td>
       <td>
-        <button className='update-user btn btn-secondary'>Update</button>
+        <Button className='update-room'>Update</Button>
       </td>
       <td>
-        <button className='delete-user btn btn-secondary'>Delete</button>
+        <Button className='delete-room'>Delete</Button>
       </td>
     </tr>
   )
+}
+
+User.propTypes = {
+  user: PropTypes.object.isRequired
 }
 
 export default User

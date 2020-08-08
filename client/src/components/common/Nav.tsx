@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Banner from '../common/Banner'
 
 const Nav = (props: any) => {
   const { isAuthenticated, isAdmin } = props
@@ -7,9 +8,7 @@ const Nav = (props: any) => {
   return (
     <>
       <div className='navbar-header'>
-        <Link to='./calendar'>
-          <img className='logo img-fluid' src='images/new_logo.png' />
-        </Link>
+        <Banner />
       </div>
       {isAuthenticated ? (
         <nav className='navbar navbar-expand-md navbar-dark'>
@@ -30,7 +29,7 @@ const Nav = (props: any) => {
           <div className='collapse navbar-collapse' id='navbarNav'>
             <ul id='left-nav' className='navbar-nav'>
               <li className='nav-item'>
-                <Link className='nav-link' to='calendar'>
+                <Link className='nav-link' to='home'>
                   Home<span className='sr-only'>(current)</span>
                 </Link>
               </li>

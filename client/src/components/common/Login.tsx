@@ -1,5 +1,16 @@
 import React, { useState } from 'react'
+import Alert from './Alert'
 import { login } from '../../actions/userActions'
+import {
+  Col,
+  Card,
+  CardBody,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Button
+} from 'reactstrap'
 
 const initialState = {
   username: '',
@@ -21,74 +32,27 @@ const Login = () => {
   }
 
   return (
-    <div className='content'>
-      <div
-        className='alert alert-dismissible fade show col-12'
-        style={{ display: 'none' }}
-        role='alert'
-        id='alert'
-      >
-        <span id='alert-text'></span>
-        <button
-          type='button'
-          className='close'
-          onClick={closeAlert}
-          aria-label='close'
-        >
-          <span aria-hidden='true'>&times;</span>
-        </button>
-      </div>
-      <div className='card col-sm-10 offset-sm-1 col-lg-4 offset-lg-4 shadow mb-5 rounded'>
-        <div>
-          <h2 style={{ textAlign: 'center' }}>Login</h2>
-        </div>
-        <div className='card-body'>
-          <div
-            id='alert'
-            style={{ display: 'none' }}
-            className='alert alert-danger alert-dismissible fade show'
-            role='alert'
-          >
-            <div id='alert-text'></div>
-            <button
-              type='button'
-              className='close'
-              aria-label='Close'
-              onClick={closeAlert}
-            >
-              <span aria-hidden='true'>&times;</span>
-            </button>
-          </div>
-          <form>
-            <div className='form-group'>
-              <label htmlFor='username'>Username</label>
-              <input
-                type='text'
-                className='form-control'
-                id='username'
-                required
-              />
-            </div>
-            <div className='form-group'>
-              <label htmlFor='password'>Password</label>
-              <input
-                type='password'
-                className='form-control'
-                id='password'
-                required
-              />
-            </div>
-            <button
-              type='submit'
-              id='submit'
-              className='btn btn-secondary col-sm-6 offset-sm-3 col-lg-4 offset-lg-4'
-            >
-              Login
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
+    <Col sm={{ size: 10, offset: 1 }} lg={{ size: 4, offset: 4 }}>
+      <h2 style={{ textAlign: 'center' }}>Login</h2>
+      <Card>
+        <CardBody>
+          <Alert />
+          <Form>
+            <FormGroup>
+              <Label for='username'>Username</Label>
+              <Input type='text' id='username' />
+            </FormGroup>
+            <FormGroup>
+              <Label for='password'>Password</Label>
+              <Input type='password' id='password' />
+            </FormGroup>
+            <Col sm={{ size: 6, offset: 3 }} lg={{ size: 4, offset: 4 }}>
+              <Button>Login</Button>
+            </Col>
+          </Form>
+        </CardBody>
+      </Card>
+    </Col>
   )
 }
 

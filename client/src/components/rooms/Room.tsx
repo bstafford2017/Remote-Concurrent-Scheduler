@@ -1,4 +1,6 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import { Input, Button, FormGroup } from 'reactstrap'
 
 const Room = (props: any) => {
   const { room } = props
@@ -6,33 +8,33 @@ const Room = (props: any) => {
   return (
     <tr id={room.id}>
       <td>
-        <input
-          type='text'
-          className='number form-control'
-          value={room.number}
-        />
+        <Input type='text' value={room.number} />
       </td>
       <td>
-        <input type='text' className='seats form-control' value={room.seats} />
+        <Input type='text' value={room.seats} />
       </td>
       <td>
-        <select className='projector form-control'>
+        <Input type='select'>
           <option value='0' selected={room.projector === 0 ? true : false}>
             False
           </option>
           <option value='1' selected={room.projector === 1 ? true : false}>
             True
           </option>
-        </select>
+        </Input>
       </td>
       <td>
-        <button className='update-room btn btn-secondary'>Update</button>
+        <Button className='update-room'>Update</Button>
       </td>
       <td>
-        <button className='delete-room btn btn-secondary'>Delete</button>
+        <Button className='delete-room'>Delete</Button>
       </td>
     </tr>
   )
+}
+
+Room.propTypes = {
+  room: PropTypes.object.isRequired
 }
 
 export default Room

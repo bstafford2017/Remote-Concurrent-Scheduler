@@ -1,54 +1,70 @@
 import React from 'react'
+import {
+  Row,
+  Col,
+  Card,
+  CardBody,
+  Form,
+  FormGroup,
+  FormText,
+  Label,
+  Input,
+  Button
+} from 'reactstrap'
 
 const CreateRoom = () => {
   return (
-    <div
-      className='card col-lg-8 offset-lg-2 shadow mb-5 rounded'
-      id='create-card'
-    >
-      <div>
+    <Col lg={{ size: 8, offset: 2 }}>
+      <Card>
         <h2 style={{ textAlign: 'center' }}>Create Room</h2>
-        <small className='form-text text-muted text-center'>
+        <FormText color='muted' style={{ textAlign: 'center' }}>
           Note: All special characters will be removed
-        </small>
-      </div>
-      <div className='card-body'>
-        <form className='form row offset-1'>
-          <div className='form-group col-2'>
-            <label htmlFor='building'>Building</label>
-            <select className='form-control' id='building'>
-              <option selected={true} disabled={true} hidden={true}>
-                Select
-              </option>
-            </select>
-          </div>
-          <div className='form-group col-2'>
-            <label htmlFor='number'>Room #</label>
-            <input type='text' className='form-control' id='number' />
-          </div>
-          <div className='form-group col-2'>
-            <label htmlFor='seats'>Seats</label>
-            <input type='text' className='form-control' id='seats' />
-          </div>
-          <div className='form-group col-2'>
-            <label htmlFor='projector'>Projector</label>
-            <select className='form-control' id='projector'>
-              <option selected={true} disabled={true} hidden={true}>
-                Select
-              </option>
-              <option value='0'>False</option>
-              <option value='1'>True</option>
-            </select>
-          </div>
-          <button
-            id='create-room'
-            className='form-control btn btn-secondary col-2'
-          >
-            Create
-          </button>
-        </form>
-      </div>
-    </div>
+        </FormText>
+        <CardBody>
+          <Form>
+            <Row>
+              <Col xs={2}>
+                <FormGroup>
+                  <Label for='building'>Building</Label>
+                  <Input type='select' id='building'>
+                    <option selected={true} disabled={true} hidden={true}>
+                      Select
+                    </option>
+                  </Input>
+                </FormGroup>
+              </Col>
+              <Col xs={2}>
+                <FormGroup>
+                  <Label for='number'>Room #</Label>
+                  <Input type='text' id='number' />
+                </FormGroup>
+              </Col>
+              <Col xs={2}>
+                <FormGroup>
+                  <Label for='seats'>Seats</Label>
+                  <Input type='text' id='seats' />
+                </FormGroup>
+              </Col>
+              <Col xs={2}>
+                <FormGroup>
+                  <Label for='projector'>Projector</Label>
+                  <Input type='select' id='projector'>
+                    <option disabled selected hidden>
+                      Select
+                    </option>
+                    <option value='0'>False</option>
+                    <option value='1'>True</option>
+                  </Input>
+                </FormGroup>
+              </Col>
+              <Col xs={2}>
+                <Button id='create-room'>Create</Button>
+              </Col>
+            </Row>
+          </Form>
+        </CardBody>
+      </Card>
+    </Col>
   )
 }
 

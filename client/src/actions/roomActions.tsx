@@ -8,11 +8,11 @@ import {
   UPDATE_ROOM,
   DELETE_ROOM
 } from './'
-import { IConfigHeaders } from '../types'
+import { IRoom } from '../types'
 
-export const loadRooms = () => async (dispatch: Function) => {
+export const loadRooms = (id: number) => async (dispatch: Function) => {
   try {
-    const response = await axios.get('/api/event')
+    const response = await axios.get(`/api/room/${id}`)
     dispatch({
       action: ROOMS_LOADED,
       payload: response.data
@@ -22,8 +22,34 @@ export const loadRooms = () => async (dispatch: Function) => {
   }
 }
 
-export const createRoom = () => {}
+export const createRoom = (room: IRoom) => async (dispatch: Function) => {
+  try {
+    const response = await axios.post('/api/room/create', room)
+    dispatch({
+      action: CREATE_ROOM,
+      payload: response.data
+    })
+  } catch (err) {
+    dispatch(returnErrors(err))
+  }
+}
 
-export const updateRoom = () => {}
+export const updateRoom = (room: IRoom) => async (dispatch: Function) => {
+  try {
+    const response = await axios.post('/api/room/update', room)
+    dispatch({
+      action: UPDATE_ROOM,
+      payload: response.data
+    })
+  } catch (err) {
+    dispatch(returnErrors(err))
+  }
+}
 
-export const deleteRoom = () => {}
+export const deleteRoom = (id: number) => async (dispatch: Function) => {
+  const response = await axios.post('/api/room/delete', id)
+  dispatch({
+    action: DELETE_ROOM,
+    payload: response.data
+  })
+}

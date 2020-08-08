@@ -32,7 +32,7 @@ export interface IEvent {
   date: string
   startTime: string
   endTime: string
-  recur: IRecur
+  recur?: IRecur
   room: IRoom
   user: IUser
 }

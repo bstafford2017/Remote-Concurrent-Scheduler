@@ -1,17 +1,41 @@
 import React from 'react'
+import {
+  Row,
+  Col,
+  Card,
+  CardBody,
+  Form,
+  FormGroup,
+  FormText,
+  Label,
+  Input,
+  Button
+} from 'reactstrap'
+import PropTypes from 'prop-types'
+import { IBuilding } from '../../types'
 
 const Building = (props: any) => {
   const { building } = props
   return (
     <div className='building' id={building.id}>
-      <input type='checkbox' className='checkbox col-1' />
-      <input
-        type='text'
-        className='text form-control col-10 d-inline'
-        value={building.name}
-      />
+      <Form>
+        <FormGroup>
+          <Col xs={1}>
+            <input type='checkbox' />
+          </Col>
+        </FormGroup>
+        <FormGroup>
+          <Col xs={10}>
+            <input type='text' value={building.name} />
+          </Col>
+        </FormGroup>
+      </Form>
     </div>
   )
+}
+
+Building.propTypes = {
+  building: PropTypes.object.isRequired
 }
 
 export default Building

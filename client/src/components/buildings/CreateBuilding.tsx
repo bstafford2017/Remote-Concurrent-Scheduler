@@ -1,37 +1,42 @@
 import React from 'react'
+import {
+  Row,
+  Col,
+  Card,
+  CardBody,
+  Form,
+  FormGroup,
+  FormText,
+  Label,
+  Input,
+  Button
+} from 'reactstrap'
 
 const CreateBuilding = () => {
   return (
-    <div
-      className='card col-lg-4 offset-lg-1 shadow mb-5 rounded'
-      id='create-card'
-    >
-      <div>
+    <Col lg={{ size: 4, offset: 1 }}>
+      <Card>
         <h2 style={{ textAlign: 'center' }}>Create Building</h2>
-        <small className='form-text text-muted text-center'>
+        <FormText color='muted'>
           Note: All special characters will be removed
-        </small>
-      </div>
-      <div className='card-body'>
-        <form>
-          <div className='form-group'>
-            <label htmlFor='building-name'>Building Name</label>
-            <input
-              type='text'
-              className='form-control'
-              id='building-name'
-              required
-            />
-          </div>
-          <button
-            id='create-building'
-            className='btn btn-secondary col-4 offset-4'
-          >
-            Create
-          </button>
-        </form>
-      </div>
-    </div>
+        </FormText>
+        <CardBody>
+          <Form>
+            <Row>
+              <FormGroup>
+                <Label for='name'>Building Name</Label>
+                <Input type='text' id='name' />
+              </FormGroup>
+            </Row>
+            <Row>
+              <Col xs={{ size: 4, offset: 4 }}>
+                <Button>Create</Button>
+              </Col>
+            </Row>
+          </Form>
+        </CardBody>
+      </Card>
+    </Col>
   )
 }
 

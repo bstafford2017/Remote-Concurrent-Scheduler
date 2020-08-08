@@ -8,7 +8,7 @@ import {
   UPDATE_BUILDING,
   DELETE_BUILDING
 } from './'
-import { IConfigHeaders } from '../types'
+import { IBuilding } from '../types'
 
 export const loadBuildings = () => async (dispatch: Function) => {
   try {
@@ -22,8 +22,42 @@ export const loadBuildings = () => async (dispatch: Function) => {
   }
 }
 
-export const createBuilding = () => {}
+export const createBuilding = (building: IBuilding) => async (
+  dispatch: Function
+) => {
+  try {
+    const response = await axios.post('/api/building/create', building)
+    dispatch({
+      action: CREATE_BUILDING,
+      payload: response.data
+    })
+  } catch (err) {
+    dispatch(returnErrors(err))
+  }
+}
 
-export const updateBuilding = () => {}
+export const updateBuilding = (building: IBuilding) => async (
+  dispatch: Function
+) => {
+  try {
+    const response = await axios.post(`/api/building/update`, building)
+    dispatch({
+      action: UPDATE_BUILDING,
+      payload: response.data
+    })
+  } catch (err) {
+    dispatch(returnErrors(err))
+  }
+}
 
-export const deleteBuilding = () => {}
+export const deleteBuilding = (id: number) => async (dispatch: Function) => {
+  try {
+    const response = await axios.post(`/api/building/delete`, id)
+    dispatch({
+      action: DELETE_BUILDING,
+      payload: response.data
+    })
+  } catch (err) {
+    dispatch(returnErrors(err))
+  }
+}

@@ -1,36 +1,33 @@
 import React from 'react'
+import { Col, FormGroup, Label, Input } from 'reactstrap'
 
 const Filter = (props: any) => {
   const { toggleDisplay } = props
 
-  return (
-    <div
-      id='filter'
-      className='form-row pb-3'
-      style={{ display: 'none', margin: 0 }}
-    >
-      <div className='form-group col-3 offset-3'>
-        <label htmlFor='filter-building' style={{ color: 'white' }}>
-          Building
-        </label>
-        <select id='filter-building' className='form-control'>
-          <option selected disabled hidden>
-            All Buildings
-          </option>
-        </select>
-      </div>
-      <div className='form-group col-3 offset-1'>
-        <label htmlFor='filter-room' style={{ color: 'white' }}>
-          Room
-        </label>
-        <select id='filter-room' className='form-control'>
-          <option selected disabled hidden>
-            All Rooms
-          </option>
-        </select>
-      </div>
+  return toggleDisplay ? (
+    <div id='filter' className='form-row pb-3' style={{ margin: 0 }}>
+      <Col xs={{ size: 3, offset: 3 }}>
+        <FormGroup>
+          <Label for='filter-building'>Building</Label>
+          <Input type='select' id='filter-building' style={{ color: 'white' }}>
+            <option selected disabled hidden>
+              All Buildings
+            </option>
+          </Input>
+        </FormGroup>
+      </Col>
+      <Col xs={{ size: 3, offset: 1 }}>
+        <FormGroup>
+          <Label for='filter-room'>Room</Label>
+          <Input type='select' id='filter-room' style={{ color: 'white' }}>
+            <option selected disabled hidden>
+              All Rooms
+            </option>
+          </Input>
+        </FormGroup>
+      </Col>
     </div>
-  )
+  ) : null
 }
 
 export default Filter

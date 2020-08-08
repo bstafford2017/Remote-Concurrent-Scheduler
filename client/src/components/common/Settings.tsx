@@ -1,79 +1,93 @@
 import React, { useState } from 'react'
+import {
+  Row,
+  Col,
+  Card,
+  CardBody,
+  Form,
+  FormGroup,
+  FormText,
+  Label,
+  Input,
+  Button
+} from 'reactstrap'
 
 const Settings = () => {
-  const [alert, setAlert] = useState(false)
+  const [user, setUser] = useState({
+    username: '',
+    password: '',
+    fname: '',
+    lname: '',
+    admin: false
+  })
 
-  const closeAlert = () => {
-    setAlert(false)
-  }
+  const { username, password, fname, lname, admin } = user
 
   return (
-    <div className='card col-lg-4 offset-lg-4 shadow mb-5 rounded'>
-      <div>
+    <Col lg={{ size: 4, offset: 4 }}>
+      <Card>
         <h2 style={{ textAlign: 'center' }}>User Settings</h2>
-        <small className='form-text text-muted text-center'>
+        <FormText color='muted'>
           Note: All special characters will be removed
-        </small>
-      </div>
-      <div className='card-body'>
-        <div
-          id='manage-alert'
-          style={{ display: 'none' }}
-          className='alert alert-danger alert-dismissible fade show'
-          role='alert'
-        >
-          <div id='manage-alert-text'></div>
-          <button
-            type='button'
-            className='close'
-            aria-label='Close'
-            onClick={closeAlert}
-          >
-            <span aria-hidden='true'>&times;</span>
-          </button>
-        </div>
-        <form>
-          <div className='form-group'>
-            <label htmlFor='username'>Username</label>
-            <input type='text' className='form-control' id='username' />
-          </div>
-          <div className='row'>
-            <div className='form-group col-6'>
-              <label htmlFor='password'>Password</label>
-              <input type='password' className='form-control' id='password' />
-            </div>
-            <div className='form-group col-6'>
-              <label htmlFor='confirm-password'>Confirm Password</label>
-              <input
-                type='password'
-                className='form-control'
-                id='confirm-password'
-              />
-            </div>
-          </div>
-          <div className='row'>
-            <div className='form-group col-6'>
-              <label htmlFor='fname'>First Name</label>
-              <input type='text' className='form-control' id='fname' />
-            </div>
-            <div className='form-group col-6'>
-              <label htmlFor='lname'>Last Name</label>
-              <input type='text' className='form-control' id='lname' />
-            </div>
-          </div>
-          <div className='form-group col-6 offset-3 text-center'>
-            <p id='admin'>Admininstrator: </p>
-          </div>
-          <button
-            id='manage-user'
-            className='btn btn-secondary col-4 offset-4'
-            type='submit'
-          >
-            Update
-          </button>
-        </form>
-      </div>
-    </div>
+        </FormText>
+        <CardBody>
+          <Form>
+            <Row>
+              <Col>
+                <FormGroup>
+                  <Label for='username'>Username</Label>
+                  <Input type='text' placeholder={username} id='username' />
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={6}>
+                <FormGroup>
+                  <Label for='password'>Password</Label>
+                  <Input type='password' placeholder={password} id='password' />
+                </FormGroup>
+              </Col>
+              <Col sm={6}>
+                <FormGroup>
+                  <Label for='confirmPassword'>Confirm Password</Label>
+                  <Input
+                    type='password'
+                    placeholder={password}
+                    id='confirmPassword'
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={6}>
+                <FormGroup>
+                  <Label for='firstName'>First Name</Label>
+                  <Input type='text' placeholder={fname} id='firstName' />
+                </FormGroup>
+              </Col>
+              <Col sm={6}>
+                <FormGroup>
+                  <Label for='lastName'>Last Name</Label>
+                  <Input type='text' placeholder={lname} id='lastName' />
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={{ size: 6, offset: 3 }}>
+                <FormGroup check>
+                  <p>Admininstrator: {admin}</p>
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={{ size: 4, offset: 4 }}>
+                <Button>Update</Button>
+              </Col>
+            </Row>
+          </Form>
+        </CardBody>
+      </Card>
+    </Col>
   )
 }
 
