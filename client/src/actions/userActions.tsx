@@ -16,7 +16,7 @@ import {
 import { ILogin, IUser, IConfigHeaders } from '../types'
 
 const tokenConfig = (getState: Function) => {
-  const token = getState().auth.token
+  const token = getState().user.token
 
   const config: IConfigHeaders = {
     headers: {

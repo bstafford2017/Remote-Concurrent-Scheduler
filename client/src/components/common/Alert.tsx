@@ -1,21 +1,19 @@
 import React from 'react'
 
 const Alert = (props: any) => {
-  const { display, hide, text } = props
+  const {
+    display,
+    hide,
+    text
+  }: { display: boolean; hide: Function; text: string } = props
 
-  return display ? (
-    <div
-      className='alert alert-dismissible fade show'
-      style={{ display: 'none' }}
-      role='alert'
-      id='alert'
-    >
-      <span id='alert-text'>{text}</span>
-      <button type='button' className='close' onClick={hide} aria-label='close'>
-        <span aria-hidden='true'>&times;</span>
-      </button>
-    </div>
-  ) : null
+  const onDismiss = () => !display
+
+  return (
+    <Alert color="danger" isOpen={display} toggle={onDismiss}>
+      {text}
+    </Alert>
+  )
 }
 
 export default Alert

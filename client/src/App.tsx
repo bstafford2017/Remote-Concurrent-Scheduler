@@ -1,59 +1,86 @@
-import React, { useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import React, { useEffect } from 'react'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { Container } from 'reactstrap'
 
-import { Container } from "reactstrap";
+import { Provider } from 'react-redux'
+import store from './store'
+import PropType from 'prop-types'
 
-import "./styles/bootstrap/dist/css/bootstrap.min.css";
-import "./styles/card.css";
-import "./styles/footer.css";
-import "./styles/header.css";
-import "./styles/login.css";
-import "./styles/navbar.css";
-import "./styles/search.css";
-import "./styles/settings.css";
+import './styles/bootstrap/dist/css/bootstrap.min.css'
+import './styles/card.css'
+import './styles/footer.css'
+import './styles/header.css'
+import './styles/login.css'
+import './styles/navbar.css'
+import './styles/search.css'
+import './styles/settings.css'
 
-import Login from "./components/common/Login";
-import Header from "./components/calendar/Header";
-import Nav from "./components/common/Nav";
-import Footer from "./components/common/Footer";
-import Settings from "./components/common/Settings";
-import Search from "./components/search/Search";
-import Home from "./components/calendar/Home";
-import ManageBuildings from "./components/buildings/ManageBuildings";
-import ManageRooms from "./components/rooms/ManageRooms";
-import ManageUsers from "./components/users/ManageUsers";
-import NotFound from "./components/common/NotFound";
+import Login from './components/common/Login'
+import Header from './components/calendar/Header'
+import Nav from './components/common/Navigation'
+import Footer from './components/common/Footer'
+import Settings from './components/common/Settings'
+import Search from './components/search/Search'
+import Home from './components/calendar/Home'
+import ManageBuildings from './components/buildings/ManageBuildings'
+import ManageRooms from './components/rooms/ManageRooms'
+import ManageUsers from './components/users/ManageUsers'
+import NotFound from './components/common/NotFound'
+import Spinner from './components/common/Spinner'
 
-import { Provider } from "react-redux";
-import store from "./store";
+import {
+  LOGIN_URL,
+  HOME_URL,
+  SEARCH_URL,
+  SETTINGS_URL,
+  BUILDINGS_URL,
+  ROOMS_URL,
+  USERS_URL
+} from './components/routes'
 
-const App = () => {
+import { loadUser } from './actions/userActions'
+
+const App = (props: any) => {
   useEffect(() => {
-    //loadUser()
-  });
+    store.dispatch(loadUser())
+  })
 
-  const isHome = false;
+  const isHome = false
+  const {
+    isAuthenticated,
+    isLoading
+  }: { isAuthenticated: boolean; isLoading: boolean } = store.getState().user
 
   return (
     <Provider store={store}>
-      <Router>
-        {isHome ? <Header /> : <Nav isAuthenticated={true} isAdmin={true} />}
-        <Container className="content">
-          <Switch>
-            <Route exact path="/" component={Login} />
-            <Route exact path="/home" component={Home} />
-            <Route path="/search" component={Search} />
-            <Route path="/settings" component={Settings} />
-            <Route path="/manageBuildings" component={ManageBuildings} />
-            <Route path="/manageRooms" component={ManageRooms} />
-            <Route path="/manageUsers" component={ManageUsers} />
-            <Route path="*" component={NotFound} />
-          </Switch>
-        </Container>
-      </Router>
-      <Footer />
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <>
+          <Router>
+            {isHome ? (
+              <Header />
+            ) : (
+              <Nav isAuthenticated={true} isAdmin={true} />
+            )}
+            <Container className="content">
+              <Switch>
+                <Route exact path={LOGIN_URL} component={Login} />
+                <Route path={HOME_URL} component={Home} />
+                <Route path={SEARCH_URL} component={Search} />
+                <Route path={SETTINGS_URL} component={Settings} />
+                <Route path={BUILDINGS_URL} component={ManageBuildings} />
+                <Route path={ROOMS_URL} component={ManageRooms} />
+                <Route path={USERS_URL} component={ManageUsers} />
+                <Route path="*" component={NotFound} />
+              </Switch>
+            </Container>
+          </Router>
+          <Footer />
+        </>
+      )}
     </Provider>
-  );
-};
+  )
+}
 
-export default App;
+export default App

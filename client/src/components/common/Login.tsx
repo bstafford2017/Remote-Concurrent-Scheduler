@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, SetStateAction } from 'react'
 import Alert from './Alert'
-import { login } from '../../actions/userActions'
+import { connect } from 'react-redux'
 import {
   Col,
   Card,
@@ -11,43 +11,45 @@ import {
   Input,
   Button
 } from 'reactstrap'
+import { ILogin } from '../../types'
+import { login } from '../../actions/userActions'
 
-const initialState = {
+const initialState: ILogin = {
   username: '',
   password: ''
 }
 
 const Login = () => {
-  const [user, setUser] = useState(initialState)
-  const [alert, setAlert] = useState(false)
+  const [user, setUser]: [ILogin, Function] = useState(initialState)
+  const [alert, setAlert]: [boolean, Function] = useState(false)
 
   const closeAlert = () => {
     setAlert(false)
   }
 
-  const login = () => {
+  const attemptLogin = () => {
     if (user.username && user.password) {
-      //login(user)
+      login(user)
     }
   }
 
   return (
     <Col sm={{ size: 10, offset: 1 }} lg={{ size: 4, offset: 4 }}>
-      <h2 style={{ textAlign: 'center' }}>Login</h2>
       <Card>
+        <h2 style={{ textAlign: 'center' }}>Login</h2>
         <CardBody>
           <Alert />
           <Form>
             <FormGroup>
-              <Label for='username'>Username</Label>
-              <Input type='text' id='username' />
+              <Label for="username">Username</Label>
+              <Input type="text" id="username" />
             </FormGroup>
             <FormGroup>
-              <Label for='password'>Password</Label>
-              <Input type='password' id='password' />
+              <Label for="password">Password</Label>
+              <Input type="password" id="password" />
             </FormGroup>
             <Col sm={{ size: 6, offset: 3 }} lg={{ size: 4, offset: 4 }}>
-              <Button>Login</Button>
+              <Button onClick={attemptLogin}>Login</Button>
             </Col>
           </Form>
         </CardBody>
@@ -56,4 +58,12 @@ const Login = () => {
   )
 }
 
-export default Login
+Login.propTypes = {}
+
+const mapStateToProps = (state: any) => ({})
+
+const mapDispatchToProps = {
+  login
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)
