@@ -39,41 +39,37 @@ const ManageUsers = (props: any) => {
   return (
     <>
       <Alert />
-      <CreateUser />
-      <Col lg={{ size: 6, offset: 1 }}>
-        <Card>
-          <h2 style={{ textAlign: 'center' }}>Manage Users</h2>
-          <CardBody>
-            <Table responsive>
-              <thead>
-                <tr>
-                  <th scope='col'>Username</th>
-                  <th scope='col'>Password</th>
-                  <th scope='col'>First Name</th>
-                  <th scope='col'>Last Name</th>
-                  <th scope='col'>Admin</th>
-                </tr>
-              </thead>
-              <tbody>
-                <FormText color='muted' style={{ textAlign: 'center' }}>
-                  Note: All special characters will be removed
-                </FormText>
-                {users.map((u: IUser) => (
-                  <User user={u} />
-                ))}
-              </tbody>
-            </Table>
-          </CardBody>
-          <CardFooter>
-            <Col xs={{ size: 4, offset: 1 }} sm={{ size: 2, offset: 3 }}>
-              <Button>Update</Button>
-            </Col>
-            <Col xs={{ size: 4, offset: 1 }} sm={{ size: 2, offset: 3 }}>
-              <Button>Delete</Button>
-            </Col>
-          </CardFooter>
-        </Card>
-      </Col>
+      <Row>
+        <CreateUser />
+        <Col lg={{ size: 6, offset: 1 }}>
+          <Card>
+            <h2 style={{ textAlign: 'center' }}>Manage Users</h2>
+            <CardBody>
+              <FormText color="muted" style={{ textAlign: 'center' }}>
+                Note: All special characters will be removed
+              </FormText>
+              <Table responsive>
+                <thead>
+                  <tr>
+                    <th scope="col">Username</th>
+                    <th scope="col">Password</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Admin</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.map((u: IUser) => (
+                    <User user={u} />
+                  ))}
+                </tbody>
+              </Table>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
     </>
   )
 }

@@ -30,28 +30,30 @@ const ManageBuildings = (props: any) => {
   return (
     <>
       <Alert />
-      <CreateBuilding />
-      <Col lg={{ size: 4, offset: 1 }}>
-        <Card>
-          <h2 style={{ textAlign: 'center' }}>Manage Buildings</h2>
-          <FormText color='muted' style={{ textAlign: 'center' }}>
-            Note: All special characters will be removed
-          </FormText>
-          <CardBody>
-            {buildings.map((b: IBuilding) => (
-              <Building building={b} />
-            ))}
-          </CardBody>
-          <CardFooter>
-            <Col xs={{ size: 4, offset: 1 }} sm={{ size: 2, offset: 3 }}>
-              <Button>Update</Button>
-            </Col>
-            <Col xs={{ size: 4, offset: 1 }} sm={{ size: 2, offset: 3 }}>
-              <Button>Delete</Button>
-            </Col>
-          </CardFooter>
-        </Card>
-      </Col>
+      <Row>
+        <CreateBuilding />
+        <Col lg={{ size: 6, offset: 1 }}>
+          <Card>
+            <h2 style={{ textAlign: 'center' }}>Manage Buildings</h2>
+            <FormText color="muted" style={{ textAlign: 'center' }}>
+              Note: All special characters will be removed
+            </FormText>
+            <CardBody>
+              {buildings.map((b: IBuilding) => (
+                <Building building={b} />
+              ))}
+            </CardBody>
+            <CardFooter>
+              <Col xs={{ size: 4, offset: 1 }} sm={{ size: 2, offset: 3 }}>
+                <Button>Update</Button>
+              </Col>
+              <Col xs={{ size: 4, offset: 1 }} sm={{ size: 2, offset: 3 }}>
+                <Button>Delete</Button>
+              </Col>
+            </CardFooter>
+          </Card>
+        </Col>
+      </Row>
     </>
   )
 }

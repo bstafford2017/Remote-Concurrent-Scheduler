@@ -50,15 +50,15 @@ const ManageRooms = (props: any) => {
       <Col lg={{ size: 8, offset: 2 }}>
         <Card>
           <h2 style={{ textAlign: 'center' }}>Manage Rooms</h2>
-          <FormText color='muted' style={{ textAlign: 'center' }}>
+          <FormText color="muted" style={{ textAlign: 'center' }}>
             Note: All special characters will be removed
           </FormText>
           <CardBody>
             <Form>
               <Col xs={{ size: 5, offset: 4 }}>
                 <FormGroup>
-                  <Label for='building'>Building</Label>
-                  <Input type='select' id='building'>
+                  <Label for="building">Building</Label>
+                  <Input type="select" id="building">
                     {buildings.map((b: IBuilding) => (
                       <option>{b.name}</option>
                     ))}
@@ -69,11 +69,11 @@ const ManageRooms = (props: any) => {
             <Table responsive>
               <thead>
                 <tr>
-                  <th scope='col'>Room #</th>
-                  <th scope='col'>Seats</th>
-                  <th scope='col'>Projector</th>
-                  <th scope='col'>Update</th>
-                  <th scope='col'>Delete</th>
+                  <th scope="col">Room #</th>
+                  <th scope="col">Seats</th>
+                  <th scope="col">Projector</th>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>

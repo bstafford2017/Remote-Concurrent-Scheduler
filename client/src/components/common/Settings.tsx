@@ -24,10 +24,10 @@ const Settings = () => {
   const { username, password, fname, lname, admin } = user
 
   return (
-    <Col lg={{ size: 4, offset: 4 }}>
+    <Col lg={{ size: 6, offset: 3 }}>
       <Card>
         <h2 style={{ textAlign: 'center' }}>User Settings</h2>
-        <FormText color='muted'>
+        <FormText color="muted">
           Note: All special characters will be removed
         </FormText>
         <CardBody>
@@ -35,25 +35,25 @@ const Settings = () => {
             <Row>
               <Col>
                 <FormGroup>
-                  <Label for='username'>Username</Label>
-                  <Input type='text' placeholder={username} id='username' />
+                  <Label for="username">Username</Label>
+                  <Input type="text" placeholder={username} id="username" />
                 </FormGroup>
               </Col>
             </Row>
             <Row>
               <Col sm={6}>
                 <FormGroup>
-                  <Label for='password'>Password</Label>
-                  <Input type='password' placeholder={password} id='password' />
+                  <Label for="password">Password</Label>
+                  <Input type="password" placeholder={password} id="password" />
                 </FormGroup>
               </Col>
               <Col sm={6}>
                 <FormGroup>
-                  <Label for='confirmPassword'>Confirm Password</Label>
+                  <Label for="confirmPassword">Confirm Password</Label>
                   <Input
-                    type='password'
+                    type="password"
                     placeholder={password}
-                    id='confirmPassword'
+                    id="confirmPassword"
                   />
                 </FormGroup>
               </Col>
@@ -61,14 +61,14 @@ const Settings = () => {
             <Row>
               <Col sm={6}>
                 <FormGroup>
-                  <Label for='firstName'>First Name</Label>
-                  <Input type='text' placeholder={fname} id='firstName' />
+                  <Label for="firstName">First Name</Label>
+                  <Input type="text" placeholder={fname} id="firstName" />
                 </FormGroup>
               </Col>
               <Col sm={6}>
                 <FormGroup>
-                  <Label for='lastName'>Last Name</Label>
-                  <Input type='text' placeholder={lname} id='lastName' />
+                  <Label for="lastName">Last Name</Label>
+                  <Input type="text" placeholder={lname} id="lastName" />
                 </FormGroup>
               </Col>
             </Row>

@@ -1,5 +1,5 @@
 export function formatDate(date: string): string {
-  const unformatted = date.split('T')[0].split('-')
+  const unformatted: string[] = date.split('T')[0].split('-')
   return unformatted[1] + '-' + unformatted[2] + '-' + unformatted[0]
 }
 
@@ -11,23 +11,25 @@ export function timeConversion(time: string): string {
   return hours + ':' + minutes + AmOrPm
 }
 
-export function getWeekDay(index: number): string {
-  switch (index) {
-    case 0:
-      return 'Sun '
-    case 1:
-      return 'Mon '
-    case 2:
-      return 'Tues '
-    case 3:
-      return 'Wed '
-    case 4:
-      return 'Thur '
-    case 5:
-      return 'Fri '
-    case 6:
-      return 'Sat '
-    default:
-      return ''
-  }
+export function getWeekDay(index: string): string {
+  return index.split('').reduce((total: string, next: string): any => {
+    switch (next) {
+      case '0':
+        total += 'Sun '
+      case '1':
+        total += 'Mon '
+      case '2':
+        total += 'Tues '
+      case '3':
+        total += 'Wed '
+      case '4':
+        total += 'Thur '
+      case '5':
+        total += 'Fri '
+      case '6':
+        total += 'Sat '
+      default:
+        total += ''
+    }
+  })
 }

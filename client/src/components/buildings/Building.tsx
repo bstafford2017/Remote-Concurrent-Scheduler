@@ -17,16 +17,16 @@ import { IBuilding } from '../../types'
 const Building = (props: any) => {
   const { building } = props
   return (
-    <div className='building' id={building.id}>
+    <div className="building" id={building.id}>
       <Form>
         <FormGroup>
           <Col xs={1}>
-            <input type='checkbox' />
+            <Input type="checkbox" />
           </Col>
         </FormGroup>
         <FormGroup>
           <Col xs={10}>
-            <input type='text' value={building.name} />
+            <Input type="text" value={building.name} />
           </Col>
         </FormGroup>
       </Form>
