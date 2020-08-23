@@ -1,23 +1,12 @@
 import React from 'react'
-import {
-  Row,
-  Col,
-  Card,
-  CardBody,
-  Form,
-  FormGroup,
-  FormText,
-  Label,
-  Input,
-  Button
-} from 'reactstrap'
+import { Col, Form, FormGroup, Input } from 'reactstrap'
 import PropTypes from 'prop-types'
 import { IBuilding } from '../../types'
 
 const Building = (props: any) => {
-  const { building } = props
+  const { building }: { building: IBuilding } = props
   return (
-    <div className="building" id={building.id}>
+    <div className="building">
       <Form>
         <FormGroup>
           <Col xs={1}>

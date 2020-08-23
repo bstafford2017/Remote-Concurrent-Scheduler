@@ -4,7 +4,6 @@ import { Container } from 'reactstrap'
 
 import { Provider } from 'react-redux'
 import store from './store'
-import PropType from 'prop-types'
 
 import './styles/bootstrap/dist/css/bootstrap.min.css'
 import './styles/card.css'
@@ -42,14 +41,17 @@ import { loadUser } from './actions/userActions'
 
 const App = (props: any) => {
   useEffect(() => {
-    store.dispatch(loadUser())
+    // store.dispatch(loadUser())
   })
 
   const isHome = false
   const {
-    isAuthenticated,
-    isLoading
+    isAuthenticated = false,
+    isLoading = false
   }: { isAuthenticated: boolean; isLoading: boolean } = store.getState().user
+  // const {
+  //   admin: isAdmin = false
+  // }: { admin: boolean } = store.getState().user.user
 
   return (
     <Provider store={store}>
@@ -61,7 +63,7 @@ const App = (props: any) => {
             {isHome ? (
               <Header />
             ) : (
-              <Nav isAuthenticated={true} isAdmin={true} />
+              <Nav isAuthenticated={isAuthenticated} isAdmin={true} />
             )}
             <Container className="content">
               <Switch>

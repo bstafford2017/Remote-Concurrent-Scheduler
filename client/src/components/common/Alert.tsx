@@ -1,11 +1,7 @@
 import React from 'react'
 
 const Alert = (props: any) => {
-  const {
-    display,
-    hide,
-    text
-  }: { display: boolean; hide: Function; text: string } = props
+  const { display, text }: { display: boolean; text: string } = props
 
   const onDismiss = () => !display
 

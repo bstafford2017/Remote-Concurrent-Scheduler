@@ -114,4 +114,4 @@ const Navigation = (props: any) => {
   )
 }
 
-export default Nav
+export default Navigation

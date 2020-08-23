@@ -5,11 +5,7 @@ import {
   Card,
   CardBody,
   CardFooter,
-  Form,
-  FormGroup,
   FormText,
-  Label,
-  Input,
   Button
 } from 'reactstrap'
 import Alert from '../common/Alert'

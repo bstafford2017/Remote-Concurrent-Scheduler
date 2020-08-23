@@ -1,18 +1,5 @@
 import React from 'react'
-import {
-  Row,
-  Col,
-  Card,
-  CardBody,
-  CardFooter,
-  Table,
-  Form,
-  FormGroup,
-  FormText,
-  Label,
-  Input,
-  Button
-} from 'reactstrap'
+import { Row, Col, Card, CardBody, Table, FormText } from 'reactstrap'
 import Alert from '../common/Alert'
 import CreateUser from './CreateUser'
 import User from './User'

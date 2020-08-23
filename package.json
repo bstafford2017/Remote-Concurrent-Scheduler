@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "app": "concurrently \"nodemon index.js\" \"npm run start --prefix ./client\"",
     "obfuscate": "rm -rf ./obfuscate && javascript-obfuscator ./public/js --output ./obfuscate && mv ./obfuscate/public/js/* ./obfuscate && rm -rf ./obfuscate/public"
   },
   "repository": {

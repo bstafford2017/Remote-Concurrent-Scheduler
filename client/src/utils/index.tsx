@@ -11,25 +11,29 @@ export function timeConversion(time: string): string {
   return hours + ':' + minutes + AmOrPm
 }
 
-export function getWeekDay(index: string): string {
-  return index.split('').reduce((total: string, next: string): any => {
-    switch (next) {
-      case '0':
-        total += 'Sun '
-      case '1':
-        total += 'Mon '
-      case '2':
-        total += 'Tues '
-      case '3':
-        total += 'Wed '
-      case '4':
-        total += 'Thur '
-      case '5':
-        total += 'Fri '
-      case '6':
-        total += 'Sat '
-      default:
-        total += ''
-    }
+export function weekdaysToString(weekdays: string): string {
+  return weekdays.split('').reduce((total, next, index): any => {
+    total += getWeekDayString(index)
   })
+}
+
+function getWeekDayString(index: number): string {
+  switch (index) {
+    case 0:
+      return 'Sun '
+    case 1:
+      return 'Mon '
+    case 2:
+      return 'Tues '
+    case 3:
+      return 'Wed '
+    case 4:
+      return 'Thur '
+    case 5:
+      return 'Fri '
+    case 6:
+      return 'Sat '
+    default:
+      return ''
+  }
 }

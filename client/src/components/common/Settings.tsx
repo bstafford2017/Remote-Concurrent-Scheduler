@@ -16,10 +16,20 @@ const Settings = () => {
   const [user, setUser] = useState({
     username: '',
     password: '',
+    confirmPassword: '',
     fname: '',
     lname: '',
     admin: false
   })
+
+  const onChange = (e: any) => {
+    setUser({
+      ...user,
+      [e.target.id]: e.target.value
+    })
+  }
+
+  const submit = () => {}
 
   const { username, password, fname, lname, admin } = user
 
@@ -36,7 +46,12 @@ const Settings = () => {
               <Col>
                 <FormGroup>
                   <Label for="username">Username</Label>
-                  <Input type="text" placeholder={username} id="username" />
+                  <Input
+                    type="text"
+                    placeholder={username}
+                    id="username"
+                    onChange={onChange}
+                  />
                 </FormGroup>
               </Col>
             </Row>
@@ -44,7 +59,12 @@ const Settings = () => {
               <Col sm={6}>
                 <FormGroup>
                   <Label for="password">Password</Label>
-                  <Input type="password" placeholder={password} id="password" />
+                  <Input
+                    type="password"
+                    placeholder={password}
+                    id="password"
+                    onChange={onChange}
+                  />
                 </FormGroup>
               </Col>
               <Col sm={6}>
@@ -54,6 +74,7 @@ const Settings = () => {
                     type="password"
                     placeholder={password}
                     id="confirmPassword"
+                    onChange={onChange}
                   />
                 </FormGroup>
               </Col>
@@ -61,14 +82,24 @@ const Settings = () => {
             <Row>
               <Col sm={6}>
                 <FormGroup>
-                  <Label for="firstName">First Name</Label>
-                  <Input type="text" placeholder={fname} id="firstName" />
+                  <Label for="fname">First Name</Label>
+                  <Input
+                    type="text"
+                    placeholder={fname}
+                    id="fname"
+                    onChange={onChange}
+                  />
                 </FormGroup>
               </Col>
               <Col sm={6}>
                 <FormGroup>
-                  <Label for="lastName">Last Name</Label>
-                  <Input type="text" placeholder={lname} id="lastName" />
+                  <Label for="lname">Last Name</Label>
+                  <Input
+                    type="text"
+                    placeholder={lname}
+                    id="lname"
+                    onChange={onChange}
+                  />
                 </FormGroup>
               </Col>
             </Row>
@@ -81,7 +112,7 @@ const Settings = () => {
             </Row>
             <Row>
               <Col xs={{ size: 4, offset: 4 }}>
-                <Button>Update</Button>
+                <Button onClick={submit}>Update</Button>
               </Col>
             </Row>
           </Form>

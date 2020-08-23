@@ -1,4 +1,4 @@
-import React, { useState, SetStateAction } from 'react'
+import React, { useState } from 'react'
 import Alert from './Alert'
 import { connect } from 'react-redux'
 import {
@@ -21,10 +21,12 @@ const initialState: ILogin = {
 
 const Login = () => {
   const [user, setUser]: [ILogin, Function] = useState(initialState)
-  const [alert, setAlert]: [boolean, Function] = useState(false)
 
-  const closeAlert = () => {
-    setAlert(false)
+  const onChange = (e: any) => {
+    setUser({
+      ...user,
+      [e.target.id]: e.target.value
+    })
   }
 
   const attemptLogin = () => {
@@ -37,16 +39,17 @@ const Login = () => {
     <Col sm={{ size: 10, offset: 1 }} lg={{ size: 4, offset: 4 }}>
       <Card>
         <h2 style={{ textAlign: 'center' }}>Login</h2>
+        <Alert text={''} />
         <CardBody>
           <Alert />
           <Form>
             <FormGroup>
               <Label for="username">Username</Label>
-              <Input type="text" id="username" />
+              <Input type="text" id="username" onChange={onChange} />
             </FormGroup>
             <FormGroup>
               <Label for="password">Password</Label>
-              <Input type="password" id="password" />
+              <Input type="password" id="password" onChange={onChange} />
             </FormGroup>
             <Col sm={{ size: 6, offset: 3 }} lg={{ size: 4, offset: 4 }}>
               <Button onClick={attemptLogin}>Login</Button>

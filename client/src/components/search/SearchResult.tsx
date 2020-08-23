@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { formatDate, timeConversion, getWeekDay } from '../../utils'
+import { formatDate, timeConversion, weekdaysToString } from '../../utils'
 import { IEvent } from '../../types'
 
 const SearchResult = (props: any) => {
@@ -14,7 +14,7 @@ const SearchResult = (props: any) => {
       <td>{timeConversion(event.endTime)}</td>
       <td>{event.room.building}</td>
       <td>{event.room.number}</td>
-      <td>{event.recur ? getWeekDay(event.recur?.weekdays) : '-'}</td>
+      <td>{event.recur ? weekdaysToString(event.recur?.weekdays) : '-'}</td>
       <td>{event.recur ? formatDate(event.recur?.end) : '-'}</td>
       <td>{event.user.username}</td>
     </tr>

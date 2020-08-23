@@ -1,23 +1,19 @@
 import React from 'react'
 import {
-  Row,
   Col,
   Card,
   CardBody,
-  CardFooter,
   Table,
   Form,
   FormGroup,
   FormText,
   Label,
-  Input,
-  Button
+  Input
 } from 'reactstrap'
 import Alert from '../common/Alert'
 import CreateRoom from '../rooms/CreateRoom'
 import Room from '../rooms/Room'
 import { IRoom, IBuilding } from '../../types'
-import { BUILDINGS_LOADED } from '../../actions'
 
 const ManageRooms = (props: any) => {
   // const { rooms, buildings } = props
