@@ -37,7 +37,7 @@ const Settings = () => {
     <Col lg={{ size: 6, offset: 3 }}>
       <Card>
         <h2 style={{ textAlign: 'center' }}>User Settings</h2>
-        <FormText color="muted">
+        <FormText color='muted' style={{ textAlign: 'center' }}>
           Note: All special characters will be removed
         </FormText>
         <CardBody>
@@ -45,11 +45,11 @@ const Settings = () => {
             <Row>
               <Col>
                 <FormGroup>
-                  <Label for="username">Username</Label>
+                  <Label for='username'>Username</Label>
                   <Input
-                    type="text"
+                    type='text'
                     placeholder={username}
-                    id="username"
+                    id='username'
                     onChange={onChange}
                   />
                 </FormGroup>
@@ -58,22 +58,22 @@ const Settings = () => {
             <Row>
               <Col sm={6}>
                 <FormGroup>
-                  <Label for="password">Password</Label>
+                  <Label for='password'>Password</Label>
                   <Input
-                    type="password"
+                    type='password'
                     placeholder={password}
-                    id="password"
+                    id='password'
                     onChange={onChange}
                   />
                 </FormGroup>
               </Col>
               <Col sm={6}>
                 <FormGroup>
-                  <Label for="confirmPassword">Confirm Password</Label>
+                  <Label for='confirmPassword'>Confirm Password</Label>
                   <Input
-                    type="password"
+                    type='password'
                     placeholder={password}
-                    id="confirmPassword"
+                    id='confirmPassword'
                     onChange={onChange}
                   />
                 </FormGroup>
@@ -82,22 +82,22 @@ const Settings = () => {
             <Row>
               <Col sm={6}>
                 <FormGroup>
-                  <Label for="fname">First Name</Label>
+                  <Label for='fname'>First Name</Label>
                   <Input
-                    type="text"
+                    type='text'
                     placeholder={fname}
-                    id="fname"
+                    id='fname'
                     onChange={onChange}
                   />
                 </FormGroup>
               </Col>
               <Col sm={6}>
                 <FormGroup>
-                  <Label for="lname">Last Name</Label>
+                  <Label for='lname'>Last Name</Label>
                   <Input
-                    type="text"
+                    type='text'
                     placeholder={lname}
-                    id="lname"
+                    id='lname'
                     onChange={onChange}
                   />
                 </FormGroup>

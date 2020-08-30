@@ -30,7 +30,7 @@ const Table = (props: any) => {
   }, [])
 
   return (
-    <div className='table'>
+    <div className='calendar-table'>
       {byMonth ? null : (
         <div className='scale'>
           <div>6a</div>

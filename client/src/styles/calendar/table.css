@@ -8,7 +8,7 @@
   color: #666;
   text-align: center;
   padding: 10px 0;
-  background-color:#ddd;
+  background-color: #ddd;
   margin: 0;
 }
 
@@ -38,13 +38,14 @@
   flex: 1;
 }
 
-.table {
+.calendar-table {
   display: flex;
   /* Remove Bootstrap default */
   margin-bottom: 0;
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
@@ -67,7 +68,8 @@ body {
   margin: 0;
 }
 
-.row .valid, .row .invalid {
+.row .valid,
+.row .invalid {
   flex: 1;
   height: 150px;
   padding: 5px;

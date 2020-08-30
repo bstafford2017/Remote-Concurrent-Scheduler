@@ -48,7 +48,7 @@ const App = (props: any) => {
   // store.dispatch(loadUser())
   // })
   const isHome = false
-  const isAuthenticated = false
+  const isAuthenticated = true
   const isLoading = false
   // const {
   //   isAuthenticated = false,

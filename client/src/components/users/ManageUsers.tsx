@@ -31,10 +31,10 @@ const ManageUsers = (props: any) => {
         <Col lg={{ size: 6, offset: 1 }}>
           <Card>
             <h2 style={{ textAlign: 'center' }}>Manage Users</h2>
+            <FormText color='muted' style={{ textAlign: 'center' }}>
+              Note: All special characters will be removed
+            </FormText>
             <CardBody>
-              <FormText color='muted' style={{ textAlign: 'center' }}>
-                Note: All special characters will be removed
-              </FormText>
               <Table responsive>
                 <thead>
                   <tr>

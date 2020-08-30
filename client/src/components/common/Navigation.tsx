@@ -30,10 +30,7 @@ const Navigation = (props: any) => {
         <Banner />
       </div>
       {isAuthenticated ? (
-        <Navbar dark>
-          <NavbarBrand href='/' className='mr-auto'>
-            Remote Concurrent Scheduler
-          </NavbarBrand>
+        <Navbar expand='md' dark>
           <NavbarToggler onClick={toggleNavbar} className='mr-2' />
           <Collapse isOpen={!collapsed} navbar>
             <Nav className='mr-auto' navbar>
@@ -68,10 +65,7 @@ const Navigation = (props: any) => {
           </Collapse>
         </Navbar>
       ) : (
-        <Navbar dark>
-          <NavbarBrand href='/' className='mr-auto'>
-            Remote Concurrent Scheduler
-          </NavbarBrand>
+        <Navbar expand='md' dark>
           <NavbarToggler onClick={toggleNavbar} className='mr-2' />
           <Collapse isOpen={!collapsed} navbar>
             <Nav className='mr-auto' navbar>
