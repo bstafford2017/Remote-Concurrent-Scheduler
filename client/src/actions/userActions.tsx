@@ -35,7 +35,7 @@ export const loadUser = () => (dispatch: Function, getState: Function) => {
   dispatch({ type: USER_LOADING })
 
   axios
-    .get('/api/auth/user', tokenConfig(getState))
+    .post('/api/user', tokenConfig(getState))
     .then((res) =>
       dispatch({
         type: USER_LOADED,
@@ -43,7 +43,7 @@ export const loadUser = () => (dispatch: Function, getState: Function) => {
       })
     )
     .catch((err) => {
-      dispatch(returnErrors(err.response.data))
+      dispatch(returnErrors(err.response))
       dispatch({
         type: AUTH_ERROR
       })

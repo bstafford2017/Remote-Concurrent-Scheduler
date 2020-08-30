@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { Container } from 'reactstrap'
+import { useLocation } from 'react-router-dom'
 
 import { Provider } from 'react-redux'
 import store from './store'
@@ -20,7 +21,7 @@ import './styles/common.css'
 
 import Login from './components/common/Login'
 import Header from './components/calendar/Header'
-import Navigation from './components/common/Navigation'
+import AuthRoute from './components/common/AuthRoute'
 import Footer from './components/common/Footer'
 import Settings from './components/common/Settings'
 import Search from './components/search/Search'
@@ -44,19 +45,15 @@ import {
 import { loadUser } from './actions/userActions'
 
 const App = (props: any) => {
-  // useEffect(() => {
-  // store.dispatch(loadUser())
-  // })
-  const isHome = false
-  const isAuthenticated = true
-  const isLoading = false
-  // const {
-  //   isAuthenticated = false,
-  //   isLoading = false
-  // }: { isAuthenticated: boolean; isLoading: boolean } = store.getState().user
-  // const {
-  //   admin: isAdmin = false
-  // }: { admin: boolean } = store.getState().user.user
+  useEffect(() => {
+    store.dispatch(loadUser())
+  })
+
+  const {
+    isAuthenticated = false,
+    isLoading = false
+  }: { isAuthenticated: boolean; isLoading: boolean } = store.getState().user
+  const isAdmin = store.getState().user.user?.admin || false
 
   const next = (e: React.MouseEvent) => {}
 
@@ -69,20 +66,21 @@ const App = (props: any) => {
       ) : (
         <>
           <Router>
-            {isHome ? (
-              <Header next={next} previous={previous} />
-            ) : (
-              <Navigation isAuthenticated={isAuthenticated} isAdmin={true} />
-            )}
+            <Header
+              isAuthenticated={isAuthenticated}
+              isAdmin={true}
+              next={next}
+              previous={previous}
+            />
             <Container className='content'>
               <Switch>
                 <Route exact path={LOGIN_URL} component={Login} />
                 <Route path={HOME_URL} component={Home} />
-                <Route path={SEARCH_URL} component={Search} />
-                <Route path={SETTINGS_URL} component={Settings} />
-                <Route path={BUILDINGS_URL} component={ManageBuildings} />
-                <Route path={ROOMS_URL} component={ManageRooms} />
-                <Route path={USERS_URL} component={ManageUsers} />
+                <AuthRoute path={SEARCH_URL} component={Search} />
+                <AuthRoute path={SETTINGS_URL} component={Settings} />
+                <AuthRoute path={BUILDINGS_URL} component={ManageBuildings} />
+                <AuthRoute path={ROOMS_URL} component={ManageRooms} />
+                <AuthRoute path={USERS_URL} component={ManageUsers} />
                 <Route path='*' component={NotFound} />
               </Switch>
             </Container>

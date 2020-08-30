@@ -1,14 +1,19 @@
 import React from 'react'
 import Banner from '../common/Banner'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
+import Navigation from '../common/Navigation'
 
 interface IHeaderProps {
   next: (event: React.MouseEvent) => void
   previous: (event: React.MouseEvent) => void
+  isAuthenticated: boolean
+  isAdmin: boolean
 }
 
-const Header = ({ next, previous }: IHeaderProps) => {
-  return (
+const Header = ({ isAuthenticated, isAdmin, next, previous }: IHeaderProps) => {
+  const location: any = useLocation()
+
+  return location.pathname === '/home' ? (
     <>
       <div className='navbar-header'>
         <Banner absolute />
@@ -41,6 +46,8 @@ const Header = ({ next, previous }: IHeaderProps) => {
         </div>
       </div>
     </>
+  ) : (
+    <Navigation isAdmin={isAdmin} isAuthenticated={isAuthenticated} />
   )
 }
 

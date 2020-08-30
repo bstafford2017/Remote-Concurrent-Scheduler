@@ -17,6 +17,10 @@ export function weekdaysToString(weekdays: string): string {
   })
 }
 
+export function hasToken(): boolean {
+  return !!localStorage.getItem('token')
+}
+
 function getWeekDayString(index: number): string {
   switch (index) {
     case 0:
