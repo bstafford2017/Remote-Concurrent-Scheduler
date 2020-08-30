@@ -8,32 +8,32 @@ const User = (props: any) => {
   return (
     <tr id={user.id?.toString() ?? 'user'}>
       <td>
-        <Input type="text" value={user.username} />
+        <Input type='text' placeholder={user.username} />
       </td>
       <td>
-        <Input type="password" value={user.password} />
+        <Input type='password' placeholder={user.password} />
       </td>
       <td>
-        <Input type="text" value={user.fname} />
+        <Input type='text' placeholder={user.fname} />
       </td>
       <td>
-        <Input type="text" value={user.lname} />
+        <Input type='text' placeholder={user.lname} />
       </td>
       <td>
-        <Input type="select">
-          <option value="0" selected={!user.admin ? true : false}>
+        <Input type='select'>
+          <option value='0' selected={!user.admin ? true : false}>
             False
           </option>
-          <option value="1" selected={user.admin ? true : false}>
+          <option value='1' selected={user.admin ? true : false}>
             True
           </option>
         </Input>
       </td>
       <td>
-        <Button className="update-room">Update</Button>
+        <Button className='update-room'>Update</Button>
       </td>
       <td>
-        <Button className="delete-room">Delete</Button>
+        <Button className='delete-room'>Delete</Button>
       </td>
     </tr>
   )

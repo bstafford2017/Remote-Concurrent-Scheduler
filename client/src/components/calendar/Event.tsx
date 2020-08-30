@@ -1,7 +1,6 @@
 import React from 'react'
 
-const Event = (props: any) => {
-  const { event, byMonth } = props
+const Event = ({ event, byMonth }: any) => {
   return byMonth ? <div className='month-event'>{event.title}</div> : null
 }
 

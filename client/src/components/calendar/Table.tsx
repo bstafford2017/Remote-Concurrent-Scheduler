@@ -1,31 +1,33 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { IEvent } from '../../types'
 import Event from './Event'
+import { start } from 'repl'
+
+const getDaysInMonth = (date: Date): number => {
+  return new Date(date.getFullYear(), date.getMonth(), 0).getDate()
+}
 
 const Table = (props: any) => {
   const { events, byMonth }: { events: IEvent[]; byMonth: boolean } = props
+  const [date, setDate]: [Date, Function] = useState(new Date())
+  const [listOfDates, setListOfDates]: [Date[], Function] = useState([])
 
-  // let firstDay = new Date(currentYear, currentMonth).getDay()
-  // let nextMonth = 1
-  // for (let j = 0; j < 7; j++) {
-  //   if (i === 0 && j < firstDay) {
-  //     printMonth(false, false, i, daysInPreviousMonth() - (firstDay - j) + 1)
-  //   } else if (date > daysInMonth()) {
-  //     printMonth(false, false, i, nextMonth)
-  //     nextMonth++
-  //   } else {
-  //     if (
-  //       date === today.getDate() &&
-  //       currentYear === today.getFullYear() &&
-  //       currentMonth === today.getMonth()
-  //     ) {
-  //       printMonth(true, true, i, date)
-  //     } else {
-  //       printMonth(false, true, i, date)
-  //     }
-  //     date++
-  //   }
-  // }
+  useEffect(() => {
+    if (byMonth) {
+      const startDate = new Date(date.getFullYear(), date.getMonth(), 1)
+      const days = getDaysInMonth(date)
+      for (let i = 0; i < days; i++) {
+        startDate.setDate(startDate.getDate() + 1)
+        setListOfDates([...listOfDates, startDate])
+      }
+    } else {
+      for (let i = 0; i < 7; i++) {
+        date.setDate(date.getDate() + 1)
+        setDate(date)
+        setListOfDates([...listOfDates, date])
+      }
+    }
+  }, [])
 
   return (
     <div className='table'>
@@ -59,14 +61,44 @@ const Table = (props: any) => {
         </div>
         {byMonth ? (
           <div className='month-by-month'>
-            {events.map((e: IEvent) => (
-              <Event byMonth={true} event={e} />
-            ))}
+            <div className='row'>
+              {listOfDates
+                .filter((date, index) => index < 7)
+                .map((d) => (
+                  <div key={date.toISOString()} className='active-date valid'>
+                    {d.getDate()}
+                  </div>
+                ))}
+            </div>
+            <div className='row'>
+              {listOfDates
+                .filter((date, index) => index < 14 && index > 7)
+                .map((d) => (
+                  <div className='active-date valid'>{d.getDate()}</div>
+                ))}
+            </div>
+            <div className='row'>
+              {listOfDates
+                .filter((date, index) => index < 21 && index > 14)
+                .map((d) => (
+                  <div className='active-date valid'>{d.getDate()}</div>
+                ))}
+            </div>
+            <div className='row'>
+              {listOfDates
+                .filter((date, index) => index > 21)
+                .map((d) => (
+                  <div className='active-date valid'>{d.getDate()}</div>
+                ))}
+            </div>
+            {/* {events.map((e: IEvent) => (
+              <Event key={e.id} byMonth={true} event={e} />
+            ))} */}
           </div>
         ) : (
           <div className='week-by-week'>
             {events.map((e: IEvent) => (
-              <Event byMonth={false} event={e} />
+              <Event key={e.id} byMonth={false} event={e} />
             ))}
           </div>
         )}

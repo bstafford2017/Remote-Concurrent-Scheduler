@@ -10,7 +10,7 @@ import {
   Label,
   Input
 } from 'reactstrap'
-import Alert from '../common/Alert'
+import Alert from '../common/CustomAlert'
 import CreateRoom from '../rooms/CreateRoom'
 import Room from '../rooms/Room'
 import { IRoom, IBuilding } from '../../types'
@@ -41,20 +41,20 @@ const ManageRooms = (props: any) => {
   ]
   return (
     <>
-      <Alert />
+      <Alert display={false} text={''} />
       <CreateRoom />
       <Col lg={{ size: 8, offset: 2 }}>
         <Card>
           <h2 style={{ textAlign: 'center' }}>Manage Rooms</h2>
-          <FormText color="muted" style={{ textAlign: 'center' }}>
+          <FormText color='muted' style={{ textAlign: 'center' }}>
             Note: All special characters will be removed
           </FormText>
           <CardBody>
             <Form>
               <Col xs={{ size: 5, offset: 4 }}>
                 <FormGroup>
-                  <Label for="building">Building</Label>
-                  <Input type="select" id="building">
+                  <Label for='building'>Building</Label>
+                  <Input type='select' id='building'>
                     {buildings.map((b: IBuilding) => (
                       <option>{b.name}</option>
                     ))}
@@ -62,14 +62,14 @@ const ManageRooms = (props: any) => {
                 </FormGroup>
               </Col>
             </Form>
-            <Table responsive>
+            <Table responsive={true}>
               <thead>
                 <tr>
-                  <th scope="col">Room #</th>
-                  <th scope="col">Seats</th>
-                  <th scope="col">Projector</th>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
+                  <th scope='col'>Room #</th>
+                  <th scope='col'>Seats</th>
+                  <th scope='col'>Projector</th>
+                  <th scope='col'></th>
+                  <th scope='col'></th>
                 </tr>
               </thead>
               <tbody>

@@ -52,6 +52,6 @@ export default function (state = initialState, action: any) {
         isLoading: false
       }
     default:
-      return state
+      return { ...state }
   }
 }

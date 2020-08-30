@@ -8,26 +8,26 @@ const Room = (props: any) => {
   return (
     <tr id={room.id}>
       <td>
-        <Input type="text" value={room.number} />
+        <Input type='text' placeholder={room.number} />
       </td>
       <td>
-        <Input type="text" value={room.seats} />
+        <Input type='text' placeholder={room.seats} />
       </td>
       <td>
-        <Input type="select">
-          <option value="0" selected={room.projector === 0 ? true : false}>
+        <Input type='select'>
+          <option value='0' selected={room.projector === 0}>
             False
           </option>
-          <option value="1" selected={room.projector === 1 ? true : false}>
+          <option value='1' selected={room.projector === 1}>
             True
           </option>
         </Input>
       </td>
       <td>
-        <Button className="update-room">Update</Button>
+        <Button className='update-room'>Update</Button>
       </td>
       <td>
-        <Button className="delete-room">Delete</Button>
+        <Button className='delete-room'>Delete</Button>
       </td>
     </tr>
   )

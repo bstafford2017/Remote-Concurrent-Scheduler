@@ -6,16 +6,16 @@ import { IBuilding } from '../../types'
 const Building = (props: any) => {
   const { building }: { building: IBuilding } = props
   return (
-    <div className="building">
+    <div className='building'>
       <Form>
         <FormGroup>
           <Col xs={1}>
-            <Input type="checkbox" />
+            <Input type='checkbox' />
           </Col>
         </FormGroup>
         <FormGroup>
           <Col xs={10}>
-            <Input type="text" value={building.name} />
+            <Input type='text' value={building.name} />
           </Col>
         </FormGroup>
       </Form>

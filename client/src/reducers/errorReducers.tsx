@@ -16,6 +16,6 @@ export default function (state = initialState, action: IAction) {
         msg: null
       }
     default:
-      return state
+      return { ...state }
   }
 }

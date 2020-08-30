@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Alert from './Alert'
+import Alert from './CustomAlert'
 import { connect } from 'react-redux'
 import {
   Col,
@@ -22,6 +22,8 @@ const initialState: ILogin = {
 const Login = () => {
   const [user, setUser]: [ILogin, Function] = useState(initialState)
 
+  console.log('login test')
+
   const onChange = (e: any) => {
     setUser({
       ...user,
@@ -39,17 +41,16 @@ const Login = () => {
     <Col sm={{ size: 10, offset: 1 }} lg={{ size: 4, offset: 4 }}>
       <Card>
         <h2 style={{ textAlign: 'center' }}>Login</h2>
-        <Alert text={''} />
         <CardBody>
-          <Alert />
+          <Alert display={false} text={''} />
           <Form>
             <FormGroup>
-              <Label for="username">Username</Label>
-              <Input type="text" id="username" onChange={onChange} />
+              <Label for='username'>Username</Label>
+              <Input type='text' id='username' onChange={onChange} />
             </FormGroup>
             <FormGroup>
-              <Label for="password">Password</Label>
-              <Input type="password" id="password" onChange={onChange} />
+              <Label for='password'>Password</Label>
+              <Input type='password' id='password' onChange={onChange} />
             </FormGroup>
             <Col sm={{ size: 6, offset: 3 }} lg={{ size: 4, offset: 4 }}>
               <Button onClick={attemptLogin}>Login</Button>
@@ -69,4 +70,5 @@ const mapDispatchToProps = {
   login
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+// export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default Login

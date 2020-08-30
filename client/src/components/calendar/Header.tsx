@@ -1,35 +1,41 @@
 import React from 'react'
 import Banner from '../common/Banner'
+import { Link } from 'react-router-dom'
 
-const Header = (props: any) => {
-  const previous = (e: any) => {}
+interface IHeaderProps {
+  next: (event: React.MouseEvent) => void
+  previous: (event: React.MouseEvent) => void
+}
 
-  const next = (e: any) => {}
-
+const Header = ({ next, previous }: IHeaderProps) => {
   return (
     <>
-      <div className="navbar-header">
+      <div className='navbar-header'>
         <Banner absolute />
-        <div className="month">
+        <div className='month'>
           <ul>
-            <li id="month">January</li>
-            <li id="prev" className="change">
-              <a onClick={previous}>&#10094;</a>
+            <li id='month'>January</li>
+            <li id='prev' className='change'>
+              <Link to='#' onClick={previous}>
+                &#10094;
+              </Link>
             </li>
             <li style={{ fontSize: '17px' }}>
-              <input id="by-week" type="radio" name="selector" value="week" />
-              <label htmlFor="by-week"> By Week</label>
+              <input id='by-week' type='radio' name='selector' value='week' />
+              <label htmlFor='by-week'> By Week</label>
               <input
-                id="by-month"
-                type="radio"
-                name="selector"
-                value="month"
-                checked
+                id='by-month'
+                type='radio'
+                name='selector'
+                value='month'
+                defaultChecked
               />
-              <label htmlFor="by-month"> By Month</label>
+              <label htmlFor='by-month'> By Month</label>
             </li>
-            <li id="next" className="change">
-              <a onClick={next}>&#10095;</a>
+            <li id='next' className='change'>
+              <Link to='#' onClick={next}>
+                &#10095;
+              </Link>
             </li>
           </ul>
         </div>
