@@ -4,9 +4,6 @@ import {
   AUTH_ERROR,
   USER_LOADING,
   USER_LOADED,
-  CREATE_USER,
-  UPDATE_USER,
-  DELETE_USER,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   LOGIN_SUCCESS,
@@ -16,6 +13,7 @@ import {
 import { ILogin, IUser, IConfigHeaders } from '../types'
 
 const tokenConfig = (getState: Function) => {
+  console.log(getState())
   const token = getState().user.token
 
   const config: IConfigHeaders = {
@@ -35,18 +33,20 @@ export const loadUser = () => (dispatch: Function, getState: Function) => {
   dispatch({ type: USER_LOADING })
 
   axios
-    .post('/api/user', tokenConfig(getState))
+    .get('/api/user', tokenConfig(getState))
     .then((res) =>
       dispatch({
         type: USER_LOADED,
-        payload: res.data
+        payload: res.data.results
       })
     )
     .catch((err) => {
-      dispatch(returnErrors(err.response))
-      dispatch({
-        type: AUTH_ERROR
-      })
+      if (err.status >= 500) {
+        dispatch(returnErrors(err.response))
+        dispatch({
+          type: AUTH_ERROR
+        })
+      }
     })
 }
 
@@ -76,27 +76,26 @@ export const updateUser = () => {}
 
 export const deleteUser = () => {}
 
-export const login = (creds: ILogin) => (dispatch: Function) => {
+export const login = (creds: ILogin) => async (dispatch: Function) => {
+  dispatch({ type: USER_LOADING })
   const config = {
     headers: {
       'Content-Type': 'application/json'
     }
   }
 
-  axios
-    .post('/api/auth/login', creds, config)
-    .then((res) =>
-      dispatch({
-        type: LOGIN_SUCCESS,
-        payload: res.data
-      })
-    )
-    .catch((err) => {
-      dispatch(returnErrors(err.response.data))
-      dispatch({
-        type: LOGIN_FAIL
-      })
+  try {
+    const res = await axios.post('/api/user/login', creds, config)
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data
     })
+  } catch (err) {
+    dispatch(returnErrors(err.response.data))
+    dispatch({
+      type: LOGIN_FAIL
+    })
+  }
 }
 
 export const logout = () => {

@@ -6,11 +6,9 @@ import Navigation from '../common/Navigation'
 interface IHeaderProps {
   next: (event: React.MouseEvent) => void
   previous: (event: React.MouseEvent) => void
-  isAuthenticated: boolean
-  isAdmin: boolean
 }
 
-const Header = ({ isAuthenticated, isAdmin, next, previous }: IHeaderProps) => {
+const Header = ({ next, previous }: IHeaderProps) => {
   const location: any = useLocation()
 
   return location.pathname === '/home' ? (
@@ -47,7 +45,9 @@ const Header = ({ isAuthenticated, isAdmin, next, previous }: IHeaderProps) => {
       </div>
     </>
   ) : (
-    <Navigation isAdmin={isAdmin} isAuthenticated={isAuthenticated} />
+    <div className='navbar-header'>
+      <Banner />
+    </div>
   )
 }
 

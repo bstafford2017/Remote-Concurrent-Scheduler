@@ -1,10 +1,6 @@
 const express = require('express')
-const parser = require('cookie-parser')
 const logger = require('./utils/logger')
-const verifyToken = require('./utils/verifyToken')
-const verifyAdmin = require('./utils/verifyAdmin')
 const obfuscate = require('./utils/obfuscate')
-const dump = require('./utils/dump')
 
 const app = express()
 
@@ -16,28 +12,6 @@ app.use(express.json())
 
 // Middleware for logging requests
 app.use(logger)
-
-// Middleware for cookie passing
-app.use(parser())
-
-// Middleware for verifying token
-app.use(
-  [
-    '/calendar.html',
-    '/manageBuildings.html',
-    '/manageRooms.html',
-    '/manageUsers.html',
-    '/settings.html',
-    '/search.html'
-  ],
-  verifyToken
-)
-
-// Middleware for verifying admin
-app.use(
-  ['/manageBuildings.html', '/manageRooms.html', '/manageUsers.html'],
-  verifyAdmin
-)
 
 // Middleware for obfuscating javascript
 app.use('/js', obfuscate)

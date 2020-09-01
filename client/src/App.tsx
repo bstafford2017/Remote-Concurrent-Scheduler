@@ -31,6 +31,7 @@ import ManageRooms from './components/rooms/ManageRooms'
 import ManageUsers from './components/users/ManageUsers'
 import NotFound from './components/common/NotFound'
 import Spinner from './components/common/Spinner'
+import Navigation from './components/common/Navigation'
 
 import {
   LOGIN_URL,
@@ -42,19 +43,13 @@ import {
   USERS_URL
 } from './components/routes'
 
-import { loadUser } from './actions/userActions'
-
 const App = (props: any) => {
-  useEffect(() => {
-    store.dispatch(loadUser())
-  })
-
   const {
     isAuthenticated = false,
     isLoading = false
   }: { isAuthenticated: boolean; isLoading: boolean } = store.getState().user
   const isAdmin = store.getState().user.user?.admin || false
-
+  console.log(isAuthenticated)
   const next = (e: React.MouseEvent) => {}
 
   const previous = (e: React.MouseEvent) => {}
@@ -66,16 +61,12 @@ const App = (props: any) => {
       ) : (
         <>
           <Router>
-            <Header
-              isAuthenticated={isAuthenticated}
-              isAdmin={true}
-              next={next}
-              previous={previous}
-            />
+            <Header next={next} previous={previous} />
+            <Navigation isAdmin={isAdmin} isAuthenticated={isAuthenticated} />
             <Container className='content'>
               <Switch>
                 <Route exact path={LOGIN_URL} component={Login} />
-                <Route path={HOME_URL} component={Home} />
+                <AuthRoute path={HOME_URL} component={Home} />
                 <AuthRoute path={SEARCH_URL} component={Search} />
                 <AuthRoute path={SETTINGS_URL} component={Settings} />
                 <AuthRoute path={BUILDINGS_URL} component={ManageBuildings} />

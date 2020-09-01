@@ -28,7 +28,14 @@ export default function (state = initialState, action: any) {
         ...state,
         isAuthenticated: true,
         isLoading: false,
-        user: action.payload
+        user: {
+          id: action.payload.id,
+          username: action.payload.username,
+          password: action.payload.password,
+          fname: action.payload.fname,
+          lname: action.payload.lname,
+          admin: action.payload.admin ? true : false
+        }
       }
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:

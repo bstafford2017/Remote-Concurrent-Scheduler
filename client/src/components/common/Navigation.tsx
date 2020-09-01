@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Banner from './Banner'
+import { connect } from 'react-redux'
 import {
   BUILDINGS_URL,
   ROOMS_URL,
@@ -26,9 +26,6 @@ const Navigation = (props: any) => {
 
   return (
     <>
-      <div className='navbar-header'>
-        <Banner />
-      </div>
       {isAuthenticated ? (
         <Navbar expand='md' dark>
           <NavbarToggler onClick={toggleNavbar} className='mr-2' />
@@ -80,4 +77,9 @@ const Navigation = (props: any) => {
   )
 }
 
-export default Navigation
+const mapStateToProps = (state: any) => ({
+  isAuthenticated: state.user.isAuthenticated,
+  isAdmin: state.user.user?.admin
+})
+
+export default connect(mapStateToProps)(Navigation)

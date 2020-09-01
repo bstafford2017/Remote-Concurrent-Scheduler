@@ -13,16 +13,16 @@ import {
 } from 'reactstrap'
 import { ILogin } from '../../types'
 import { login } from '../../actions/userActions'
+import { useHistory } from 'react-router-dom'
 
 const initialState: ILogin = {
   username: '',
   password: ''
 }
 
-const Login = () => {
+const Login = ({ login }: any) => {
+  const history = useHistory()
   const [user, setUser]: [ILogin, Function] = useState(initialState)
-
-  console.log('login test')
 
   const onChange = (e: any) => {
     setUser({
@@ -31,9 +31,10 @@ const Login = () => {
     })
   }
 
-  const attemptLogin = () => {
+  const attemptLogin = (e: any) => {
     if (user.username && user.password) {
       login(user)
+      history.push('/home')
     }
   }
 
@@ -70,5 +71,4 @@ const mapDispatchToProps = {
   login
 }
 
-// export default connect(mapStateToProps, mapDispatchToProps)(Login)
-export default Login
+export default connect(mapStateToProps, mapDispatchToProps)(Login)
