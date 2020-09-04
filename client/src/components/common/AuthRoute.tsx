@@ -12,10 +12,6 @@ const AuthRoute = ({
   component: Component,
   ...rest
 }: any) => {
-  useEffect(() => {
-    loadUser()
-  }, [loadUser])
-
   return (
     <Route
       {...rest}

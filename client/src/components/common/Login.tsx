@@ -20,7 +20,11 @@ const initialState: ILogin = {
   password: ''
 }
 
-const Login = ({ login }: any) => {
+interface IProps {
+  login: Function
+}
+
+const Login = ({ login }: IProps) => {
   const history = useHistory()
   const [user, setUser]: [ILogin, Function] = useState(initialState)
 

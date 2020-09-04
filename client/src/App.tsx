@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { Container } from 'reactstrap'
-import { useLocation } from 'react-router-dom'
+import { loadUser } from './actions/userActions'
 
 import { Provider } from 'react-redux'
 import store from './store'
@@ -44,12 +43,15 @@ import {
 } from './components/routes'
 
 const App = (props: any) => {
+  useEffect(() => {
+    store.dispatch(loadUser())
+  }, [])
+
   const {
     isAuthenticated = false,
     isLoading = false
   }: { isAuthenticated: boolean; isLoading: boolean } = store.getState().user
   const isAdmin = store.getState().user.user?.admin || false
-  console.log(isAuthenticated)
   const next = (e: React.MouseEvent) => {}
 
   const previous = (e: React.MouseEvent) => {}
@@ -61,20 +63,28 @@ const App = (props: any) => {
       ) : (
         <>
           <Router>
-            <Header next={next} previous={previous} />
-            <Navigation isAdmin={isAdmin} isAuthenticated={isAuthenticated} />
-            <Container className='content'>
-              <Switch>
-                <Route exact path={LOGIN_URL} component={Login} />
-                <AuthRoute path={HOME_URL} component={Home} />
-                <AuthRoute path={SEARCH_URL} component={Search} />
-                <AuthRoute path={SETTINGS_URL} component={Settings} />
-                <AuthRoute path={BUILDINGS_URL} component={ManageBuildings} />
-                <AuthRoute path={ROOMS_URL} component={ManageRooms} />
-                <AuthRoute path={USERS_URL} component={ManageUsers} />
-                <Route path='*' component={NotFound} />
-              </Switch>
-            </Container>
+            <Route
+              path={LOGIN_URL}
+              component={() => (
+                <>
+                  <Header next={next} previous={previous} />
+                  <Navigation
+                    isAdmin={isAdmin}
+                    isAuthenticated={isAuthenticated}
+                  />
+                </>
+              )}
+            />
+            <Switch>
+              <Route exact path={LOGIN_URL} component={Login} />
+              <AuthRoute path={HOME_URL} component={Home} />
+              <AuthRoute path={SEARCH_URL} component={Search} />
+              <AuthRoute path={SETTINGS_URL} component={Settings} />
+              <AuthRoute path={BUILDINGS_URL} component={ManageBuildings} />
+              <AuthRoute path={ROOMS_URL} component={ManageRooms} />
+              <AuthRoute path={USERS_URL} component={ManageUsers} />
+              <Route path='*' component={NotFound} />
+            </Switch>
           </Router>
           <Footer />
         </>

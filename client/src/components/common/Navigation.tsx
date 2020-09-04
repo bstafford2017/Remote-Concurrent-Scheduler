@@ -6,7 +6,8 @@ import {
   USERS_URL,
   SETTINGS_URL,
   SEARCH_URL,
-  HOME_URL
+  HOME_URL,
+  LOGIN_URL
 } from '../routes'
 import {
   Collapse,
@@ -17,12 +18,20 @@ import {
   NavItem,
   NavLink
 } from 'reactstrap'
+import { useHistory, NavLink as RRNavLink } from 'react-router-dom'
 
 const Navigation = (props: any) => {
   const { isAuthenticated, isAdmin } = props
 
   const [collapsed, setCollapsed]: [boolean, Function] = useState(true)
   const toggleNavbar = () => setCollapsed(!collapsed)
+  const history = useHistory()
+
+  const onClick = (e: any) => {
+    e.preventDefault()
+    history.push(e.target.value)
+    console.log(e.target)
+  }
 
   return (
     <>
@@ -32,31 +41,43 @@ const Navigation = (props: any) => {
           <Collapse isOpen={!collapsed} navbar>
             <Nav className='mr-auto' navbar>
               <NavItem>
-                <NavLink href={HOME_URL}>Home</NavLink>
+                <NavLink to={HOME_URL} tag={RRNavLink}>
+                  Home
+                </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href={SEARCH_URL}>Search</NavLink>
+                <NavLink to={SEARCH_URL} tag={RRNavLink}>
+                  Search
+                </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href={SETTINGS_URL}>Settings</NavLink>
+                <NavLink to={SETTINGS_URL} tag={RRNavLink}>
+                  Settings
+                </NavLink>
               </NavItem>
               {isAdmin ? (
                 <>
                   <NavItem>
-                    <NavLink href={BUILDINGS_URL}>Manage Buildings</NavLink>
+                    <NavLink to={BUILDINGS_URL} tag={RRNavLink}>
+                      Manage Buildings
+                    </NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink href={ROOMS_URL}>Manage Rooms</NavLink>
+                    <NavLink to={ROOMS_URL} tag={RRNavLink}>
+                      Manage Rooms
+                    </NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink href={USERS_URL}>Manage Users</NavLink>
+                    <NavLink to={USERS_URL} tag={RRNavLink}>
+                      Manage Users
+                    </NavLink>
                   </NavItem>
                 </>
               ) : null}
             </Nav>
             <Nav className='ml-auto'>
               <NavItem>
-                <NavLink>Sign Out</NavLink>
+                <NavLink to='#'>Sign Out</NavLink>
               </NavItem>
             </Nav>
           </Collapse>
@@ -67,7 +88,9 @@ const Navigation = (props: any) => {
           <Collapse isOpen={!collapsed} navbar>
             <Nav className='mr-auto' navbar>
               <NavItem>
-                <NavLink href={HOME_URL}>Home</NavLink>
+                <NavLink to={LOGIN_URL} tag={RRNavLink}>
+                  Home
+                </NavLink>
               </NavItem>
             </Nav>
           </Collapse>
