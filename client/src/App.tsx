@@ -5,16 +5,12 @@ import { loadUser } from './actions/userActions'
 import { Provider } from 'react-redux'
 import store from './store'
 
-import './styles/bootstrap/dist/css/bootstrap.min.css'
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import './styles/calendar/items.css'
 import './styles/calendar/modal.css'
 import './styles/calendar/table.css'
-import './styles/card.css'
 import './styles/header.css'
-import './styles/login.css'
 import './styles/navbar.css'
-import './styles/search.css'
-import './styles/settings.css'
 import './styles/common.css'
 
 import Login from './components/common/Login'
@@ -30,6 +26,7 @@ import ManageUsers from './components/users/ManageUsers'
 import NotFound from './components/common/NotFound'
 import Spinner from './components/common/Spinner'
 import Navigation from './components/common/Navigation'
+import Live from './components/calendar/Live'
 
 import {
   LOGIN_URL,
@@ -38,7 +35,8 @@ import {
   SETTINGS_URL,
   BUILDINGS_URL,
   ROOMS_URL,
-  USERS_URL
+  USERS_URL,
+  LIVE_URL
 } from './components/routes'
 
 const App = (props: any) => {
@@ -77,6 +75,7 @@ const App = (props: any) => {
             <div className='content'>
               <Switch>
                 <Route exact path={LOGIN_URL} component={Login} />
+                <Route path={LIVE_URL} component={Live} />
                 <AuthRoute path={HOME_URL} component={Home} />
                 <AuthRoute path={SEARCH_URL} component={Search} />
                 <AuthRoute path={SETTINGS_URL} component={Settings} />

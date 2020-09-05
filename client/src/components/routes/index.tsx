@@ -1,5 +1,6 @@
 // Non-protected routes
 export const LOGIN_URL = '/'
+export const LIVE_URL = '/live'
 
 // Protected routes
 export const HOME_URL = '/home'
