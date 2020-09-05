@@ -12,27 +12,21 @@ import {
 import {
   Collapse,
   Navbar,
-  NavbarBrand,
   NavbarToggler,
   Nav,
   NavItem,
   NavLink
 } from 'reactstrap'
-import { useHistory, NavLink as RRNavLink } from 'react-router-dom'
+import { NavLink as RRNavLink } from 'react-router-dom'
 
 const Navigation = (props: any) => {
-  const { isAuthenticated, isAdmin } = props
+  const {
+    isAuthenticated,
+    isAdmin
+  }: { isAuthenticated: boolean; isAdmin: boolean } = props
 
   const [collapsed, setCollapsed]: [boolean, Function] = useState(true)
   const toggleNavbar = () => setCollapsed(!collapsed)
-  const history = useHistory()
-
-  const onClick = (e: any) => {
-    e.preventDefault()
-    history.push(e.target.value)
-    console.log(e.target)
-  }
-
   return (
     <>
       {isAuthenticated ? (

@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "app": "concurrently \"nodemon index.js\" \"npm run start --prefix ./client\"",
-    "obfuscate": "rm -rf ./obfuscate && javascript-obfuscator ./public/js --output ./obfuscate && mv ./obfuscate/public/js/* ./obfuscate && rm -rf ./obfuscate/public"
+    "app": "concurrently \"nodemon index.js\" \"npm run start --prefix ./client\""
   },
   "repository": {
     "type": "git",
@@ -24,15 +23,12 @@
     "@types/react-router": "^5.1.8",
     "@types/react-router-dom": "^5.1.5",
     "bootstrap": "^4.5.0",
-    "child_process": "^1.0.2",
     "concurrently": "^5.3.0",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
-    "javascript-obfuscator": "^0.27.4",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
-    "mysqldump": "^3.2.0",
-    "react-router-dom": "^5.2.0"
+    "mysqldump": "^3.2.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"

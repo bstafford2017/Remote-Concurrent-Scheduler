@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { IEvent } from '../../types'
 import Event from './Event'
-import { start } from 'repl'
 
 const getDaysInMonth = (date: Date): number => {
   return new Date(date.getFullYear(), date.getMonth(), 0).getDate()
@@ -12,22 +11,20 @@ const Table = (props: any) => {
   const [date, setDate]: [Date, Function] = useState(new Date())
   const [listOfDates, setListOfDates]: [Date[], Function] = useState([])
 
-  useEffect(() => {
-    if (byMonth) {
-      const startDate = new Date(date.getFullYear(), date.getMonth(), 1)
-      const days = getDaysInMonth(date)
-      for (let i = 0; i < days; i++) {
-        startDate.setDate(startDate.getDate() + 1)
-        setListOfDates([...listOfDates, startDate])
-      }
-    } else {
-      for (let i = 0; i < 7; i++) {
-        date.setDate(date.getDate() + 1)
-        setDate(date)
-        setListOfDates([...listOfDates, date])
-      }
+  if (byMonth) {
+    const startDate = new Date(date.getFullYear(), date.getMonth(), 1)
+    const days = getDaysInMonth(date)
+    for (let i = 0; i < days; i++) {
+      startDate.setDate(startDate.getDate() + 1)
+      setListOfDates([...listOfDates, startDate])
     }
-  }, [])
+  } else {
+    for (let i = 0; i < 7; i++) {
+      date.setDate(date.getDate() + 1)
+      setDate(date)
+      setListOfDates([...listOfDates, date])
+    }
+  }
 
   return (
     <div className='calendar-table'>

@@ -2,7 +2,6 @@ import React from 'react'
 import Filter from './Filter'
 import Table from './Table'
 import { IEvent } from '../../types'
-import { Link } from 'react-router-dom'
 
 const Home = (props: any) => {
   const toggleDisplay = { props }

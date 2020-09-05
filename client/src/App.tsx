@@ -31,8 +31,6 @@ import NotFound from './components/common/NotFound'
 import Spinner from './components/common/Spinner'
 import Navigation from './components/common/Navigation'
 
-import { Container } from 'reactstrap'
-
 import {
   LOGIN_URL,
   HOME_URL,

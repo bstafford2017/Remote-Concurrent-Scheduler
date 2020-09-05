@@ -1,7 +1,6 @@
 import React from 'react'
 import Banner from '../common/Banner'
 import { Link, useLocation } from 'react-router-dom'
-import Navigation from '../common/Navigation'
 
 interface IHeaderProps {
   next: (event: React.MouseEvent) => void

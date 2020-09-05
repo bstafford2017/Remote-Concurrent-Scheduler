@@ -1,6 +1,5 @@
 const express = require('express')
 const logger = require('./utils/logger')
-const obfuscate = require('./utils/obfuscate')
 
 const app = express()
 
@@ -13,9 +12,6 @@ app.use(express.json())
 // Middleware for logging requests
 app.use(logger)
 
-// Middleware for obfuscating javascript
-app.use('/js', obfuscate)
-
 // Routes for API
 app.use('/api/token', require('./routes/api/token'))
 app.use('/api/event', require('./routes/api/event'))
@@ -25,7 +21,7 @@ app.use('/api/room', require('./routes/api/room'))
 
 // Catch 404
 app.use((req, res, next) => {
-  res.redirect('/error.html')
+  res.sendStatus(404)
 })
 
 let port = process.env.PORT || 5000

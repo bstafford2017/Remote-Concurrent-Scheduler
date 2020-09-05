@@ -12,8 +12,8 @@ export function timeConversion(time: string): string {
 }
 
 export function weekdaysToString(weekdays: string): string {
-  return weekdays.split('').reduce((total, next, index): any => {
-    total += getWeekDayString(index)
+  return weekdays.split('').reduce((total, next, index): string => {
+    return (total += getWeekDayString(index))
   })
 }
 
