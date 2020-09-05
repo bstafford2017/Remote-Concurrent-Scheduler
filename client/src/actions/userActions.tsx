@@ -13,7 +13,6 @@ import {
 import { ILogin, IUser, IConfigHeaders } from '../types'
 
 const tokenConfig = (getState: Function) => {
-  console.log(getState())
   const token = getState().user.token
 
   const config: IConfigHeaders = {

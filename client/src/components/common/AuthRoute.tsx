@@ -28,7 +28,9 @@ const AuthRoute = ({
 
 AuthRoute.propTypes = {
   path: PropTypes.string.isRequired,
-  component: PropTypes.object.isRequired
+  component: PropTypes.func.isRequired,
+  loadUser: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired
 }
 
 const mapStateToProps = (state: any) => ({

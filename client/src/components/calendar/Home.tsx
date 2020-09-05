@@ -33,7 +33,7 @@ const Home = (props: any) => {
   return (
     <>
       <Filter toggleDisplay={toggleDisplay} />
-      {/* <Table byMonth={true} events={events} /> */}
+      <Table byMonth={true} events={events} />
     </>
   )
 }
