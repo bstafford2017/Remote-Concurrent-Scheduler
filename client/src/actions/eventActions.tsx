@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { returnErrors } from './errorActions'
 import {
-  AUTH_ERROR,
   EVENTS_LOADING,
   EVENTS_LOADED,
   CREATE_EVENT,
@@ -12,6 +11,7 @@ import { IEvent } from '../types'
 
 export const loadEvents = () => async (dispatch: Function) => {
   try {
+    dispatch({ action: EVENTS_LOADING })
     const response = await axios.get('/api/event')
     dispatch({
       action: EVENTS_LOADED,

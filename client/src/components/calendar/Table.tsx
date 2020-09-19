@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
+import { loadEvents } from '../../actions/eventActions'
 import { IEvent } from '../../types'
 import Event from './Event'
 
@@ -6,25 +8,32 @@ const getDaysInMonth = (date: Date): number => {
   return new Date(date.getFullYear(), date.getMonth(), 0).getDate()
 }
 
-const Table = (props: any) => {
-  const { events, byMonth }: { events: IEvent[]; byMonth: boolean } = props
+interface IProps {
+  byMonth: boolean
+  events: IEvent[]
+  loadEvents: Function
+}
+
+const Table = ({ events, byMonth, loadEvents }: IProps) => {
   const [date, setDate]: [Date, Function] = useState(new Date())
   const [listOfDates, setListOfDates]: [Date[], Function] = useState([])
 
-  if (byMonth) {
-    const startDate = new Date(date.getFullYear(), date.getMonth(), 1)
-    const days = getDaysInMonth(date)
-    for (let i = 0; i < days; i++) {
-      startDate.setDate(startDate.getDate() + 1)
-      setListOfDates([...listOfDates, startDate])
+  useEffect(() => {
+    loadEvents()
+    if (byMonth) {
+      const startDate = new Date(date.getFullYear(), date.getMonth(), 0)
+      const days = getDaysInMonth(date)
+      for (let i = 0; i < days; i++) {
+        startDate.setDate(startDate.getDate() + 1)
+        setListOfDates((arr: Date[]) => [...arr, new Date(startDate)])
+      }
+    } else {
+      for (let i = 0; i < 7; i++) {
+        date.setDate(date.getDate() + 1)
+        setListOfDates((arr: Date[]) => [...arr, new Date(date)])
+      }
     }
-  } else {
-    for (let i = 0; i < 7; i++) {
-      date.setDate(date.getDate() + 1)
-      setDate(date)
-      setListOfDates([...listOfDates, date])
-    }
-  }
+  }, [])
 
   return (
     <div className='calendar-table'>
@@ -62,30 +71,30 @@ const Table = (props: any) => {
               {listOfDates
                 .filter((date, index) => index < 7)
                 .map((d) => (
-                  <div key={date.toISOString()} className='active-date valid'>
+                  <div key={date.toISOString()} className='valid'>
                     {d.getDate()}
                   </div>
                 ))}
             </div>
             <div className='row'>
               {listOfDates
-                .filter((date, index) => index < 14 && index > 7)
+                .filter((date, index) => index <= 14 && index > 7)
                 .map((d) => (
-                  <div className='active-date valid'>{d.getDate()}</div>
+                  <div className='valid'>{d.getDate()}</div>
                 ))}
             </div>
             <div className='row'>
               {listOfDates
-                .filter((date, index) => index < 21 && index > 14)
+                .filter((date, index) => index <= 21 && index > 14)
                 .map((d) => (
-                  <div className='active-date valid'>{d.getDate()}</div>
+                  <div className='valid'>{d.getDate()}</div>
                 ))}
             </div>
             <div className='row'>
               {listOfDates
                 .filter((date, index) => index > 21)
                 .map((d) => (
-                  <div className='active-date valid'>{d.getDate()}</div>
+                  <div className='valid'>{d.getDate()}</div>
                 ))}
             </div>
             {/* {events.map((e: IEvent) => (
@@ -104,4 +113,12 @@ const Table = (props: any) => {
   )
 }
 
-export default Table
+const mapStateToProps = (state: any) => ({
+  events: state.event.events
+})
+
+const mapDispatchToProps = {
+  loadEvents
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Table)

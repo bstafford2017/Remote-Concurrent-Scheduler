@@ -2,9 +2,7 @@ import React from 'react'
 import { Col, FormGroup, Label, Input } from 'reactstrap'
 
 const Filter = (props: any) => {
-  const { toggleDisplay } = props
-
-  return toggleDisplay ? (
+  return (
     <div id='filter' className='form-row pb-3' style={{ margin: 0 }}>
       <Col xs={{ size: 3, offset: 3 }}>
         <FormGroup>
@@ -37,7 +35,7 @@ const Filter = (props: any) => {
         </FormGroup>
       </Col>
     </div>
-  ) : null
+  )
 }
 
 export default Filter
