@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../../client/src/reducers/index.tsx"],"names":[],"mappings":";;;;;AAAA,iCAAuC;AACvC,wEAA+C;AAC/C,gEAAuC;AACvC,gEAAuC;AACvC,kEAAyC;AACzC,oEAA2C;AAE3C,kBAAe,uBAAe,CAAC;IAC7B,QAAQ,EAAE,yBAAe;IACzB,IAAI,EAAE,qBAAW;IACjB,IAAI,EAAE,qBAAW;IACjB,KAAK,EAAE,sBAAY;IACnB,MAAM,EAAE,uBAAa;CACtB,CAAC,CAAA"}

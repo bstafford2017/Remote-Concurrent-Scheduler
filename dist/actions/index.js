@@ -1,0 +1,39 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SEARCH_EVENT = exports.DELETE_EVENT = exports.UPDATE_EVENT = exports.CREATE_EVENT = exports.EVENTS_LOADED = exports.EVENTS_LOADING = exports.DELETE_USER = exports.UPDATE_USER = exports.CREATE_USER = exports.USER_LOADED = exports.USER_LOADING = exports.DELETE_ROOM = exports.UPDATE_ROOM = exports.CREATE_ROOM = exports.ROOMS_LOADED = exports.ROOMS_LOADING = exports.DELETE_BUILDING = exports.UPDATE_BUILDING = exports.CREATE_BUILDING = exports.BUILDINGS_LOADED = exports.BUILDINGS_LOADING = exports.GET_ERRORS = exports.CLEAR_ERRORS = exports.REGISTER_SUCCESS = exports.REGISTER_FAIL = exports.AUTH_ERROR = exports.LOGOUT_SUCCESS = exports.LOGIN_SUCCESS = exports.LOGIN_FAIL = void 0;
+// Authentication
+exports.LOGIN_FAIL = 'LOGIN_FAIL';
+exports.LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+exports.LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+exports.AUTH_ERROR = 'AUTH_ERROR';
+exports.REGISTER_FAIL = 'REGISTER_FAIL';
+exports.REGISTER_SUCCESS = 'REGISTER_SUCCESS';
+// Error
+exports.CLEAR_ERRORS = 'CLEAR_ERRORS';
+exports.GET_ERRORS = 'GET_ERRORS';
+// Buildings
+exports.BUILDINGS_LOADING = 'BUILDINGS_LOADING';
+exports.BUILDINGS_LOADED = 'BUILDINGS_LOADED';
+exports.CREATE_BUILDING = 'CREATE_BUILDING';
+exports.UPDATE_BUILDING = 'UPDATE_BUILDING';
+exports.DELETE_BUILDING = 'DELETE_BUILDING';
+// Rooms
+exports.ROOMS_LOADING = 'ROOMS_LOADING';
+exports.ROOMS_LOADED = 'ROOMS_LOADED';
+exports.CREATE_ROOM = 'CREATE_ROOM';
+exports.UPDATE_ROOM = 'UPDATE_ROOM';
+exports.DELETE_ROOM = 'DELETE_ROOM';
+// Users
+exports.USER_LOADING = 'USER_LOADING';
+exports.USER_LOADED = 'USER_LOADED';
+exports.CREATE_USER = 'CREATE_USER';
+exports.UPDATE_USER = 'UPDATE_USER';
+exports.DELETE_USER = 'DELETE_USER';
+// Events
+exports.EVENTS_LOADING = 'EVENTS_LOADING';
+exports.EVENTS_LOADED = 'EVENTS_LOADED';
+exports.CREATE_EVENT = 'CREATE_EVENT';
+exports.UPDATE_EVENT = 'UPDATE_EVENT';
+exports.DELETE_EVENT = 'DELETE_EVENT';
+exports.SEARCH_EVENT = 'SEARCH_EVENT';
+//# sourceMappingURL=index.js.map

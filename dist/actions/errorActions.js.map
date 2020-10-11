@@ -1,0 +1,1 @@
+{"version":3,"file":"errorActions.js","sourceRoot":"","sources":["../../client/src/actions/errorActions.tsx"],"names":[],"mappings":";;;AAAA,wCAAqD;AAExC,QAAA,YAAY,GAAG,CAAC,GAAW,EAAE,EAAE;IAC1C,OAAO;QACL,IAAI,EAAE,oBAAU;QAChB,OAAO,EAAE,GAAG;KACb,CAAA;AACH,CAAC,CAAA;AAEY,QAAA,WAAW,GAAG,GAAG,EAAE;IAC9B,OAAO;QACL,IAAI,EAAE,sBAAY;KACnB,CAAA;AACH,CAAC,CAAA"}

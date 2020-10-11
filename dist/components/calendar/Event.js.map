@@ -1,0 +1,1 @@
+{"version":3,"file":"Event.js","sourceRoot":"","sources":["../../../client/src/components/calendar/Event.tsx"],"names":[],"mappings":";;;;;AAAA,kDAAyB;AAEzB,MAAM,KAAK,GAAG,CAAC,EAAE,KAAK,EAAE,OAAO,EAAO,EAAE,EAAE;IACxC,OAAO,OAAO,CAAC,CAAC,CAAC,CAAC,GAAG,CAAC,SAAS,CAAC,aAAa,CAAC,CAAC,KAAK,CAAC,KAAK,CAAC,EAAE,GAAG,CAAC,CAAC,CAAC,CAAC,IAAI,CAAA;AAC1E,CAAC,CAAA;AAED,kBAAe,KAAK,CAAA"}
