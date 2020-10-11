@@ -3,3 +3,4 @@ client/node_modules
 logs/
 .vscode/
 /.DS_Store
+dist/
