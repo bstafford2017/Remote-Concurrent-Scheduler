@@ -1,0 +1,34 @@
+type User {
+  username: String!
+  password: String!
+  firstName: String!
+  lastName: String!
+  admin: Boolean!
+  events: [Event]
+}
+
+type Building {
+  id: String!
+  name: String!
+}
+
+type Room {
+  id: String!
+  number: String!
+  seats: Int!
+  projector: Boolean!
+  building: Building!
+}
+
+type Event {
+  id: String!
+  title: String!
+  startDate: String!
+  start: String!
+  end: String!
+  recur: Boolean!
+  weekdays: String
+  endDate: String
+  room: Room!
+  createdBy: User!
+}
