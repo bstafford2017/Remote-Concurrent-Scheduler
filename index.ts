@@ -1,5 +1,5 @@
 import express from 'express'
-import logger from './utils/logger'
+import { logger } from './utils'
 import tokenRoutes from './routes/api/token'
 import eventRoutes from './routes/api/event'
 import userRoutes from './routes/api/user'

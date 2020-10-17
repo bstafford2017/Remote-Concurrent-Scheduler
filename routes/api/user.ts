@@ -1,11 +1,16 @@
 import express from 'express'
-import insert from '../../lib/insert'
-import remove from '../../lib/remove'
-import select from '../../lib/select'
-import update from '../../lib/update'
-import filter from '../../utils/filter'
-import log from '../../utils/log'
+import { insert } from '../../lib/insert'
+import { remove } from '../../lib/remove'
+import {
+  select,
+  selectWithWhere,
+  selectWithJoinAndWhere
+} from '../../lib/select'
+import { update } from '../../lib/update'
+import { filter } from '../../utils'
+import { log } from '../../utils'
 import jwt from 'jsonwebtoken'
+import { IUser } from '../../client/src/types/index'
 
 const router = express.Router()
 
@@ -18,14 +23,14 @@ router.get('/', async (req, res) => {
     if (!token) {
       return res.sendStatus(401)
     }
-    const jwtResults = await jwt.verify(token, 'secret-key')
+    const jwtResults: IUser = await jwt.verify(token, 'secret-key')
     if (!jwtResults) {
       return res.sendStatus(401)
     }
     const where = {
       username: filter(jwtResults.username)
     }
-    const results = await select('users', where)
+    const results: IUser[] = await selectWithWhere('users', [], where, 'AND')
     res.json({ results: results[0] })
   } catch (err) {
     log('error-log', err.toString() + '\n')
@@ -45,7 +50,7 @@ router.post('/login', async (req, res) => {
       username: filter(req.body.username),
       password: filter(req.body.password)
     }
-    const results = await select('users', where, 'AND')
+    const results: IUser[] = await selectWithWhere('users', [], where, 'AND')
     if (results.length === 0) {
       return res.sendStatus(401)
     }
@@ -77,7 +82,7 @@ router.post('/login', async (req, res) => {
 // Get all users
 router.get('/', async (req, res) => {
   try {
-    const results = await select('users')
+    const results = await select('users', [])
     res.json({ results })
   } catch (err) {
     log('error-log', err.toString() + '\n')
@@ -93,14 +98,14 @@ router.get('/admin', async (req, res) => {
       return res.redirect('/login.html')
     }
 
-    const verifyResults = await jwt.verify(token, 'secret-key')
+    const verifyResults: IUser = await jwt.verify(token, 'secret-key')
     if (!verifyResults) {
       return res.redirect('/login.html')
     }
     const where = {
       username: filter(verifyResults.username)
     }
-    const results = await select('users', where)
+    const results: IUser[] = await selectWithWhere('users', [], where, 'AND')
     if (results.length === 0) {
       return res.redirect('/login.html')
     }
@@ -129,15 +134,17 @@ router.post('/create', async (req, res) => {
       throw new Error('Please fill out the entire create user form')
     }
 
-    const user = {
-      id: null,
-      username: filter(req.body.username),
-      password: filter(req.body.password),
-      fname: filter(req.body.fname),
-      lname: filter(req.body.lname),
-      admin: parseInt(filter(req.body.admin))
-    }
-    const results = await insert(user, 'users')
+    const user = [
+      {
+        id: null,
+        username: filter(req.body.username),
+        password: filter(req.body.password),
+        fname: filter(req.body.fname),
+        lname: filter(req.body.lname),
+        admin: parseInt(filter(req.body.admin))
+      }
+    ]
+    const results = await insert('users', user)
     res.json({ results })
   } catch (err) {
     log('error-log', err.toString() + '\n')
@@ -168,23 +175,30 @@ router.post('/update', async (req, res) => {
         lname: filter(req.body.lname)
       }
     ]
-    let results = await update(user, 'users')
+    let results: IUser = await update('users', user)
 
     // If < 1 admin, create an admin
     const adminWhere = {
       admin: '1'
     }
-    const adminResults = await select('users', adminWhere)
+    const adminResults: IUser[] = await selectWithWhere(
+      'users',
+      [],
+      adminWhere,
+      'AND'
+    )
     if (adminResults.length < 1) {
-      const admin = {
-        id: null,
-        username: 'admin',
-        password: 'Scheduler2019',
-        fname: 'admin',
-        lname: 'admin',
-        admin: 1
-      }
-      results = [...results, await insert(admin, 'users')]
+      const admin = [
+        {
+          id: null,
+          username: 'admin',
+          password: 'Scheduler2019',
+          fname: 'admin',
+          lname: 'admin',
+          admin: 1
+        }
+      ]
+      results = [...results, await insert('users', admin)]
     }
 
     res.json({ results })
@@ -204,13 +218,13 @@ router.post('/delete', async (req, res) => {
 
     // Check if deleting logged in account
     const token = req.cookies.token
-    let tokenResults = {}
+    let tokenResults: any = {}
     if (token) {
-      const results = await jwt.verify(token, 'secret-key')
+      const results: IUser = await jwt.verify(token, 'secret-key')
       const userWhere = {
         username: results.username
       }
-      tokenResults = await select('users', userWhere)
+      tokenResults = await selectWithWhere('users', [], userWhere, 'AND')
     }
     if (req.body.id == tokenResults[0].id) {
       throw new Error('Cannot delete logged in account')
@@ -226,12 +240,12 @@ router.post('/delete', async (req, res) => {
         'events.user': 'users.id'
       }
     ]
-    const eventsResults = await select(
+    const eventsResults = await selectWithJoinAndWhere(
       'users',
-      eventsWhere,
-      'AND',
       ['users.id'],
-      eventsJoin
+      eventsJoin,
+      eventsWhere,
+      'AND'
     )
     console.log(JSON.stringify(eventsResults) + ' ' + req.body.id)
     if (eventsResults.length > 0) {
@@ -239,23 +253,25 @@ router.post('/delete', async (req, res) => {
     }
 
     const id = [parseInt(filter(req.body.id))]
-    let results = await remove(id, 'users', 'id')
+    let results = await remove('users', id, 'id')
 
     // If < 1 admin, create an admin
     const adminWhere = {
       admin: '1'
     }
-    const adminResults = await select('users', adminWhere)
+    const adminResults = await selectWithWhere('users', [], adminWhere, 'AND')
     if (adminResults.length < 1) {
-      const admin = {
-        id: null,
-        username: 'admin',
-        password: 'Scheduler2019',
-        fname: 'admin',
-        lname: 'admin',
-        admin: 1
-      }
-      results = [...results, await insert(admin, 'users')]
+      const admin = [
+        {
+          id: null,
+          username: 'admin',
+          password: 'Scheduler2019',
+          fname: 'admin',
+          lname: 'admin',
+          admin: 1
+        }
+      ]
+      results = [...results, await insert('users', admin)]
     }
 
     res.json({ results })

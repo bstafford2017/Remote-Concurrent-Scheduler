@@ -1,4 +1,4 @@
-const connection = require('../utils/database')
+import connection from '../utils/database'
 
 export async function select(table: string, columns: string[]): Promise<any> {
   table = connection.escape(table)
