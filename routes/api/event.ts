@@ -1,10 +1,9 @@
 import express from 'express'
-import insert from '../../lib/insert'
-import remove from '../../lib/remove'
-import select from '../../lib/select'
-import update from '../../lib/update'
-import filter from '../../utils/filter'
-import log from '../../utils/log'
+import { insert } from '../../lib/insert'
+import { remove } from '../../lib/remove'
+import { select } from '../../lib/select'
+import { update } from '../../lib/update'
+import { filter, log } from '../../utils'
 import jwt from 'jsonwebtoken'
 
 const router = express.Router()

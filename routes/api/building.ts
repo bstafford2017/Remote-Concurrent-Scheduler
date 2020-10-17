@@ -1,17 +1,18 @@
 import express from 'express'
-import insert from '../../lib/insert'
-import remove from '../../lib/remove'
-import select from '../../lib/select'
-import update from '../../lib/update'
-import filter from '../../utils/filter'
-import log from '../../utils/log'
+import connection from '../../utils/database'
+import { insert } from '../../lib/insert'
+import { remove } from '../../lib/remove'
+import { select } from '../../lib/select'
+import { update } from '../../lib/update'
+import { filter, log } from '../../utils'
+import { IBuilding } from '../../client/src/types'
 
 const router = express.Router()
 
 // Get all buildings
 router.get('/', async (req: express.Request, res: express.Response) => {
   try {
-    res.json({ results: await select('buildings') })
+    res.json({ results: await select('buildings', []) })
   } catch (err) {
     log('error-log', err.toString() + '\n')
     res.status(400).json({ msg: err.toString() })
@@ -21,16 +22,17 @@ router.get('/', async (req: express.Request, res: express.Response) => {
 // Create a building
 router.post('/create', async (req: express.Request, res: express.Response) => {
   try {
-    // Input validation
     if (!req.body.name) {
       throw new Error('Please enter a valid building name')
     }
 
-    const building = {
-      id: null,
-      name: filter(req.body.name)
-    }
-    res.json({ results: await insert(building, 'buildings') })
+    const building = [
+      {
+        id: null,
+        name: connection.escape(req.body.name)
+      }
+    ]
+    res.json({ results: await insert('buildings', building) })
   } catch (err) {
     log('error-log', err.toString() + '\n')
     res.status(400).json({ msg: err.toString() })
@@ -40,18 +42,17 @@ router.post('/create', async (req: express.Request, res: express.Response) => {
 // Update a building
 router.post('/update', async (req: express.Request, res: express.Response) => {
   try {
-    // Input validation
     if (!req.body.names) {
       throw new Error('Please select a building to modify')
     }
 
-    const names = req.body.names.map((name) => {
+    const names: IBuilding[] = req.body.names.map((name: IBuilding) => {
       return {
         id: parseInt(filter(name.id)),
         name: filter(name.name)
       }
     })
-    res.json({ results: await update(names, 'buildings') })
+    res.json({ results: await update('buildings', names) })
   } catch (err) {
     log('error-log', err.toString() + '\n')
     res.status(400).json({ msg: err.toString() })
@@ -61,15 +62,14 @@ router.post('/update', async (req: express.Request, res: express.Response) => {
 // Delete a building
 router.post('/delete', async (req: express.Request, res: express.Response) => {
   try {
-    // Input validation
     if (!req.body.ids) {
       throw new Error('Please select a building to modify')
     }
 
-    const ids = req.body.ids.map((id) => {
+    const ids: number[] = req.body.ids.map((id: string) => {
       return parseInt(filter(id))
     })
-    res.json({ results: await remove(ids, 'buildings', 'id') })
+    res.json({ results: await remove('buildings', ids, 'id') })
   } catch (err) {
     log('error-log', err.toString() + '\n')
     res.status(400).json({ msg: err.toString() })
