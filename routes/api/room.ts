@@ -1,9 +1,10 @@
 import express from 'express'
+import connection from '../../utils/database'
 import { insert } from '../../lib/insert'
 import { remove } from '../../lib/remove'
 import { select, selectWithJoinAndWhere } from '../../lib/select'
 import { update } from '../../lib/update'
-import { filter, log } from '../../utils'
+import { log } from '../../utils'
 import { IRoom } from '../../client/src/types'
 
 const router = express.Router()
@@ -23,7 +24,7 @@ router.get('/:building', async (req, res) => {
       }
     ]
     const where = {
-      'buildings.id': parseInt(filter(req.params.building))
+      'buildings.id': parseInt(connection.escape(req.params.building))
     }
     const results: IRoom[] = await selectWithJoinAndWhere(
       'rooms',
@@ -53,10 +54,10 @@ router.post('/create', async (req, res) => {
     const room = [
       {
         id: null,
-        number: filter(req.body.number),
-        seats: parseInt(filter(req.body.seats)),
-        projector: parseInt(filter(req.body.projector)),
-        building: parseInt(filter(req.body.building))
+        number: connection.escape(req.body.number),
+        seats: parseInt(connection.escape(req.body.seats)),
+        projector: parseInt(connection.escape(req.body.projector)),
+        building: parseInt(connection.escape(req.body.building))
       }
     ]
     let insertResults: IRoom = await insert('rooms', room)
@@ -68,7 +69,7 @@ router.post('/create', async (req, res) => {
       }
     ]
     const where = {
-      'rooms.id': parseInt(filter(insertResults.id))
+      'rooms.id': parseInt(connection.escape(insertResults.id))
     }
     let selectResults: IRoom = await selectWithJoinAndWhere(
       'rooms',
@@ -97,10 +98,10 @@ router.post('/update', async (req, res) => {
 
     const room = [
       {
-        id: parseInt(filter(req.body.id)),
-        number: filter(req.body.number),
-        seats: parseInt(filter(req.body.seats)),
-        projector: parseInt(filter(req.body.projector))
+        id: parseInt(connection.escape(req.body.id)),
+        number: connection.escape(req.body.number),
+        seats: parseInt(connection.escape(req.body.seats)),
+        projector: parseInt(connection.escape(req.body.projector))
       }
     ]
     const results: IRoom = await update('rooms', room)
@@ -117,7 +118,7 @@ router.post('/delete', async (req, res) => {
       throw new Error('Please enter a valid room id to delete')
     }
 
-    const room = [parseInt(filter(req.body.id))]
+    const room = [parseInt(connection.escape(req.body.id))]
     const results: IRoom = await remove('rooms', room, 'id')
     res.json({ results })
   } catch (err) {

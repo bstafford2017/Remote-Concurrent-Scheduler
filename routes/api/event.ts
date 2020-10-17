@@ -1,10 +1,14 @@
 import express from 'express'
+import connection from '../../utils/database'
 import { insert } from '../../lib/insert'
 import { remove } from '../../lib/remove'
-import { select } from '../../lib/select'
+import { select, selectWithJoinAndWhere } from '../../lib/select'
 import { update } from '../../lib/update'
-import { filter, log } from '../../utils'
+import { log } from '../../utils'
 import jwt from 'jsonwebtoken'
+import { IEvent } from '../../client/src/types'
+import { IUser } from '../../client/src/types'
+import { IRecur } from '../../client/src/types'
 
 const router = express.Router()
 
@@ -32,7 +36,6 @@ function getWeekString(day: number) {
 // Get all events
 router.get('/:search', async (req: express.Request, res: express.Response) => {
   try {
-    // Input validation
     if (!req.params.search) {
       throw new Error('Please enter a valid search')
     }
@@ -68,22 +71,18 @@ router.get('/:search', async (req: express.Request, res: express.Response) => {
       }
     ]
     const where = {
-      title: filter(req.params.search),
-      'rooms.number': filter(req.params.search),
-      'buildings.name': filter(req.params.search),
-      'users.username': filter(req.params.search),
-      date: filter(req.params.search)
+      title: connection.escape(req.params.search),
+      'rooms.number': connection.escape(req.params.search),
+      'buildings.name': connection.escape(req.params.search),
+      'users.username': connection.escape(req.params.search),
+      date: connection.escape(req.params.search)
     }
-    const results = await select(
+    const results: IEvent[] = await selectWithJoinAndWhere(
       'events',
-      where,
-      'OR',
-      cols,
+      [],
       join,
-      null,
-      null,
-      null,
-      true
+      where,
+      'OR'
     )
     results.sort((a, b) => {
       return a.date - b.date
@@ -100,12 +99,11 @@ router.get(
   '/:year/:month',
   async (req: express.Request, res: express.Response) => {
     try {
-      // Input validation
       if (!req.params.year || !req.params.month) {
         throw new Error('Please enter a valid year and month')
       }
 
-      let results = [[]]
+      let results: IEvent = [[]]
       const date = new Date(
         parseInt(req.params.year),
         parseInt(req.params.month) - 1,
@@ -152,8 +150,8 @@ router.get(
             'recurs.weekdays': matchWeek,
             'recurs.end': formattedDate,
             date: formattedDate,
-            'buildings.name': filter(req.body.building),
-            'rooms.number': filter(req.body.room)
+            'buildings.name': connection.escape(req.body.building),
+            'rooms.number': connection.escape(req.body.room)
           }
         } else {
           where = {
@@ -167,15 +165,12 @@ router.get(
           'recurs.end': '>=',
           date: '<='
         }
-        const selectResults = await select(
+        const selectResults: IEvent[] = await selectWithJoinAndWhere(
           'events',
-          where,
-          'OR',
           cols,
           join,
-          whereCompare,
-          'AND',
-          true
+          where,
+          'OR'
         )
         for (let j = 0; j < selectResults.length; j++) {
           if (j == 0) {
@@ -199,7 +194,6 @@ router.post(
   '/:year/:month/:day',
   async (req: express.Request, res: express.Response) => {
     try {
-      // Input validation
       if (!req.params.year || !req.params.month || !req.params.day) {
         throw new Error('Please enter a valid year, month and day')
       }
@@ -245,21 +239,18 @@ router.post(
         'recurs.end': '>=',
         date: '<='
       }
-      let results = await select(
+      let results: IEvent[] = await selectWithJoinAndWhere(
         'events',
-        where,
-        'OR',
         cols,
         join,
-        whereCompare,
-        'AND',
-        true
+        where,
+        'OR'
       )
 
-      // Filter out results because of complex query
+      // connection.escape out results because of complex query
       if (req.body.room && req.body.building) {
         results = results.filter(
-          (row) =>
+          (row: IEvent) =>
             row.name === req.body.building && row.number === req.body.room
         )
       }
@@ -318,34 +309,31 @@ router.post('/create', async (req: express.Request, res: express.Response) => {
 
     // For getting a regular event that overlap
     const where1 = {
-      'events.date': filter(req.body.date),
-      room: parseInt(filter(req.body.room)),
-      startTime: filter(req.body.end),
-      endTime: filter(req.body.start)
+      'events.date': connection.escape(req.body.date),
+      room: parseInt(connection.escape(req.body.room)),
+      startTime: connection.escape(req.body.end),
+      endTime: connection.escape(req.body.start)
     }
     const whereCompare1 = {
       startTime: '<',
       endTime: '>'
     }
-    const eventResults1 = await select(
+    const eventResults1 = await selectWithJoinAndWhere(
       'events',
-      where1,
-      'AND',
       cols,
       join,
-      whereCompare1,
-      'AND',
-      true
+      where1,
+      'AND'
     )
 
     // For gettings recurring events that overlap
     const where2 = {
-      'recurs.weekdays': filter(matchWeek),
-      room: parseInt(filter(req.body.room)),
-      'recurs.end': filter(req.body.date),
-      date: filter(req.body.date),
-      startTime: filter(req.body.end),
-      endTime: filter(req.body.start)
+      'recurs.weekdays': connection.escape(matchWeek),
+      room: parseInt(connection.escape(req.body.room)),
+      'recurs.end': connection.escape(req.body.date),
+      date: connection.escape(req.body.date),
+      startTime: connection.escape(req.body.end),
+      endTime: connection.escape(req.body.start)
     }
     const whereCompare2 = {
       'recurs.end': '>=',
@@ -353,15 +341,12 @@ router.post('/create', async (req: express.Request, res: express.Response) => {
       startTime: '<',
       endTime: '>'
     }
-    const eventResults2 = await select(
+    const eventResults2: IEvent[] = await selectWithJoinAndWhere(
       'events',
-      where2,
-      'AND',
       cols,
       join,
-      whereCompare2,
-      'AND',
-      true
+      where2,
+      'AND'
     )
     const fullEventResults = eventResults1.concat(eventResults2)
     if (fullEventResults.length !== 0) {
@@ -374,36 +359,40 @@ router.post('/create', async (req: express.Request, res: express.Response) => {
     // Insert recur
     let recurInsertResults = null
     if (req.body.weekString && req.body.endRecur) {
-      const recur = {
-        id: null,
-        weekdays: filter(req.body.weekString),
-        end: filter(req.body.endRecur)
-      }
-      recurInsertResults = await insert(recur, 'recurs')
+      const recur = [
+        {
+          id: null,
+          weekdays: connection.escape(req.body.weekString),
+          end: connection.escape(req.body.endRecur)
+        }
+      ]
+      recurInsertResults = await insert('recurs', recur)
     }
 
     // Get logged in user
     const token = req.cookies.token
-    const authData = await jwt.verify(token, 'secret-key')
-    const userWhere = {
+    const authData: IUser = await jwt.verify(token, 'secret-key')
+    const userWhere: any = {
       username: authData.username
     }
-    const userResults = await select('users', userWhere)
+    const userResults: IUser[] = await select('users', userWhere)
 
     // Insert event
-    const event = {
-      id: null,
-      title: filter(req.body.title),
-      date: filter(req.body.date),
-      startTime: filter(req.body.start),
-      endTime: filter(req.body.end),
-      recur: recurInsertResults
-        ? parseInt(filter(recurInsertResults.id))
-        : null,
-      room: parseInt(filter(req.body.room)),
-      user: parseInt(filter(userResults[0].id))
-    }
-    const insertResults = await insert(event, 'events')
+    const event = [
+      {
+        id: null,
+        title: connection.escape(req.body.title),
+        date: connection.escape(req.body.date),
+        startTime: connection.escape(req.body.start),
+        endTime: connection.escape(req.body.end),
+        recur: recurInsertResults
+          ? parseInt(connection.escape(recurInsertResults.id))
+          : null,
+        room: parseInt(connection.escape(req.body.room)),
+        user: parseInt(connection.escape(userResults[0].id))
+      }
+    ]
+    const insertResults: IEvent[] = await insert('events', event)
     res.json({ results: insertResults })
   } catch (err) {
     log('error-log', err.toString() + '\n')
@@ -414,7 +403,6 @@ router.post('/create', async (req: express.Request, res: express.Response) => {
 // Update an event
 router.post('/update', async (req: express.Request, res: express.Response) => {
   try {
-    // Input validation
     if (
       !req.body.id ||
       !req.body.title ||
@@ -458,36 +446,33 @@ router.post('/update', async (req: express.Request, res: express.Response) => {
     const matchWeek = getWeekString(date.getDay())
     // For getting a regular event that overlap
     const where1 = {
-      'events.date': filter(req.body.date),
-      room: parseInt(filter(req.body.room)),
-      startTime: filter(req.body.end),
-      endTime: filter(req.body.start)
+      'events.date': connection.escape(req.body.date),
+      room: parseInt(connection.escape(req.body.room)),
+      startTime: connection.escape(req.body.end),
+      endTime: connection.escape(req.body.start)
     }
     const whereCompare1 = {
       room: '!=',
       startTime: '<',
       endTime: '>'
     }
-    const eventResults1 = await select(
+    const eventResults1: IEvent[] = await selectWithJoinAndWhere(
       'events',
-      where1,
-      'AND',
       cols,
       join,
-      whereCompare1,
-      'AND',
-      true
+      where1,
+      'AND'
     )
     // For gettings recurring events that overlap
     const where2 = {
-      'events.date': filter(req.body.date),
-      room: parseInt(filter(req.body.room)),
-      'recurs.weekdays': filter(matchWeek),
-      'events.id': parseInt(filter(req.body.id)),
-      'recurs.end': filter(req.body.date),
-      date: filter(req.body.date),
-      startTime: filter(req.body.start),
-      endTime: filter(req.body.end)
+      'events.date': connection.escape(req.body.date),
+      room: parseInt(connection.escape(req.body.room)),
+      'recurs.weekdays': connection.escape(matchWeek),
+      'events.id': parseInt(connection.escape(req.body.id)),
+      'recurs.end': connection.escape(req.body.date),
+      date: connection.escape(req.body.date),
+      startTime: connection.escape(req.body.start),
+      endTime: connection.escape(req.body.end)
     }
     const whereCompare2 = {
       room: '!=',
@@ -497,15 +482,12 @@ router.post('/update', async (req: express.Request, res: express.Response) => {
       startTime: '>',
       endTime: '<'
     }
-    const eventResults2 = await select(
+    const eventResults2: IEvent[] = await selectWithJoinAndWhere(
       'events',
-      where2,
-      'AND',
       cols,
       join,
-      whereCompare2,
-      'AND',
-      true
+      where2,
+      'AND'
     )
     const fullEventResults = eventResults1.concat(eventResults2)
     if (fullEventResults.length !== 0) {
@@ -519,36 +501,38 @@ router.post('/update', async (req: express.Request, res: express.Response) => {
       // Update recur
       const recur = [
         {
-          'recurs.id': parseInt(filter(req.body.recurId)),
-          'recurs.weekdays': filter(req.body.weekString),
-          'recurs.end': filter(req.body.endRecur)
+          'recurs.id': parseInt(connection.escape(req.body.recurId)),
+          'recurs.weekdays': connection.escape(req.body.weekString),
+          'recurs.end': connection.escape(req.body.endRecur)
         }
       ]
-      const recurInsertResults = await update(recur, 'recurs')
+      const recurInsertResults: IRecur[] = await update('recurs', recur)
     }
 
     // Get logged in user
     const token = req.cookies.token
-    const authData = await jwt.verify(token, 'secret-key')
-    const userWhere = {
+    const authData: IUser = await jwt.verify(token, 'secret-key')
+    const userWhere: any = {
       username: authData.username
     }
-    const userResults = await select('users', userWhere)
+    const userResults: IUser[] = await select('users', userWhere)
 
     // Update event
     const event = [
       {
-        id: parseInt(filter(req.body.id)),
-        title: filter(req.body.title),
-        date: filter(req.body.date),
-        startTime: filter(req.body.start),
-        endTime: filter(req.body.end),
-        recur: req.body.recurId ? parseInt(filter(req.body.recurId)) : null,
-        room: parseInt(filter(req.body.room)),
-        user: parseInt(filter(userResults[0].id))
+        id: parseInt(connection.escape(req.body.id)),
+        title: connection.escape(req.body.title),
+        date: connection.escape(req.body.date),
+        startTime: connection.escape(req.body.start),
+        endTime: connection.escape(req.body.end),
+        recur: req.body.recurId
+          ? parseInt(connection.escape(req.body.recurId))
+          : null,
+        room: parseInt(connection.escape(req.body.room)),
+        user: parseInt(connection.escape(userResults[0].id))
       }
     ]
-    const results = await update(event, 'events')
+    const results: IEvent[] = await update('events', event)
     res.json({ results })
   } catch (err) {
     log('error-log', err.toString() + '\n')
@@ -559,14 +543,13 @@ router.post('/update', async (req: express.Request, res: express.Response) => {
 // Delete an event
 router.post('/delete', async (req: express.Request, res: express.Response) => {
   try {
-    // Input validation
     if (!req.body.id) {
       throw new Error('Please enter a valid event id to delete')
     }
 
     const results = await remove(
-      [parseInt(filter(req.body.id))],
       'events',
+      [parseInt(connection.escape(req.body.id))],
       'id'
     )
     res.json({ results })

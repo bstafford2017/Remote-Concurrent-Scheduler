@@ -1,4 +1,5 @@
 import express from 'express'
+import connection from '../../utils/database'
 import { insert } from '../../lib/insert'
 import { remove } from '../../lib/remove'
 import {
@@ -7,7 +8,6 @@ import {
   selectWithJoinAndWhere
 } from '../../lib/select'
 import { update } from '../../lib/update'
-import { filter } from '../../utils'
 import { log } from '../../utils'
 import jwt from 'jsonwebtoken'
 import { IUser } from '../../client/src/types/index'
@@ -28,7 +28,7 @@ router.get('/', async (req, res) => {
       return res.sendStatus(401)
     }
     const where = {
-      username: filter(jwtResults.username)
+      username: connection.escape(jwtResults.username)
     }
     const results: IUser[] = await selectWithWhere('users', [], where, 'AND')
     res.json({ results: results[0] })
@@ -47,8 +47,8 @@ router.post('/login', async (req, res) => {
     }
 
     const where = {
-      username: filter(req.body.username),
-      password: filter(req.body.password)
+      username: connection.escape(req.body.username),
+      password: connection.escape(req.body.password)
     }
     const results: IUser[] = await selectWithWhere('users', [], where, 'AND')
     if (results.length === 0) {
@@ -103,7 +103,7 @@ router.get('/admin', async (req, res) => {
       return res.redirect('/login.html')
     }
     const where = {
-      username: filter(verifyResults.username)
+      username: connection.escape(verifyResults.username)
     }
     const results: IUser[] = await selectWithWhere('users', [], where, 'AND')
     if (results.length === 0) {
@@ -137,11 +137,11 @@ router.post('/create', async (req, res) => {
     const user = [
       {
         id: null,
-        username: filter(req.body.username),
-        password: filter(req.body.password),
-        fname: filter(req.body.fname),
-        lname: filter(req.body.lname),
-        admin: parseInt(filter(req.body.admin))
+        username: connection.escape(req.body.username),
+        password: connection.escape(req.body.password),
+        fname: connection.escape(req.body.fname),
+        lname: connection.escape(req.body.lname),
+        admin: parseInt(connection.escape(req.body.admin))
       }
     ]
     const results = await insert('users', user)
@@ -168,11 +168,11 @@ router.post('/update', async (req, res) => {
 
     const user = [
       {
-        id: parseInt(filter(req.body.id)),
-        username: filter(req.body.username),
-        password: filter(req.body.password),
-        fname: filter(req.body.fname),
-        lname: filter(req.body.lname)
+        id: parseInt(connection.escape(req.body.id)),
+        username: connection.escape(req.body.username),
+        password: connection.escape(req.body.password),
+        fname: connection.escape(req.body.fname),
+        lname: connection.escape(req.body.lname)
       }
     ]
     let results: IUser = await update('users', user)
@@ -232,7 +232,7 @@ router.post('/delete', async (req, res) => {
 
     // Check if user has create events
     const eventsWhere = {
-      'users.id': parseInt(filter(req.body.id))
+      'users.id': parseInt(connection.escape(req.body.id))
     }
     const eventsJoin = [
       {
@@ -252,7 +252,7 @@ router.post('/delete', async (req, res) => {
       throw new Error('Cannot delete user with created events')
     }
 
-    const id = [parseInt(filter(req.body.id))]
+    const id = [parseInt(connection.escape(req.body.id))]
     let results = await remove('users', id, 'id')
 
     // If < 1 admin, create an admin

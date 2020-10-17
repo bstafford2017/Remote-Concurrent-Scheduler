@@ -4,7 +4,7 @@ import { insert } from '../../lib/insert'
 import { remove } from '../../lib/remove'
 import { select } from '../../lib/select'
 import { update } from '../../lib/update'
-import { filter, log } from '../../utils'
+import { log } from '../../utils'
 import { IBuilding } from '../../client/src/types'
 
 const router = express.Router()
@@ -48,8 +48,8 @@ router.post('/update', async (req: express.Request, res: express.Response) => {
 
     const names: IBuilding[] = req.body.names.map((name: IBuilding) => {
       return {
-        id: parseInt(filter(name.id)),
-        name: filter(name.name)
+        id: parseInt(connection.escape(name.id)),
+        name: connection.escape(name.name)
       }
     })
     res.json({ results: await update('buildings', names) })
@@ -67,7 +67,7 @@ router.post('/delete', async (req: express.Request, res: express.Response) => {
     }
 
     const ids: number[] = req.body.ids.map((id: string) => {
-      return parseInt(filter(id))
+      return parseInt(connection.escape(id))
     })
     res.json({ results: await remove('buildings', ids, 'id') })
   } catch (err) {
