@@ -1,17 +1,16 @@
 import express from 'express'
-import insert from '../../lib/insert'
-import remove from '../../lib/remove'
-import select from '../../lib/select'
-import update from '../../lib/update'
-import filter from '../../utils/filter'
-import log from '../../utils/log'
+import { insert } from '../../lib/insert'
+import { remove } from '../../lib/remove'
+import { select, selectWithJoinAndWhere } from '../../lib/select'
+import { update } from '../../lib/update'
+import { filter, log } from '../../utils'
+import { IRoom } from '../../client/src/types'
 
 const router = express.Router()
 
 // Get particular building's rooms
 router.get('/:building', async (req, res) => {
   try {
-    // Input validation
     if (!req.params.building) {
       throw new Error('Please enter a valid building id')
     }
@@ -26,7 +25,13 @@ router.get('/:building', async (req, res) => {
     const where = {
       'buildings.id': parseInt(filter(req.params.building))
     }
-    const results = await select('rooms', where, 'OR', columns, join)
+    const results: IRoom[] = await selectWithJoinAndWhere(
+      'rooms',
+      columns,
+      join,
+      where,
+      'OR'
+    )
     res.json({ results })
   } catch (err) {
     log('error-log', err.toString() + '\n')
@@ -36,7 +41,6 @@ router.get('/:building', async (req, res) => {
 
 router.post('/create', async (req, res) => {
   try {
-    // Input validation
     if (
       !req.body.number ||
       !req.body.seats ||
@@ -46,14 +50,16 @@ router.post('/create', async (req, res) => {
       throw new Error('Please fill out the entire create room form')
     }
 
-    const room = {
-      id: null,
-      number: filter(req.body.number),
-      seats: parseInt(filter(req.body.seats)),
-      projector: parseInt(filter(req.body.projector)),
-      building: parseInt(filter(req.body.building))
-    }
-    let insertResults = await insert(room, 'rooms')
+    const room = [
+      {
+        id: null,
+        number: filter(req.body.number),
+        seats: parseInt(filter(req.body.seats)),
+        projector: parseInt(filter(req.body.projector)),
+        building: parseInt(filter(req.body.building))
+      }
+    ]
+    let insertResults: IRoom = await insert('rooms', room)
     const columns = ['rooms.id', 'number', 'seats', 'projector', 'name']
     const join = [
       {
@@ -64,7 +70,13 @@ router.post('/create', async (req, res) => {
     const where = {
       'rooms.id': parseInt(filter(insertResults.id))
     }
-    let selectResults = await select('rooms', where, 'AND', columns, join)
+    let selectResults: IRoom = await selectWithJoinAndWhere(
+      'rooms',
+      columns,
+      join,
+      where,
+      'AND'
+    )
     res.json({ results: selectResults[0] })
   } catch (err) {
     log('error-log', err.toString() + '\n')
@@ -74,7 +86,6 @@ router.post('/create', async (req, res) => {
 
 router.post('/update', async (req, res) => {
   try {
-    // Input validation
     if (
       !req.body.number ||
       !req.body.seats ||
@@ -92,7 +103,7 @@ router.post('/update', async (req, res) => {
         projector: parseInt(filter(req.body.projector))
       }
     ]
-    const results = await update(room, 'rooms')
+    const results: IRoom = await update('rooms', room)
     res.json({ results })
   } catch (err) {
     log('error-log', err.toString() + '\n')
@@ -102,13 +113,12 @@ router.post('/update', async (req, res) => {
 
 router.post('/delete', async (req, res) => {
   try {
-    // Input validation
     if (!req.body.id) {
       throw new Error('Please enter a valid room id to delete')
     }
 
     const room = [parseInt(filter(req.body.id))]
-    const results = await remove(room, 'rooms', 'id')
+    const results: IRoom = await remove('rooms', room, 'id')
     res.json({ results })
   } catch (err) {
     log('error-log', err.toString() + '\n')
