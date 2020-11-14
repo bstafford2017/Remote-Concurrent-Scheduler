@@ -1,6 +1,8 @@
 import express from 'express'
+import mongoose from 'mongoose'
 import { graphqlHTTP } from 'express-graphql'
 import schema from './schema'
+import config from './config'
 import { logger } from './utils'
 import tokenRoutes from './routes/api/token'
 import eventRoutes from './routes/api/event'
@@ -9,6 +11,15 @@ import buildingRoutes from './routes/api/building'
 import roomRoutes from './routes/api/room'
 
 const app: any = express()
+
+mongoose
+  .connect(config.mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true
+  })
+  .then(() => console.log('MongoDB connected...'))
+  .catch((err) => console.error(err))
 
 app.use('/graphiql', graphqlHTTP({ schema, graphiql: true }))
 
