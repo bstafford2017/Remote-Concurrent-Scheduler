@@ -24,11 +24,11 @@ type Event {
   id: String!
   title: String!
   startDate: String!
-  start: String!
-  end: String!
-  recur: Boolean!
-  weekdays: String
   endDate: String
+  startTime: String!
+  endTime: String!
+  recur: Boolean!
+  weekdays: [Boolean]
   room: Room!
   createdBy: User!
 }

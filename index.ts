@@ -1,4 +1,6 @@
 import express from 'express'
+import { graphqlHTTP } from 'express-graphql'
+import schema from './schema'
 import { logger } from './utils'
 import tokenRoutes from './routes/api/token'
 import eventRoutes from './routes/api/event'
@@ -7,6 +9,8 @@ import buildingRoutes from './routes/api/building'
 import roomRoutes from './routes/api/room'
 
 const app: any = express()
+
+app.use('/graphiql', graphqlHTTP({ schema, graphiql: true }))
 
 // Middleware for body parsing for POST
 app.use(express.urlencoded({ extended: true }))
