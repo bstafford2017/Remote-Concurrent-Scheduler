@@ -32,18 +32,6 @@ app.use(express.json())
 // Middleware for logging requests
 app.use(logger)
 
-// Routes for API
-app.use('/api/token', tokenRoutes)
-app.use('/api/event', eventRoutes)
-app.use('/api/user', userRoutes)
-app.use('/api/building', buildingRoutes)
-app.use('/api/room', roomRoutes)
-
-// Catch 404
-app.use((req: express.Request, res: express.Response) => {
-  res.sendStatus(404)
-})
-
 let port = process.env.PORT || 5000
 
 // Listen for request
