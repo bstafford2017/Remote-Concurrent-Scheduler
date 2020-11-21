@@ -1,8 +1,8 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import { graphqlHTTP } from 'express-graphql'
-import schema from './schema'
 import config from './config'
+import schema from './schema'
 ;(async () => {
   try {
     const app: express.Application = express()
@@ -13,10 +13,20 @@ import config from './config'
       useCreateIndex: true
     })
 
-    app.use('/graphiql', graphqlHTTP({ schema, graphiql: true }))
+    console.log('MongoDB connected...')
+
+    app.use(
+      '/graphql',
+      graphqlHTTP({
+        schema,
+        graphiql: true
+      })
+    )
 
     let port = process.env.PORT || 5000
-    app.listen(port, () => console.log(`Server started on port ${port}`))
+    app.listen(port)
+
+    console.log(`Server listening on port ${port}`)
   } catch (e) {
     console.error(e)
   }
