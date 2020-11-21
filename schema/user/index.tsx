@@ -54,6 +54,14 @@ export const addUser = {
 
 export const updateUser = {}
 
-export const removeUser = {}
+export const removeUser = {
+  type: UserType,
+  args: {
+    id: { type: new GraphQLNonNull(GraphQLString) }
+  },
+  resolve(parent: any, args: any) {
+    return User.findByIdAndDelete(args.id)
+  }
+}
 
 export default UserType

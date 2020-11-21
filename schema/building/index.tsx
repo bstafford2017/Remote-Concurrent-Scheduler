@@ -33,6 +33,14 @@ export const addBuilding = {
 
 export const updateBuilding = {}
 
-export const removeBuilding = {}
+export const removeBuilding = {
+  type: BuildingType,
+  args: {
+    id: { type: new GraphQLNonNull(GraphQLString) }
+  },
+  resolve(parent: any, args: any) {
+    return Building.findByIdAndDelete(args.id)
+  }
+}
 
 export default BuildingType

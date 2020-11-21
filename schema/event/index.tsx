@@ -81,6 +81,14 @@ export const addEvent = {
 
 export const updateEvent = {}
 
-export const removeEvent = {}
+export const removeEvent = {
+  type: EventType,
+  args: {
+    id: { type: new GraphQLNonNull(GraphQLString) }
+  },
+  resolve(parent: any, args: any) {
+    return Event.findByIdAndDelete(args.id)
+  }
+}
 
 export default EventType

@@ -53,6 +53,14 @@ export const addRoom = {
 
 export const updateRoom = {}
 
-export const removeRoom = {}
+export const removeRoom = {
+  type: RoomType,
+  args: {
+    id: { type: new GraphQLNonNull(GraphQLString) }
+  },
+  resolve(parent: any, args: any) {
+    return Room.findByIdAndDelete(args.id)
+  }
+}
 
 export default RoomType

@@ -2,6 +2,10 @@ import mongo from 'mongoose'
 const Schema = mongo.Schema
 
 const roomSchema = new Schema({
+  _id: {
+    type: String,
+    required: false
+  },
   number: {
     type: String,
     required: true

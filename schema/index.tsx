@@ -17,6 +17,11 @@ import BuildingType from './building'
 import RoomType from './room'
 import EventType from './event'
 
+import { addUser, updateUser, removeUser } from './user'
+import { addBuilding, updateBuilding, removeBuilding } from './building'
+import { addRoom, updateRoom, removeRoom } from './room'
+import { addEvent, updateEvent, removeEvent } from './event'
+
 const query = new GraphQLObjectType({
   name: 'RootQuery',
   fields: {
@@ -69,7 +74,16 @@ const query = new GraphQLObjectType({
 
 const mutation = new GraphQLObjectType({
   name: 'Mutation',
-  fields: {}
+  fields: {
+    addUser,
+    removeUser,
+    addBuilding,
+    removeBuilding,
+    addRoom,
+    removeRoom,
+    addEvent,
+    removeEvent
+  }
 })
 
 export default new GraphQLSchema({

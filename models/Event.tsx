@@ -2,6 +2,10 @@ import mongo from 'mongoose'
 const Schema = mongo.Schema
 
 const eventSchema = new Schema({
+  _id: {
+    type: String,
+    required: false
+  },
   title: {
     type: String,
     required: true
