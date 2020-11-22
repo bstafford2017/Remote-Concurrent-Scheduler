@@ -1,16 +1,22 @@
 import {
-  GraphQLSchema,
+  GraphQLInputObjectType,
   GraphQLObjectType,
   GraphQLString,
-  GraphQLBoolean,
-  GraphQLList,
-  GraphQLInt,
   GraphQLNonNull
 } from 'graphql'
 import Building from '../../models/Building'
 
 const BuildingType = new GraphQLObjectType({
   name: 'Building',
+  fields: () => ({
+    name: {
+      type: GraphQLString
+    }
+  })
+})
+
+export const BuildingInputType = new GraphQLInputObjectType({
+  name: 'BuildingInput',
   fields: () => ({
     name: {
       type: GraphQLString

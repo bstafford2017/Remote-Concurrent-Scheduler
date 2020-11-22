@@ -1,5 +1,5 @@
 import {
-  GraphQLSchema,
+  GraphQLInputObjectType,
   GraphQLObjectType,
   GraphQLString,
   GraphQLBoolean,
@@ -10,6 +10,7 @@ import {
 import Room from '../../models/Room'
 import Building from '../../models/Building'
 import BuildingType from '../building'
+import { BuildingInputType } from '../building'
 
 const RoomType = new GraphQLObjectType({
   name: 'Room',
@@ -32,13 +33,31 @@ const RoomType = new GraphQLObjectType({
   })
 })
 
+export const RoomInputType = new GraphQLInputObjectType({
+  name: 'RoomInput',
+  fields: () => ({
+    number: {
+      type: GraphQLString
+    },
+    seats: {
+      type: GraphQLInt
+    },
+    projector: {
+      type: GraphQLBoolean
+    },
+    building: {
+      type: BuildingInputType
+    }
+  })
+})
+
 export const addRoom = {
   type: RoomType,
   args: {
     number: { type: new GraphQLNonNull(GraphQLString) },
     seats: { type: new GraphQLNonNull(GraphQLInt) },
     projector: { type: new GraphQLNonNull(GraphQLBoolean) },
-    building: { type: new GraphQLNonNull(BuildingType) }
+    building: { type: new GraphQLNonNull(BuildingInputType) }
   },
   resolve(parent: any, args: any) {
     const room = new Room({

@@ -10,7 +10,8 @@ import {
 import Event from '../../models/Event'
 import Room from '../../models/Room'
 import User from '../../models/User'
-import BuildingType from '../building'
+import { RoomInputType } from '../room'
+import { UserInputType } from '../user'
 import RoomType from '../room'
 import UserType from '../user'
 
@@ -61,8 +62,8 @@ export const addEvent = {
     startTime: { type: new GraphQLNonNull(GraphQLString) },
     endTime: { type: new GraphQLNonNull(GraphQLString) },
     weekends: { type: new GraphQLNonNull(new GraphQLList(GraphQLBoolean)) },
-    room: { type: new GraphQLNonNull(RoomType) },
-    createdBy: { type: new GraphQLNonNull(UserType) }
+    room: { type: new GraphQLNonNull(RoomInputType) },
+    createdBy: { type: new GraphQLNonNull(UserInputType) }
   },
   resolve(parent: any, args: any) {
     const event = new Event({

@@ -28,12 +28,12 @@ const query = new GraphQLObjectType({
     user: {
       type: UserType,
       args: {
-        username: {
+        id: {
           type: GraphQLString
         }
       },
       resolve(parent: any, args: any) {
-        return User.find({ username: args.username })
+        return User.findById(args.id)
       }
     },
     building: {

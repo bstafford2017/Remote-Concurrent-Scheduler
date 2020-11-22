@@ -1,16 +1,35 @@
 import {
-  GraphQLSchema,
+  GraphQLInputObjectType,
   GraphQLObjectType,
   GraphQLString,
   GraphQLBoolean,
-  GraphQLList,
-  GraphQLInt,
   GraphQLNonNull
 } from 'graphql'
 import User from '../../models/User'
 
 const UserType = new GraphQLObjectType({
   name: 'User',
+  fields: () => ({
+    username: {
+      type: GraphQLString
+    },
+    password: {
+      type: GraphQLString
+    },
+    firstName: {
+      type: GraphQLString
+    },
+    lastName: {
+      type: GraphQLString
+    },
+    admin: {
+      type: GraphQLBoolean
+    }
+  })
+})
+
+export const UserInputType = new GraphQLInputObjectType({
+  name: 'UserInput',
   fields: () => ({
     username: {
       type: GraphQLString
