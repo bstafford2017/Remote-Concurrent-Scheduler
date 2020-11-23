@@ -1,7 +1,22 @@
 import React from 'react'
 import { Col, FormGroup, Label, Input } from 'reactstrap'
+import { connect } from 'react-redux'
+import { selectBuilding, selectRoom } from '../../actions/selectActions'
 
-const Filter = (props: any) => {
+interface IProps {
+  selectBuilding: Function
+  selectRoom: Function
+}
+
+const Filter = ({ selectBuilding, selectRoom }: IProps) => {
+  const handleBuildingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    selectBuilding(e.target.value)
+  }
+
+  const handleRoomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    selectRoom(e.target.value)
+  }
+
   return (
     <div id='filter' className='form-row pb-3' style={{ margin: 0 }}>
       <Col xs={{ size: 3, offset: 3 }}>
@@ -12,6 +27,7 @@ const Filter = (props: any) => {
             id='filter-building'
             defaultValue='default'
             style={{ color: 'white' }}
+            onChange={handleBuildingChange}
           >
             <option value='default' disabled={true} hidden={true}>
               All Buildings
@@ -27,6 +43,7 @@ const Filter = (props: any) => {
             id='filter-room'
             defaultValue='default'
             style={{ color: 'white' }}
+            onChange={handleRoomChange}
           >
             <option value='default' disabled={true} hidden={true}>
               All Rooms
@@ -38,4 +55,9 @@ const Filter = (props: any) => {
   )
 }
 
-export default Filter
+const mapDispathToProps = {
+  selectBuilding,
+  selectRoom
+}
+
+export default connect(null, mapDispathToProps)(Filter)

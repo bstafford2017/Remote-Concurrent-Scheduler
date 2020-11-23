@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
+import Filter from './Filter'
 import { loadEvents } from '../../actions/eventActions'
 import { IEvent } from '../../types'
 import Event from './Event'
@@ -9,12 +10,13 @@ const getDaysInMonth = (date: Date): number => {
 }
 
 interface IProps {
-  byMonth: boolean
   events: IEvent[]
-  loadEvents: Function
+  building: string
+  room: string
+  byMonth: boolean
 }
 
-const Table = ({ events, byMonth, loadEvents }: IProps) => {
+const Table = ({ events, byMonth, building, room }: IProps) => {
   const [date, setDate]: [Date, Function] = useState(new Date())
   const [listOfDates, setListOfDates]: [Date[], Function] = useState([])
 
@@ -102,11 +104,14 @@ const Table = ({ events, byMonth, loadEvents }: IProps) => {
             ))} */}
           </div>
         ) : (
-          <div className='week-by-week'>
-            {events.map((e: IEvent) => (
-              <Event key={e.id} byMonth={false} event={e} />
-            ))}
-          </div>
+          <>
+            <Filter />
+            <div className='week-by-week'>
+              {/* {events.map((e: IEvent) => (
+                <Event key={e.id} byMonth={false} event={e} />
+              ))} */}
+            </div>
+          </>
         )}
       </div>
     </div>
@@ -114,7 +119,10 @@ const Table = ({ events, byMonth, loadEvents }: IProps) => {
 }
 
 const mapStateToProps = (state: any) => ({
-  events: state.event.events
+  events: state.event.events,
+  building: state.select.building,
+  room: state.select.room,
+  byMonth: state.select.byMonth
 })
 
 const mapDispatchToProps = {

@@ -38,3 +38,8 @@ export const CREATE_EVENT = 'CREATE_EVENT'
 export const UPDATE_EVENT = 'UPDATE_EVENT'
 export const DELETE_EVENT = 'DELETE_EVENT'
 export const SEARCH_EVENT = 'SEARCH_EVENT'
+
+// Select
+export const SELECT_BUILDING = 'SELECT_BUILDING'
+export const SELECT_ROOM = 'SELECT_ROOM'
+export const SELECT_BY_MONTH = 'SELECT_BY_MONTH'
