@@ -1,7 +1,7 @@
 import React from 'react'
 import { Col, FormGroup, Label, Input } from 'reactstrap'
 import { connect } from 'react-redux'
-import { selectBuilding, selectRoom } from '../../actions/selectActions'
+import { selectBuilding, selectRoom } from '../../actions/select'
 
 interface IProps {
   selectBuilding: Function

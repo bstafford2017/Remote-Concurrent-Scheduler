@@ -15,7 +15,7 @@ import {
 } from 'reactstrap'
 import SearchResult from './SearchResult'
 import { IEvent } from '../../types'
-import { searchEvent } from '../../actions/searchActions'
+import { searchEvent } from '../../actions/search'
 
 interface IProps {
   results: IEvent[]

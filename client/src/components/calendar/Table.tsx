@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import Filter from './Filter'
-import { loadEvents } from '../../actions/eventActions'
+import { loadEvents } from '../../actions/event'
 import { IEvent } from '../../types'
-import Event from './Event'
 
 const getDaysInMonth = (date: Date): number => {
   return new Date(date.getFullYear(), date.getMonth(), 0).getDate()

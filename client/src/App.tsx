@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { loadUser } from './actions/userActions'
+import { loadUser } from './actions/user'
 
-import { Provider } from 'react-redux'
-import store from './store'
+import { connect } from 'react-redux'
 
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import './styles/calendar/items.css'
@@ -39,58 +38,62 @@ import {
   LIVE_URL
 } from './components/routes'
 
-const App = (props: any) => {
+interface IProps {
+  isAuthenticated: boolean
+  isAdmin: boolean
+  isLoading: boolean
+}
+
+const App = ({ isAuthenticated, isAdmin, isLoading }: IProps) => {
   useEffect(() => {
-    store.dispatch(loadUser())
+    loadUser()
   }, [])
 
-  const {
-    isAuthenticated = false,
-    isLoading = false
-  }: { isAuthenticated: boolean; isLoading: boolean } = store.getState().user
-  const isAdmin = store.getState().user.user?.admin || false
   const next = (e: React.MouseEvent) => {}
 
   const previous = (e: React.MouseEvent) => {}
 
+  if (isLoading) return <Spinner />
+
   return (
-    <Provider store={store}>
-      {isLoading ? (
-        <Spinner />
-      ) : (
-        <>
-          <Router>
-            <Route
-              path={LOGIN_URL}
-              component={() => (
-                <>
-                  <Header next={next} previous={previous} />
-                  <Navigation
-                    isAdmin={isAdmin}
-                    isAuthenticated={isAuthenticated}
-                  />
-                </>
-              )}
-            />
-            <div className='content'>
-              <Switch>
-                <Route exact path={LOGIN_URL} component={Login} />
-                <Route path={LIVE_URL} component={Live} />
-                <AuthRoute path={HOME_URL} component={Home} />
-                <AuthRoute path={SEARCH_URL} component={Search} />
-                <AuthRoute path={SETTINGS_URL} component={Settings} />
-                <AuthRoute path={BUILDINGS_URL} component={ManageBuildings} />
-                <AuthRoute path={ROOMS_URL} component={ManageRooms} />
-                <AuthRoute path={USERS_URL} component={ManageUsers} />
-                <Route path='*' component={NotFound} />
-              </Switch>
-            </div>
-          </Router>
-          <Footer />
-        </>
-      )}
-    </Provider>
+    <>
+      <Router>
+        <Route
+          path={LOGIN_URL}
+          component={() => (
+            <>
+              <Header next={next} previous={previous} />
+              <Navigation isAdmin={isAdmin} isAuthenticated={isAuthenticated} />
+            </>
+          )}
+        />
+        <div className='content'>
+          <Switch>
+            <Route exact path={LOGIN_URL} component={Login} />
+            <Route path={LIVE_URL} component={Live} />
+            <AuthRoute path={HOME_URL} component={Home} />
+            <AuthRoute path={SEARCH_URL} component={Search} />
+            <AuthRoute path={SETTINGS_URL} component={Settings} />
+            <AuthRoute path={BUILDINGS_URL} component={ManageBuildings} />
+            <AuthRoute path={ROOMS_URL} component={ManageRooms} />
+            <AuthRoute path={USERS_URL} component={ManageUsers} />
+            <Route path='*' component={NotFound} />
+          </Switch>
+        </div>
+      </Router>
+      <Footer />
+    </>
   )
 }
 
-export default App
+const mapStateToProps = (state: any) => ({
+  isAuthenticated: state.user.isAuthenticated,
+  isAdmin: state.user.isAdmin,
+  isLoading: state.common.isLoading
+})
+
+const mapDispatchToProps = {
+  loadUser
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

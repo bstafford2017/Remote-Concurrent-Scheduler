@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import Banner from '../common/Banner'
 import { Link, useLocation } from 'react-router-dom'
-import { selectByMonth } from '../../actions/selectActions'
+import { selectByMonth } from '../../actions/select'
 
 interface IProps {
   next: (event: React.MouseEvent) => void

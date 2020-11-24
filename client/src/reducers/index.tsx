@@ -1,16 +1,18 @@
 import { combineReducers } from 'redux'
-import buildingReducer from './buildingReducer'
-import roomReducer from './roomReducer'
-import userReducer from './userReducer'
-import eventReducer from './eventReducer'
-import searchReducer from './searchReducer'
-import selectReducer from './selectReducer'
+import building from './building'
+import room from './room'
+import user from './user'
+import event from './event'
+import search from './search'
+import select from './select'
+import common from './common'
 
 export default combineReducers({
-  building: buildingReducer,
-  room: roomReducer,
-  user: userReducer,
-  event: eventReducer,
-  search: searchReducer,
-  select: selectReducer
+  building,
+  room,
+  user,
+  event,
+  search,
+  select,
+  common
 })

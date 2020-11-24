@@ -12,7 +12,7 @@ import {
   Button
 } from 'reactstrap'
 import { ILogin } from '../../types'
-import { login } from '../../actions/userActions'
+import { login } from '../../actions/user'
 import { useHistory } from 'react-router-dom'
 
 const initialState: ILogin = {

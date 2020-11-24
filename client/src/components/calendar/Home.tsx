@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Table from './Table'
-import { brotliDecompressSync } from 'zlib'
 
 const Home = () => {
   return (

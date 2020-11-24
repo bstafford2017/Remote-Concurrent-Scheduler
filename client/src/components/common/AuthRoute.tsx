@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Route, Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { LOGIN_URL } from '../routes'
-import { loadUser } from '../../actions/userActions'
+import { loadUser } from '../../actions/user'
 import { hasToken } from '../../utils'
 
 const AuthRoute = ({
