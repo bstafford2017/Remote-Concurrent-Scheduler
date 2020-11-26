@@ -1,0 +1,35 @@
+import {
+  LOADED_EVENT,
+  CREATE_EVENT,
+  UPDATE_EVENT,
+  DELETE_EVENT
+} from '../actions'
+import { IAction } from '../types'
+
+const initialState = {
+  events: []
+}
+
+export default function (state = initialState, action: IAction) {
+  switch (action.type) {
+    case LOADED_EVENT:
+      return { ...state, events: [action.payload] }
+    case CREATE_EVENT:
+      return { ...state, events: [...state.events, action.payload] }
+    case UPDATE_EVENT:
+      return {
+        ...state,
+        events: [
+          ...state.events.filter((e) => e !== action.payload),
+          action.payload
+        ]
+      }
+    case DELETE_EVENT:
+      return {
+        ...state,
+        events: [...state.events.filter((e) => e !== action.payload)]
+      }
+    default:
+      return { ...state }
+  }
+}

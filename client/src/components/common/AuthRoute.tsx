@@ -34,7 +34,7 @@ AuthRoute.propTypes = {
 }
 
 const mapStateToProps = (state: any) => ({
-  isLoading: state.user.isLoading
+  isLoading: state.common.isLoading
 })
 
 const mapDispatchToProps = {
