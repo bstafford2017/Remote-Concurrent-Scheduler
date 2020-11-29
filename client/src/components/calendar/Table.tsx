@@ -6,7 +6,8 @@ import {
   startOfWeek,
   lastDayOfWeek,
   endOfWeek,
-  addDays
+  addDays,
+  isSameMonth
 } from 'date-fns'
 import { connect } from 'react-redux'
 import Filter from './Filter'
@@ -43,6 +44,15 @@ const Table = ({ events, byMonth, building, room }: IProps) => {
     }
   }, [byMonth])
 
+  const printMonth = (d: Date) => (
+    <div
+      key={d.toISOString()}
+      className={isSameMonth(d, new Date()) ? 'valid' : 'invalid'}
+    >
+      {d.getDate()}
+    </div>
+  )
+
   return (
     <div className='calendar-table'>
       {byMonth ? null : (
@@ -78,47 +88,27 @@ const Table = ({ events, byMonth, building, room }: IProps) => {
             <div className='row'>
               {listOfDates
                 .filter((date, index) => index < 7)
-                .map((d) => (
-                  <div key={d.toISOString()} className='valid'>
-                    {d.getDate()}
-                  </div>
-                ))}
+                .map((d) => printMonth(d))}
             </div>
             <div className='row'>
               {listOfDates
                 .filter((date, index) => index <= 14 && index > 7)
-                .map((d) => (
-                  <div key={d.toISOString()} className='valid'>
-                    {d.getDate()}
-                  </div>
-                ))}
+                .map((d) => printMonth(d))}
             </div>
             <div className='row'>
               {listOfDates
                 .filter((date, index) => index <= 21 && index > 14)
-                .map((d) => (
-                  <div key={d.toISOString()} className='valid'>
-                    {d.getDate()}
-                  </div>
-                ))}
+                .map((d) => printMonth(d))}
             </div>
             <div className='row'>
               {listOfDates
                 .filter((date, index) => index <= 28 && index > 21)
-                .map((d) => (
-                  <div key={d.toISOString()} className='valid'>
-                    {d.getDate()}
-                  </div>
-                ))}
+                .map((d) => printMonth(d))}
             </div>
             <div className='row'>
               {listOfDates
                 .filter((date, index) => index > 28)
-                .map((d) => (
-                  <div key={d.toISOString()} className='valid'>
-                    {d.getDate()}
-                  </div>
-                ))}
+                .map((d) => printMonth(d))}
             </div>
             {events.map((e: IEvent) => (
               <Event key={e.id} event={e} />
