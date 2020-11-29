@@ -4,7 +4,9 @@ import {
   startOfMonth,
   lastDayOfMonth,
   startOfWeek,
-  endOfWeek
+  lastDayOfWeek,
+  endOfWeek,
+  addDays
 } from 'date-fns'
 import { connect } from 'react-redux'
 import Filter from './Filter'
@@ -27,8 +29,8 @@ const Table = ({ events, byMonth, building, room }: IProps) => {
     if (byMonth) {
       setListOfDates(
         eachDayOfInterval({
-          start: startOfMonth(new Date()),
-          end: lastDayOfMonth(new Date())
+          start: startOfWeek(startOfMonth(new Date())),
+          end: addDays(lastDayOfWeek(lastDayOfMonth(new Date())), 1)
         })
       )
     } else {
@@ -102,7 +104,16 @@ const Table = ({ events, byMonth, building, room }: IProps) => {
             </div>
             <div className='row'>
               {listOfDates
-                .filter((date, index) => index > 21)
+                .filter((date, index) => index <= 28 && index > 21)
+                .map((d) => (
+                  <div key={d.toISOString()} className='valid'>
+                    {d.getDate()}
+                  </div>
+                ))}
+            </div>
+            <div className='row'>
+              {listOfDates
+                .filter((date, index) => index > 28)
                 .map((d) => (
                   <div key={d.toISOString()} className='valid'>
                     {d.getDate()}
