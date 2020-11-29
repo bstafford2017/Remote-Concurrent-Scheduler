@@ -56,18 +56,21 @@ const App = ({ isAuthenticated, isAdmin, isLoading }: IProps) => {
   if (isLoading) return <Spinner />
 
   return (
-    <>
+    <div className='content'>
       <Router>
-        <Route
-          path={LOGIN_URL}
-          component={() => (
-            <>
-              <Header next={next} previous={previous} />
-              <Navigation isAdmin={isAdmin} isAuthenticated={isAuthenticated} />
-            </>
-          )}
-        />
-        <div className='content'>
+        <div className='content-wrap'>
+          <Route
+            path={LOGIN_URL}
+            component={() => (
+              <>
+                <Header next={next} previous={previous} />
+                <Navigation
+                  isAdmin={isAdmin}
+                  isAuthenticated={isAuthenticated}
+                />
+              </>
+            )}
+          />
           <Switch>
             <Route exact path={LOGIN_URL} component={Login} />
             <Route path={LIVE_URL} component={Live} />
@@ -82,7 +85,7 @@ const App = ({ isAuthenticated, isAdmin, isLoading }: IProps) => {
         </div>
       </Router>
       <Footer />
-    </>
+    </div>
   )
 }
 
