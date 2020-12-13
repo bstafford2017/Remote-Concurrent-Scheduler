@@ -14,6 +14,7 @@ import Filter from './Filter'
 import { loadEvents } from '../../actions/event'
 import { IEvent } from '../../types'
 import Event from './Event'
+import MenuModal from './MenuModal'
 
 interface IProps {
   events: IEvent[]
@@ -24,6 +25,7 @@ interface IProps {
 
 const Table = ({ events, byMonth, building, room }: IProps) => {
   const [listOfDates, setListOfDates]: [Date[], Function] = useState([])
+  const [displayModal, setDisplayModal]: [boolean, Function] = useState(false)
 
   useEffect(() => {
     loadEvents()
@@ -48,10 +50,18 @@ const Table = ({ events, byMonth, building, room }: IProps) => {
     <div
       key={d.toISOString()}
       className={isSameMonth(d, new Date()) ? 'valid' : 'invalid'}
+      onClick={() => setDisplayModal(!displayModal)}
     >
       {d.getDate()}
     </div>
   )
+
+  const toggleModal = (e: React.MouseEvent) => {
+    setDisplayModal(!displayModal)
+  }
+
+  if (displayModal)
+    return <MenuModal display={displayModal} toggle={toggleModal} />
 
   return (
     <div className='calendar-table'>
