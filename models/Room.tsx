@@ -19,7 +19,7 @@ const roomSchema = new Schema({
     required: true
   },
   building: {
-    type: mongo.Schema.Types.ObjectId,
+    type: mongo.Types.ObjectId,
     ref: 'Building',
     required: true
   }

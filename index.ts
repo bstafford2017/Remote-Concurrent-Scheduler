@@ -1,10 +1,55 @@
 import express from 'express'
 import mongoose from 'mongoose'
-import { graphqlHTTP } from 'express-graphql'
+import { readFileSync } from 'fs'
+import { ApolloServer } from 'apollo-server-express'
+import cors from 'cors'
 import config from './config'
-import schema from './schema'
+import { selectUsers, addUser, updateUser, deleteUser } from './schema/user'
+import {
+  selectBuildings,
+  addBuilding,
+  updateBuilding,
+  deleteBuilding
+} from './schema/building'
+import { selectRooms, addRoom, updateRoom, deleteRoom } from './schema/Room'
+import {
+  selectEvents,
+  addEvent,
+  updateEvent,
+  deleteEvent
+} from './schema/event'
 ;(async () => {
   try {
+    let port = process.env.PORT || 5000
+
+    const typeDefs: string = readFileSync('schema.graphql').toString()
+
+    // Resolver map
+    const resolvers = {
+      Query: {
+        selectUsers,
+        selectBuildings,
+        selectRooms,
+        selectEvents
+      },
+      Mutation: {
+        addUser,
+        addBuilding,
+        addRoom,
+        addEvent,
+        updateUser,
+        updateBuilding,
+        updateRoom,
+        updateEvent,
+        deleteUser,
+        deleteBuilding,
+        deleteRoom,
+        deleteEvent
+      }
+    }
+
+    const server: ApolloServer = new ApolloServer({ typeDefs, resolvers })
+
     const app: express.Application = express()
 
     await mongoose.connect(config.mongoURI, {
@@ -15,15 +60,9 @@ import schema from './schema'
 
     console.log('MongoDB connected...')
 
-    app.use(
-      '/graphql',
-      graphqlHTTP({
-        schema,
-        graphiql: true
-      })
-    )
+    server.applyMiddleware({ app, path: '/graphql' })
 
-    let port = process.env.PORT || 5000
+    app.use(cors())
     app.listen(port)
 
     console.log(`Server listening on port ${port}`)

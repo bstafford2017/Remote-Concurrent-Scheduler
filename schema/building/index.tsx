@@ -1,52 +1,62 @@
-import {
-  GraphQLInputObjectType,
-  GraphQLObjectType,
-  GraphQLString,
-  GraphQLNonNull
-} from 'graphql'
+import mongoose from 'mongoose'
 import Building from '../../models/Building'
 
-const BuildingType = new GraphQLObjectType({
-  name: 'Building',
-  fields: () => ({
-    name: {
-      type: GraphQLString
-    }
-  })
-})
+export const selectBuildings = async () => {
+  try {
+    console.log(`Selecting all buildings`)
+    return await Building.find()
+  } catch (e) {
+    console.log(e)
+  }
+}
 
-export const BuildingInputType = new GraphQLInputObjectType({
-  name: 'BuildingInput',
-  fields: () => ({
-    name: {
-      type: GraphQLString
-    }
-  })
-})
-
-export const addBuilding = {
-  type: BuildingType,
-  args: {
-    name: { type: new GraphQLNonNull(GraphQLString) }
-  },
-  resolve(parent: any, args: any) {
+export const addBuilding = async (
+  parent: any,
+  { input }: { input: any },
+  context: any,
+  info: any
+) => {
+  try {
+    console.log(`Adding building=${JSON.stringify(input)}`)
     const building = new Building({
-      name: args.name
+      _id: mongoose.Types.ObjectId(),
+      name: input.name
     })
-    return building.save()
+    return await building.save()
+  } catch (e) {
+    console.log(e)
   }
 }
 
-export const updateBuilding = {}
-
-export const removeBuilding = {
-  type: BuildingType,
-  args: {
-    id: { type: new GraphQLNonNull(GraphQLString) }
-  },
-  resolve(parent: any, args: any) {
-    return Building.findByIdAndDelete(args.id)
+export const updateBuilding = async (
+  parent: any,
+  { input }: { input: any },
+  context: any,
+  info: any
+) => {
+  try {
+    console.log(`Updating building=${JSON.stringify(input)}`)
+    return await Building.updateOne(
+      { _id: input.id },
+      {
+        name: input.name
+      }
+    )
+  } catch (e) {
+    console.log(e)
   }
 }
 
-export default BuildingType
+export const deleteBuilding = (
+  parent: any,
+  id: string,
+  context: any,
+  info: any
+) => {
+  try {
+    console.log(`Removing user=${id}`)
+    return Building.findByIdAndDelete(id)
+  } catch (e) {
+    console.log(e)
+  }
+}

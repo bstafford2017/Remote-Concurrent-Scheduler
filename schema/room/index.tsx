@@ -1,85 +1,75 @@
-import {
-  GraphQLInputObjectType,
-  GraphQLObjectType,
-  GraphQLString,
-  GraphQLBoolean,
-  GraphQLList,
-  GraphQLInt,
-  GraphQLNonNull
-} from 'graphql'
+import mongoose from 'mongoose'
 import Room from '../../models/Room'
 import Building from '../../models/Building'
-import BuildingType from '../building'
-import { BuildingInputType } from '../building'
 
-const RoomType = new GraphQLObjectType({
-  name: 'Room',
-  fields: () => ({
-    number: {
-      type: GraphQLString
-    },
-    seats: {
-      type: GraphQLInt
-    },
-    projector: {
-      type: GraphQLBoolean
-    },
-    building: {
-      type: BuildingType,
-      resolve(parent: any, args: any) {
-        return Building.findById(args.id)
+export const selectRooms = async () => {
+  try {
+    console.log(`Selecting all rooms`)
+    return await Room.find()
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+export const addRoom = async (
+  parent: any,
+  { input }: { input: any },
+  context: any,
+  info: any
+) => {
+  try {
+    console.log(`Looking for buildingId=${JSON.stringify(input.building)}`)
+    const building = await Building.findById(input.building)
+    if (building) {
+      console.log(`Adding room=${JSON.stringify(input)}`)
+      const room = new Room({
+        _id: mongoose.Types.ObjectId(),
+        number: input.number,
+        seats: input.seats,
+        projector: input.projector,
+        building: input.building
+      })
+      return await room.save()
+    } else {
+      console.log(`No building exists for buildingId=${input.building}`)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+export const updateRoom = async (
+  parent: any,
+  { input }: { input: any },
+  context: any,
+  info: any
+) => {
+  try {
+    console.log(`Updating room=${JSON.stringify(input)}`)
+    return await Room.updateOne(
+      { _id: input.id },
+      {
+        number: input.number,
+        seats: input.seats,
+        projector: input.projector,
+        building: input.building
       }
-    }
-  })
-})
-
-export const RoomInputType = new GraphQLInputObjectType({
-  name: 'RoomInput',
-  fields: () => ({
-    number: {
-      type: GraphQLString
-    },
-    seats: {
-      type: GraphQLInt
-    },
-    projector: {
-      type: GraphQLBoolean
-    },
-    building: {
-      type: BuildingInputType
-    }
-  })
-})
-
-export const addRoom = {
-  type: RoomType,
-  args: {
-    number: { type: new GraphQLNonNull(GraphQLString) },
-    seats: { type: new GraphQLNonNull(GraphQLInt) },
-    projector: { type: new GraphQLNonNull(GraphQLBoolean) },
-    building: { type: new GraphQLNonNull(BuildingInputType) }
-  },
-  resolve(parent: any, args: any) {
-    const room = new Room({
-      number: args.number,
-      seats: args.seats,
-      projector: args.projector,
-      building: args.building
-    })
-    return room.save()
+    )
+  } catch (e) {
+    console.log(e)
   }
 }
 
-export const updateRoom = {}
-
-export const removeRoom = {
-  type: RoomType,
-  args: {
-    id: { type: new GraphQLNonNull(GraphQLString) }
-  },
-  resolve(parent: any, args: any) {
-    return Room.findByIdAndDelete(args.id)
+export const deleteRoom = async (
+  parent: any,
+  id: string,
+  context: any,
+  info: any
+) => {
+  try {
+    console.log(`Removing room=${id}`)
+    return await Room.findByIdAndDelete(id)
+  } catch (e) {
+    console.log(e)
   }
 }
-
-export default RoomType

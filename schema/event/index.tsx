@@ -1,95 +1,92 @@
-import {
-  GraphQLSchema,
-  GraphQLObjectType,
-  GraphQLString,
-  GraphQLBoolean,
-  GraphQLList,
-  GraphQLInt,
-  GraphQLNonNull
-} from 'graphql'
+import mongoose from 'mongoose'
 import Event from '../../models/Event'
-import Room from '../../models/Room'
+import Room from '../../models/Event'
 import User from '../../models/User'
-import { RoomInputType } from '../room'
-import { UserInputType } from '../user'
-import RoomType from '../room'
-import UserType from '../user'
 
-const EventType = new GraphQLObjectType({
-  name: 'Event',
-  fields: () => ({
-    title: {
-      type: GraphQLString
-    },
-    startDate: {
-      type: GraphQLString
-    },
-    endDate: {
-      type: GraphQLString
-    },
-    startTime: {
-      type: GraphQLString
-    },
-    endTime: {
-      type: GraphQLString
-    },
-    weekends: {
-      type: new GraphQLList(GraphQLBoolean)
-    },
-    room: {
-      type: RoomType,
-      resolve(parent: any, args: any) {
-        return Room.findById(args.id)
-      }
-    },
-    createdBy: {
-      type: UserType,
-      resolve(parent: any, args: any) {
-        return User.find({
-          username: args.username
-        })
-      }
+export const selectEvents = async () => {
+  try {
+    console.log(`Selecting all events`)
+    return await Event.find()
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+export const addEvent = async (
+  parent: any,
+  { input }: { input: any },
+  context: any,
+  info: any
+) => {
+  try {
+    console.log(`Looking for roomId=${JSON.stringify(input.room)}`)
+    const room = await Room.findById(input.room)
+    console.log(`Looking for username=${JSON.stringify(input.createdBy)}`)
+    const user = await User.findById(input.createdBy)
+    if (room && user) {
+      console.log(`Adding event=${JSON.stringify(input)}`)
+      const event = new Event({
+        _id: mongoose.Types.ObjectId(),
+        title: input.title,
+        startDate: input.startDate,
+        endDate: input.endDate,
+        startTime: input.startTime,
+        endTime: input.endTime,
+        weekends: input.weekends,
+        room: input.room,
+        createdBy: input.createdBy
+      })
+      return await event.save()
+    } else if (!room && user) {
+      console.log(`No room exists for roomId=${input.room}`)
+    } else if (room && !user) {
+      console.log(`No user exists for userId=${input.createdBy}`)
+    } else {
+      console.log(
+        `No room and user exists for userId=${input.createdBy} and roomId=${input.room}`
+      )
     }
-  })
-})
-
-export const addEvent = {
-  type: EventType,
-  args: {
-    title: { type: new GraphQLNonNull(GraphQLString) },
-    startDate: { type: new GraphQLNonNull(GraphQLString) },
-    endDate: { type: new GraphQLNonNull(GraphQLString) },
-    startTime: { type: new GraphQLNonNull(GraphQLString) },
-    endTime: { type: new GraphQLNonNull(GraphQLString) },
-    weekends: { type: new GraphQLNonNull(new GraphQLList(GraphQLBoolean)) },
-    room: { type: new GraphQLNonNull(RoomInputType) },
-    createdBy: { type: new GraphQLNonNull(UserInputType) }
-  },
-  resolve(parent: any, args: any) {
-    const event = new Event({
-      title: args.title,
-      startDate: args.startDate,
-      endDate: args.endDate,
-      startTime: args.startTime,
-      endTime: args.endTime,
-      weekends: args.weekends,
-      room: args.room,
-      createdBy: args.createdBy
-    })
-    return event.save()
+  } catch (e) {
+    console.log(e)
   }
 }
 
-export const updateEvent = {}
-
-export const removeEvent = {
-  type: EventType,
-  args: {
-    id: { type: new GraphQLNonNull(GraphQLString) }
-  },
-  resolve(parent: any, args: any) {
-    return Event.findByIdAndDelete(args.id)
+export const updateEvent = async (
+  parent: any,
+  { input }: { input: any },
+  context: any,
+  info: any
+) => {
+  try {
+    console.log(`Updating event=${JSON.stringify(input)}`)
+    return await Event.updateOne(
+      { _id: input.id },
+      {
+        title: input.title,
+        startDate: input.startDate,
+        endDate: input.endDate,
+        startTime: input.startTime,
+        endTime: input.endTime,
+        weekends: input.weekends,
+        room: input.room,
+        createdBy: input.createdBy
+      }
+    )
+  } catch (e) {
+    console.log(e)
   }
 }
 
-export default EventType
+export const deleteEvent = (
+  parent: any,
+  id: string,
+  context: any,
+  info: any
+) => {
+  try {
+    console.log(`Removing user=${id}`)
+    return Event.findByIdAndDelete(id)
+  } catch (e) {
+    console.log(e)
+  }
+}

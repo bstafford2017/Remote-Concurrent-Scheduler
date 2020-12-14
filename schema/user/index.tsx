@@ -1,86 +1,71 @@
-import {
-  GraphQLInputObjectType,
-  GraphQLObjectType,
-  GraphQLString,
-  GraphQLBoolean,
-  GraphQLNonNull
-} from 'graphql'
+import mongoose from 'mongoose'
 import User from '../../models/User'
 
-const UserType = new GraphQLObjectType({
-  name: 'User',
-  fields: () => ({
-    username: {
-      type: GraphQLString
-    },
-    password: {
-      type: GraphQLString
-    },
-    firstName: {
-      type: GraphQLString
-    },
-    lastName: {
-      type: GraphQLString
-    },
-    admin: {
-      type: GraphQLBoolean
-    }
-  })
-})
+export const selectUsers = async () => {
+  try {
+    console.log(`Selecting all users`)
+    return await User.find()
+  } catch (e) {
+    console.log(e)
+  }
+}
 
-export const UserInputType = new GraphQLInputObjectType({
-  name: 'UserInput',
-  fields: () => ({
-    username: {
-      type: GraphQLString
-    },
-    password: {
-      type: GraphQLString
-    },
-    firstName: {
-      type: GraphQLString
-    },
-    lastName: {
-      type: GraphQLString
-    },
-    admin: {
-      type: GraphQLBoolean
-    }
-  })
-})
-
-export const addUser = {
-  type: UserType,
-  args: {
-    username: { type: new GraphQLNonNull(GraphQLString) },
-    password: { type: new GraphQLNonNull(GraphQLString) },
-    firstName: { type: new GraphQLNonNull(GraphQLString) },
-    lastName: { type: new GraphQLNonNull(GraphQLString) },
-    admin: { type: new GraphQLNonNull(GraphQLBoolean) }
-  },
-  resolve(parent: any, args: any) {
+export const addUser = async (
+  parent: any,
+  { input }: { input: any },
+  context: any,
+  info: any
+) => {
+  try {
+    console.log(`Adding user=${JSON.stringify(input)}`)
     const user = new User({
-      username: args.username,
-      password: args.password,
-      firstName: args.firstName,
-      lastName: args.lastName,
-      admin: args.admin,
+      _id: mongoose.Types.ObjectId(),
+      username: input.username,
+      password: input.password,
+      firstName: input.firstName,
+      lastName: input.lastName,
+      admin: input.admin,
       events: []
     })
-    return user.save()
+    return await user.save()
+  } catch (e) {
+    console.log(e)
   }
 }
 
-export const updateUser = {}
-
-export const removeUser = {
-  type: UserType,
-  args: {
-    id: { type: new GraphQLNonNull(GraphQLString) }
-  },
-  resolve(parent: any, args: any) {
-    return User.findByIdAndDelete(args.id)
+export const updateUser = async (
+  parent: any,
+  { input }: { input: any },
+  context: any,
+  info: any
+) => {
+  try {
+    console.log(`Updating user=${JSON.stringify(input)}`)
+    return await User.updateOne(
+      { _id: input.id },
+      {
+        username: input.username,
+        password: input.password,
+        firstName: input.firstName,
+        lastName: input.lastName,
+        admin: input.admin
+      }
+    )
+  } catch (e) {
+    console.log(e)
   }
 }
 
-export default UserType
+export const deleteUser = async (
+  parent: any,
+  id: string,
+  context: any,
+  info: any
+) => {
+  try {
+    console.log(`Removing user=${id}`)
+    return await User.findByIdAndDelete(id)
+  } catch (e) {
+    console.log(e)
+  }
+}

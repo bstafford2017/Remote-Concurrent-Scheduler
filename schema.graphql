@@ -32,3 +32,60 @@ type Event {
   room: Room!
   createdBy: User!
 }
+
+type Query {
+  selectUsers: [User]!
+  selectBuildings: [Building]!
+  selectRooms: [Room]!
+  selectEvents: [Event]!
+}
+
+input UserInput {
+  id: String
+  username: String!
+  password: String!
+  firstName: String!
+  lastName: String!
+  admin: Boolean!
+}
+
+input BuildingInput {
+  id: String
+  name: String!
+}
+
+input RoomInput {
+  id: String
+  number: String!
+  seats: Int!
+  projector: Boolean!
+  building: BuildingInput!
+}
+
+input EventInput {
+  id: String
+  title: String!
+  startDate: String!
+  endDate: String
+  startTime: String!
+  endTime: String!
+  recur: Boolean!
+  weekdays: [Boolean]
+  room: RoomInput!
+  createdBy: UserInput!
+}
+
+type Mutation {
+  addUser(input: UserInput): User
+  updateUser(input: UserInput): User
+  deleteUser(id: String!): User
+  addBuilding(input: BuildingInput): Building
+  updateBuilding(input: BuildingInput): Building
+  deleteBuilding(id: String!): Building
+  addRoom(input: RoomInput): Room
+  updateRoom(input: RoomInput): Room
+  deleteRoom(id: String!): Room
+  addEvent(input: EventInput): Event
+  updateEvent(input: EventInput): Event
+  deleteEvent(id: String!): Event
+}

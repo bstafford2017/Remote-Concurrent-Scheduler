@@ -27,12 +27,12 @@ const eventSchema = new Schema({
     required: true
   },
   room: {
-    type: mongo.Schema.Types.ObjectId,
+    type: mongo.Types.ObjectId,
     ref: 'Room',
     required: true
   },
   createdBy: {
-    type: mongo.Schema.Types.ObjectId,
+    type: mongo.Types.ObjectId,
     ref: 'User',
     required: true
   },
