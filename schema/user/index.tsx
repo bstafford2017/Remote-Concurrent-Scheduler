@@ -1,6 +1,20 @@
 import mongoose from 'mongoose'
 import User from '../../models/User'
 
+export const selectUser = async (
+  parent: any,
+  { id }: { id: any },
+  context: any,
+  info: any
+) => {
+  try {
+    console.log(`Selecting userId=${id}`)
+    return await User.findById(id)
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 export const selectUsers = async () => {
   try {
     console.log(`Selecting all users`)

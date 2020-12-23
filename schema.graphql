@@ -34,9 +34,13 @@ type Event {
 }
 
 type Query {
+  selectUser(id: String!): User
   selectUsers: [User]!
+  selectBuilding(id: String!): Building
   selectBuildings: [Building]!
+  selectRoom(id: String!): Room
   selectRooms: [Room]!
+  selectEvent(id: String!): Event
   selectEvents: [Event]!
 }
 

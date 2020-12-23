@@ -3,6 +3,20 @@ import Event from '../../models/Event'
 import Room from '../../models/Event'
 import User from '../../models/User'
 
+export const selectEvent = async (
+  parent: any,
+  { id }: { id: any },
+  context: any,
+  info: any
+) => {
+  try {
+    console.log(`Selecting eventId${id}`)
+    return await Event.findById(id)
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 export const selectEvents = async () => {
   try {
     console.log(`Selecting all events`)
@@ -32,7 +46,7 @@ export const addEvent = async (
         endDate: input.endDate,
         startTime: input.startTime,
         endTime: input.endTime,
-        weekends: input.weekends,
+        weekdays: input.weekdays,
         room: input.room,
         createdBy: input.createdBy
       })

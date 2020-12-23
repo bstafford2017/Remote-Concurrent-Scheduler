@@ -1,6 +1,20 @@
 import mongoose from 'mongoose'
 import Building from '../../models/Building'
 
+export const selectBuilding = async (
+  parent: any,
+  { id }: { id: string },
+  context: any,
+  info: any
+) => {
+  try {
+    console.log(`Selecting buildingId=${id}`)
+    return await Building.findById(id)
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 export const selectBuildings = async () => {
   try {
     console.log(`Selecting all buildings`)

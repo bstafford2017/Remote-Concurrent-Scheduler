@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { gql, useQuery, useMutation } from '@apollo/client'
 import { returnErrors } from './error'
 import {
   LOADING,
@@ -36,7 +36,13 @@ export const loadUser = () => async (
     dispatch({
       action: LOADING
     })
-    const response = await axios.get('/api/user', tokenConfig(getState))
+    const response = await useQuery(gql`
+      query {
+        selectUsers {
+          username
+        }
+      }
+    `)
     dispatch({
       action: LOADED
     })
@@ -51,15 +57,25 @@ export const loadUser = () => async (
 
 export const createUser = (user: IUser) => async (dispatch: Function) => {
   try {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json'
+    const response = await useMutation(gql`
+      mutation {
+        addUser(
+          input: {
+            username: ${user.username}
+            password: ${user.password}
+            firstName: ${user.fname}
+            lastName: ${user.lname}
+            admin: ${user.admin}
+          }
+        ) {
+          username
+          password
+        }
       }
-    }
-    const response = await axios.post('/api/auth/register', user, config)
+    `)
     dispatch({
       action: REGISTER_SUCCESS,
-      payload: response.data
+      payload: response
     })
   } catch (err) {
     dispatch(returnErrors(err))
@@ -80,10 +96,19 @@ export const login = (creds: ILogin) => async (dispatch: Function) => {
         'Content-Type': 'application/json'
       }
     }
-    const res = await axios.post('/api/user/login', creds, config)
+    const response = await useQuery(gql`
+    query {
+      selectUser(
+        id: ${creds.username}
+      ) {
+        username
+        password
+      }
+    }
+  `)
     dispatch({
       type: LOGIN_SUCCESS,
-      payload: res.data
+      payload: response
     })
   } catch (err) {
     dispatch(returnErrors(err.response.data))

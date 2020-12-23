@@ -2,6 +2,20 @@ import mongoose from 'mongoose'
 import Room from '../../models/Room'
 import Building from '../../models/Building'
 
+export const selectRoom = async (
+  parent: any,
+  { id }: { id: string },
+  context: any,
+  info: any
+) => {
+  try {
+    console.log(`Selecting roomId=${id}`)
+    return await Room.findById(id)
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 export const selectRooms = async () => {
   try {
     console.log(`Selecting all rooms`)
@@ -18,8 +32,8 @@ export const addRoom = async (
   info: any
 ) => {
   try {
-    console.log(`Looking for buildingId=${JSON.stringify(input.building)}`)
-    const building = await Building.findById(input.building)
+    console.log(`Looking for buildingId=${JSON.stringify(input.building.id)}`)
+    const building = await Building.findById(input.building.id)
     if (building) {
       console.log(`Adding room=${JSON.stringify(input)}`)
       const room = new Room({
@@ -27,7 +41,7 @@ export const addRoom = async (
         number: input.number,
         seats: input.seats,
         projector: input.projector,
-        building: input.building
+        building: input.building.id
       })
       return await room.save()
     } else {

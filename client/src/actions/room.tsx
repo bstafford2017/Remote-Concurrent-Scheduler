@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { gql, useQuery, useMutation } from '@apollo/client'
 import { returnErrors } from './error'
 import {
   LOADING,
@@ -15,13 +15,20 @@ export const loadRooms = (id: number) => async (dispatch: Function) => {
     dispatch({
       action: LOADING
     })
-    const response = await axios.get(`/api/room/${id}`)
+    const response = await useQuery(gql`
+      query {
+        selectRooms {
+          number
+          projector
+        }
+      }
+    `)
     dispatch({
       action: LOADED
     })
     dispatch({
       action: LOADED_ROOM,
-      payload: response.data
+      payload: response
     })
   } catch (err) {
     dispatch(returnErrors(err))
@@ -30,10 +37,23 @@ export const loadRooms = (id: number) => async (dispatch: Function) => {
 
 export const createRoom = (room: IRoom) => async (dispatch: Function) => {
   try {
-    const response = await axios.post('/api/room/create', room)
+    const response = await useMutation(gql`
+      mutation {
+        addRoom(
+          input: {
+            number: ${room.number}
+            seats: ${room.seats}
+            projector: ${room.projector}
+            building: { id: ${room.building} }
+          }
+        ) {
+          number
+        }
+      }
+    `)
     dispatch({
       action: CREATE_ROOM,
-      payload: response.data
+      payload: response
     })
   } catch (err) {
     dispatch(returnErrors(err))
@@ -42,10 +62,23 @@ export const createRoom = (room: IRoom) => async (dispatch: Function) => {
 
 export const updateRoom = (room: IRoom) => async (dispatch: Function) => {
   try {
-    const response = await axios.post('/api/room/update', room)
+    const response = await useMutation(gql`
+    mutation {
+      updateRoom(
+        input: {
+          number: ${room.number}
+          seats: ${room.seats}
+          projector: ${room.projector}
+          building: { id: ${room.building} }
+        }
+      ) {
+        number
+      }
+    }
+  `)
     dispatch({
       action: UPDATE_ROOM,
-      payload: response.data
+      payload: response
     })
   } catch (err) {
     dispatch(returnErrors(err))
@@ -53,9 +86,17 @@ export const updateRoom = (room: IRoom) => async (dispatch: Function) => {
 }
 
 export const deleteRoom = (id: number) => async (dispatch: Function) => {
-  const response = await axios.post('/api/room/delete', id)
+  const response = await useMutation(gql`
+  mutation {
+    deleteRoom(
+      id: ${id}
+    ) {
+      number
+    }
+  }
+`)
   dispatch({
     action: DELETE_ROOM,
-    payload: response.data
+    payload: response
   })
 }
