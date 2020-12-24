@@ -9,7 +9,9 @@ export const selectBuilding = async (
 ) => {
   try {
     console.log(`Selecting buildingId=${id}`)
-    return await Building.findById(id)
+    const response: any = await Building.findById(id)
+    console.log(`Selected building=${JSON.stringify(response)}`)
+    return response
   } catch (e) {
     console.log(e)
   }
@@ -18,7 +20,9 @@ export const selectBuilding = async (
 export const selectBuildings = async () => {
   try {
     console.log(`Selecting all buildings`)
-    return await Building.find()
+    const response: any = await Building.find()
+    console.log(`Selected buildings=${JSON.stringify(response)}`)
+    return response
   } catch (e) {
     console.log(e)
   }
@@ -36,7 +40,9 @@ export const addBuilding = async (
       _id: mongoose.Types.ObjectId(),
       name: input.name
     })
-    return await building.save()
+    const response: any = await building.save()
+    console.log(`Selected building=${JSON.stringify(response)}`)
+    return response
   } catch (e) {
     console.log(e)
   }
@@ -50,26 +56,30 @@ export const updateBuilding = async (
 ) => {
   try {
     console.log(`Updating building=${JSON.stringify(input)}`)
-    return await Building.updateOne(
+    const response: any = await Building.updateOne(
       { _id: input.id },
       {
         name: input.name
       }
     )
+    console.log(`Updated building=${JSON.stringify(response)}`)
+    return response
   } catch (e) {
     console.log(e)
   }
 }
 
-export const deleteBuilding = (
+export const deleteBuilding = async (
   parent: any,
   id: string,
   context: any,
   info: any
 ) => {
   try {
-    console.log(`Removing user=${id}`)
-    return Building.findByIdAndDelete(id)
+    console.log(`Removing buildingId=${id}`)
+    const response: any = await Building.findByIdAndDelete(id)
+    console.log(`Removed building=${JSON.stringify(response)}`)
+    return response
   } catch (e) {
     console.log(e)
   }

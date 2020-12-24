@@ -1,9 +1,9 @@
 type User {
-  username: String!
-  password: String!
-  firstName: String!
-  lastName: String!
-  admin: Boolean!
+  username: String
+  password: String
+  firstName: String
+  lastName: String
+  admin: Boolean
   events: [Event]
 }
 
@@ -34,7 +34,7 @@ type Event {
 }
 
 type Query {
-  selectUser(id: String!): User
+  selectUser(username: String!, password: String!): User
   selectUsers: [User]!
   selectBuilding(id: String!): Building
   selectBuildings: [Building]!

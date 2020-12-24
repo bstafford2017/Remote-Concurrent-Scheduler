@@ -1,15 +1,18 @@
 import mongoose from 'mongoose'
 import User from '../../models/User'
 
+// TODO: add bcrypt
 export const selectUser = async (
   parent: any,
-  { id }: { id: any },
+  { username, password }: { username: string; password: string },
   context: any,
   info: any
 ) => {
   try {
-    console.log(`Selecting userId=${id}`)
-    return await User.findById(id)
+    console.log(`Selecting username=${username} and password=${password}`)
+    const response: any = await User.findOne({ username, password })
+    console.log(`Selected response=${JSON.stringify(response)}`)
+    return response
   } catch (e) {
     console.log(e)
   }
@@ -18,7 +21,9 @@ export const selectUser = async (
 export const selectUsers = async () => {
   try {
     console.log(`Selecting all users`)
-    return await User.find()
+    const response: any = await User.find()
+    console.log(`Selected response=${JSON.stringify(response)}`)
+    return response
   } catch (e) {
     console.log(e)
   }
@@ -41,7 +46,9 @@ export const addUser = async (
       admin: input.admin,
       events: []
     })
-    return await user.save()
+    const response: any = await user.save()
+    console.log(`Added user=${JSON.stringify(response)}`)
+    return response
   } catch (e) {
     console.log(e)
   }
@@ -55,7 +62,7 @@ export const updateUser = async (
 ) => {
   try {
     console.log(`Updating user=${JSON.stringify(input)}`)
-    return await User.updateOne(
+    const response: any = await User.updateOne(
       { _id: input.id },
       {
         username: input.username,
@@ -65,6 +72,8 @@ export const updateUser = async (
         admin: input.admin
       }
     )
+    console.log(`Updated user=${JSON.stringify(response)}`)
+    return response
   } catch (e) {
     console.log(e)
   }
@@ -77,8 +86,10 @@ export const deleteUser = async (
   info: any
 ) => {
   try {
-    console.log(`Removing user=${id}`)
-    return await User.findByIdAndDelete(id)
+    console.log(`Removing userId=${id}`)
+    const response: any = await User.findByIdAndDelete(id)
+    console.log(`Removed user=${JSON.stringify(response)}`)
+    return response
   } catch (e) {
     console.log(e)
   }

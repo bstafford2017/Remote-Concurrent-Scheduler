@@ -10,7 +10,9 @@ export const selectRoom = async (
 ) => {
   try {
     console.log(`Selecting roomId=${id}`)
-    return await Room.findById(id)
+    const response: any = await Room.findById(id)
+    console.log(`Selected room=${JSON.stringify(response)}`)
+    return response
   } catch (e) {
     console.log(e)
   }
@@ -19,7 +21,9 @@ export const selectRoom = async (
 export const selectRooms = async () => {
   try {
     console.log(`Selecting all rooms`)
-    return await Room.find()
+    const response: any = await Room.find()
+    console.log(`Selected room=${JSON.stringify(response)}`)
+    return response
   } catch (e) {
     console.log(e)
   }
@@ -34,6 +38,7 @@ export const addRoom = async (
   try {
     console.log(`Looking for buildingId=${JSON.stringify(input.building.id)}`)
     const building = await Building.findById(input.building.id)
+    console.log(`Selected building=${JSON.stringify(building)}`)
     if (building) {
       console.log(`Adding room=${JSON.stringify(input)}`)
       const room = new Room({
@@ -43,7 +48,9 @@ export const addRoom = async (
         projector: input.projector,
         building: input.building.id
       })
-      return await room.save()
+      const response: any = await room.save()
+      console.log(`Added room=${JSON.stringify(response)}`)
+      return response
     } else {
       console.log(`No building exists for buildingId=${input.building}`)
     }
@@ -60,7 +67,7 @@ export const updateRoom = async (
 ) => {
   try {
     console.log(`Updating room=${JSON.stringify(input)}`)
-    return await Room.updateOne(
+    const response: any = await Room.updateOne(
       { _id: input.id },
       {
         number: input.number,
@@ -69,6 +76,8 @@ export const updateRoom = async (
         building: input.building
       }
     )
+    console.log(`Updated room=${response}`)
+    return response
   } catch (e) {
     console.log(e)
   }
@@ -81,8 +90,10 @@ export const deleteRoom = async (
   info: any
 ) => {
   try {
-    console.log(`Removing room=${id}`)
-    return await Room.findByIdAndDelete(id)
+    console.log(`Removing roomId=${id}`)
+    const response: any = await Room.findByIdAndDelete(id)
+    console.log(`Removed room=${response}`)
+    return response
   } catch (e) {
     console.log(e)
   }

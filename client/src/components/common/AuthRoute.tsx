@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Route, Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { LOGIN_URL } from '../routes'
-import { loadUser } from '../../actions/user'
+// import { loadUser } from '../../actions/user'
 import { hasToken } from '../../utils'
 
 const AuthRoute = ({
@@ -29,7 +29,7 @@ const AuthRoute = ({
 AuthRoute.propTypes = {
   path: PropTypes.string.isRequired,
   component: PropTypes.func.isRequired,
-  loadUser: PropTypes.func.isRequired,
+  // loadUser: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired
 }
 
@@ -38,7 +38,7 @@ const mapStateToProps = (state: any) => ({
 })
 
 const mapDispatchToProps = {
-  loadUser
+  // loadUser
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthRoute)

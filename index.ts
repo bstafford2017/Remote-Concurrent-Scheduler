@@ -4,15 +4,29 @@ import { readFileSync } from 'fs'
 import { ApolloServer } from 'apollo-server-express'
 import cors from 'cors'
 import config from './config'
-import { selectUsers, addUser, updateUser, deleteUser } from './schema/user'
 import {
+  selectUser,
+  selectUsers,
+  addUser,
+  updateUser,
+  deleteUser
+} from './schema/user'
+import {
+  selectBuilding,
   selectBuildings,
   addBuilding,
   updateBuilding,
   deleteBuilding
 } from './schema/building'
-import { selectRooms, addRoom, updateRoom, deleteRoom } from './schema/Room'
 import {
+  selectRoom,
+  selectRooms,
+  addRoom,
+  updateRoom,
+  deleteRoom
+} from './schema/Room'
+import {
+  selectEvent,
   selectEvents,
   addEvent,
   updateEvent,
@@ -27,9 +41,13 @@ import {
     // Resolver map
     const resolvers = {
       Query: {
+        selectUser,
         selectUsers,
+        selectBuilding,
         selectBuildings,
+        selectRoom,
         selectRooms,
+        selectEvent,
         selectEvents
       },
       Mutation: {

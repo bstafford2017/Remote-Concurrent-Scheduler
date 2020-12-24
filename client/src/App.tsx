@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { loadUser } from './actions/user'
+// import { loadUser } from './actions/user'
 
 import { connect } from 'react-redux'
 
@@ -45,9 +45,9 @@ interface IProps {
 }
 
 const App = ({ isAuthenticated, isAdmin, isLoading }: IProps) => {
-  useEffect(() => {
-    loadUser()
-  }, [])
+  // useEffect(() => {
+  //   loadUser()
+  // }, [])
 
   const next = (e: React.MouseEvent) => {}
 
@@ -96,7 +96,7 @@ const mapStateToProps = (state: any) => ({
 })
 
 const mapDispatchToProps = {
-  loadUser
+  // loadUser
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

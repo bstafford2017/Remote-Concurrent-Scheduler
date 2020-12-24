@@ -10,8 +10,10 @@ export const selectEvent = async (
   info: any
 ) => {
   try {
-    console.log(`Selecting eventId${id}`)
-    return await Event.findById(id)
+    console.log(`Selecting eventId=${id}`)
+    const response: any = await Event.findById(id)
+    console.log(`Selected event=${JSON.stringify(response)}`)
+    return response
   } catch (e) {
     console.log(e)
   }
@@ -20,7 +22,9 @@ export const selectEvent = async (
 export const selectEvents = async () => {
   try {
     console.log(`Selecting all events`)
-    return await Event.find()
+    const response: any = await Event.find()
+    console.log(`Selected events=${JSON.stringify(response)}`)
+    return response
   } catch (e) {
     console.log(e)
   }
@@ -33,10 +37,12 @@ export const addEvent = async (
   info: any
 ) => {
   try {
-    console.log(`Looking for roomId=${JSON.stringify(input.room)}`)
+    console.log(`Looking for roomId=${input.room}`)
     const room = await Room.findById(input.room)
-    console.log(`Looking for username=${JSON.stringify(input.createdBy)}`)
+    console.log(`Selected for room=${JSON.stringify(room)}`)
+    console.log(`Looking for username=${input.createdBy}`)
     const user = await User.findById(input.createdBy)
+    console.log(`Selected for user=${JSON.stringify(user)}`)
     if (room && user) {
       console.log(`Adding event=${JSON.stringify(input)}`)
       const event = new Event({
@@ -50,7 +56,9 @@ export const addEvent = async (
         room: input.room,
         createdBy: input.createdBy
       })
-      return await event.save()
+      const response: any = await event.save()
+      console.log(`Added event=${JSON.stringify(response)}`)
+      return response
     } else if (!room && user) {
       console.log(`No room exists for roomId=${input.room}`)
     } else if (room && !user) {
@@ -73,7 +81,7 @@ export const updateEvent = async (
 ) => {
   try {
     console.log(`Updating event=${JSON.stringify(input)}`)
-    return await Event.updateOne(
+    const response: any = await Event.updateOne(
       { _id: input.id },
       {
         title: input.title,
@@ -86,6 +94,8 @@ export const updateEvent = async (
         createdBy: input.createdBy
       }
     )
+    console.log(`Updated event=${JSON.stringify(response)}`)
+    return response
   } catch (e) {
     console.log(e)
   }
@@ -98,8 +108,10 @@ export const deleteEvent = (
   info: any
 ) => {
   try {
-    console.log(`Removing user=${id}`)
-    return Event.findByIdAndDelete(id)
+    console.log(`Removing eventId=${id}`)
+    const response: any = Event.findByIdAndDelete(id)
+    console.log(`Removed event=${JSON.stringify(response)}`)
+    return response
   } catch (e) {
     console.log(e)
   }

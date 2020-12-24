@@ -13,7 +13,7 @@ import { IRoom } from '../types'
 export const loadRooms = (id: number) => async (dispatch: Function) => {
   try {
     dispatch({
-      action: LOADING
+      type: LOADING
     })
     const response = await useQuery(gql`
       query {
@@ -24,10 +24,10 @@ export const loadRooms = (id: number) => async (dispatch: Function) => {
       }
     `)
     dispatch({
-      action: LOADED
+      type: LOADED
     })
     dispatch({
-      action: LOADED_ROOM,
+      type: LOADED_ROOM,
       payload: response
     })
   } catch (err) {
@@ -52,7 +52,7 @@ export const createRoom = (room: IRoom) => async (dispatch: Function) => {
       }
     `)
     dispatch({
-      action: CREATE_ROOM,
+      type: CREATE_ROOM,
       payload: response
     })
   } catch (err) {
@@ -77,7 +77,7 @@ export const updateRoom = (room: IRoom) => async (dispatch: Function) => {
     }
   `)
     dispatch({
-      action: UPDATE_ROOM,
+      type: UPDATE_ROOM,
       payload: response
     })
   } catch (err) {
@@ -96,7 +96,7 @@ export const deleteRoom = (id: number) => async (dispatch: Function) => {
   }
 `)
   dispatch({
-    action: DELETE_ROOM,
+    type: DELETE_ROOM,
     payload: response
   })
 }

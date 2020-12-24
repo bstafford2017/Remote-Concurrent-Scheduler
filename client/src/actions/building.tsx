@@ -13,7 +13,7 @@ import { IBuilding } from '../types'
 export const loadBuildings = () => async (dispatch: Function) => {
   try {
     dispatch({
-      action: LOADING
+      type: LOADING
     })
     const response = await useQuery(gql`
       query selectBuildings {
@@ -22,10 +22,10 @@ export const loadBuildings = () => async (dispatch: Function) => {
       }
     `)
     dispatch({
-      action: LOADED
+      type: LOADED
     })
     dispatch({
-      action: LOADED_BUILDING,
+      type: LOADED_BUILDING,
       payload: response
     })
   } catch (err) {
@@ -45,7 +45,7 @@ export const createBuilding = (building: IBuilding) => async (
       }
     `)
     dispatch({
-      action: CREATE_BUILDING,
+      type: CREATE_BUILDING,
       payload: response
     })
   } catch (err) {
@@ -65,7 +65,7 @@ export const updateBuilding = (building: IBuilding) => async (
     }
   `)
     dispatch({
-      action: UPDATE_BUILDING,
+      type: UPDATE_BUILDING,
       payload: response
     })
   } catch (err) {
@@ -83,7 +83,7 @@ export const deleteBuilding = (id: number) => async (dispatch: Function) => {
     }
   `)
     dispatch({
-      action: DELETE_BUILDING,
+      type: DELETE_BUILDING,
       payload: response
     })
   } catch (err) {

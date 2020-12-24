@@ -6,6 +6,7 @@ import event from './event'
 import search from './search'
 import select from './select'
 import common from './common'
+import error from './error'
 
 export default combineReducers({
   building,
@@ -14,5 +15,6 @@ export default combineReducers({
   event,
   search,
   select,
-  common
+  common,
+  error
 })

@@ -28,29 +28,28 @@ const tokenConfig = (getState: Function) => {
   return config
 }
 
-export const loadUser = () => async (
-  dispatch: Function,
-  getState: Function
-) => {
+// TODO: Add token
+export const login = (user: ILogin) => async (dispatch: Function) => {
   try {
     dispatch({
-      action: LOADING
+      type: LOADING
     })
     const response = await useQuery(gql`
       query {
-        selectUsers {
+        selectUser(username: ${user.username}, password: ${user.password}) {
           username
         }
       }
     `)
     dispatch({
-      action: LOADED
+      type: LOADED
     })
     dispatch({
-      action: LOADED_USER,
+      type: LOADED_USER,
       payload: response.data
     })
   } catch (err) {
+    console.log(err.toString())
     dispatch(returnErrors(err))
   }
 }
@@ -74,7 +73,7 @@ export const createUser = (user: IUser) => async (dispatch: Function) => {
       }
     `)
     dispatch({
-      action: REGISTER_SUCCESS,
+      type: REGISTER_SUCCESS,
       payload: response
     })
   } catch (err) {
@@ -87,36 +86,6 @@ export const createUser = (user: IUser) => async (dispatch: Function) => {
 export const updateUser = () => {}
 
 export const deleteUser = () => {}
-
-export const login = (creds: ILogin) => async (dispatch: Function) => {
-  try {
-    dispatch({ type: LOADING })
-    const config = {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }
-    const response = await useQuery(gql`
-    query {
-      selectUser(
-        id: ${creds.username}
-      ) {
-        username
-        password
-      }
-    }
-  `)
-    dispatch({
-      type: LOGIN_SUCCESS,
-      payload: response
-    })
-  } catch (err) {
-    dispatch(returnErrors(err.response.data))
-    dispatch({
-      type: LOGIN_FAIL
-    })
-  }
-}
 
 export const logout = () => {
   return {

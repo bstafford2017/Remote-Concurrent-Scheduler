@@ -12,13 +12,13 @@ import { IEvent } from '../types'
 
 export const loadEvents = () => async (dispatch: Function) => {
   try {
-    dispatch({ action: LOADING })
+    dispatch({ type: LOADING })
     const response = await axios.get('/api/event')
     dispatch({
-      action: LOADED
+      type: LOADED
     })
     dispatch({
-      action: LOADED_EVENT,
+      type: LOADED_EVENT,
       payload: response.data
     })
   } catch (err) {
@@ -30,7 +30,7 @@ export const createEvent = (event: IEvent) => async (dispatch: Function) => {
   try {
     const response = await axios.post('/api/event/create', event)
     dispatch({
-      action: CREATE_EVENT,
+      type: CREATE_EVENT,
       payload: response.data
     })
   } catch (err) {
@@ -42,7 +42,7 @@ export const updateEvent = (event: IEvent) => async (dispatch: Function) => {
   try {
     const response = await axios.post('/api/event/update', event)
     dispatch({
-      action: UPDATE_EVENT,
+      type: UPDATE_EVENT,
       payload: response.data
     })
   } catch (err) {
@@ -54,7 +54,7 @@ export const deleteEvent = (id: number) => async (dispatch: Function) => {
   try {
     const response = await axios.post('/api/event/delete', id)
     dispatch({
-      action: DELETE_EVENT,
+      type: DELETE_EVENT,
       payload: response.data
     })
   } catch (err) {
