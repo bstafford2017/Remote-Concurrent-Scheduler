@@ -1,6 +1,5 @@
 import React from 'react'
-import { Row, Col, Card, CardBody, Table, FormText } from 'reactstrap'
-import Alert from '../common/CustomAlert'
+import { Row, Col, Card, CardBody, Table, FormText, Alert } from 'reactstrap'
 import CreateUser from './CreateUser'
 import User from './User'
 import { IUser } from '../../types'

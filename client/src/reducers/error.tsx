@@ -8,9 +8,7 @@ const initialState = {
 export default function (state = initialState, action: IAction) {
   switch (action.type) {
     case GET_ERRORS:
-      return {
-        msg: action.payload.msg
-      }
+      return { ...state, msg: action.payload }
     case CLEAR_ERRORS:
       return {
         msg: null

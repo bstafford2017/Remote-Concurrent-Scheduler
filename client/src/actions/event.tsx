@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { returnErrors } from './error'
+import { setErrors } from './error'
 import {
   LOADING,
   LOADED,
@@ -22,7 +22,7 @@ export const loadEvents = () => async (dispatch: Function) => {
       payload: response.data
     })
   } catch (err) {
-    dispatch(returnErrors(err))
+    dispatch(setErrors(err))
   }
 }
 
@@ -34,7 +34,7 @@ export const createEvent = (event: IEvent) => async (dispatch: Function) => {
       payload: response.data
     })
   } catch (err) {
-    dispatch(returnErrors(err))
+    dispatch(setErrors(err))
   }
 }
 
@@ -46,7 +46,7 @@ export const updateEvent = (event: IEvent) => async (dispatch: Function) => {
       payload: response.data
     })
   } catch (err) {
-    dispatch(returnErrors(err))
+    dispatch(setErrors(err))
   }
 }
 
@@ -58,6 +58,6 @@ export const deleteEvent = (id: number) => async (dispatch: Function) => {
       payload: response.data
     })
   } catch (err) {
-    dispatch(returnErrors(err))
+    dispatch(setErrors(err))
   }
 }

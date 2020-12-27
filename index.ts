@@ -9,28 +9,32 @@ import {
   selectUsers,
   addUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  resolveUser
 } from './schema/user'
 import {
   selectBuilding,
   selectBuildings,
   addBuilding,
   updateBuilding,
-  deleteBuilding
+  deleteBuilding,
+  resolveBuilding
 } from './schema/building'
 import {
   selectRoom,
   selectRooms,
   addRoom,
   updateRoom,
-  deleteRoom
+  deleteRoom,
+  resolveRoom
 } from './schema/Room'
 import {
   selectEvent,
   selectEvents,
   addEvent,
   updateEvent,
-  deleteEvent
+  deleteEvent,
+  resolveEvents
 } from './schema/event'
 ;(async () => {
   try {
@@ -63,6 +67,16 @@ import {
         deleteBuilding,
         deleteRoom,
         deleteEvent
+      },
+      Room: {
+        building: resolveBuilding
+      },
+      Event: {
+        createdBy: resolveUser,
+        room: resolveRoom
+      },
+      User: {
+        events: resolveEvents
       }
     }
 

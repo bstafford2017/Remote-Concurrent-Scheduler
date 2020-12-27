@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import Alert from './CustomAlert'
 import { connect } from 'react-redux'
 import {
   Col,
@@ -9,11 +8,13 @@ import {
   FormGroup,
   Label,
   Input,
-  Button
+  Button,
+  Alert
 } from 'reactstrap'
 import { ILogin } from '../../types'
 import { login } from '../../actions/user'
 import { useHistory } from 'react-router-dom'
+import { setErrors, clearErrors } from '../../actions/error'
 
 const initialState: ILogin = {
   username: '',
@@ -22,9 +23,11 @@ const initialState: ILogin = {
 
 interface IProps {
   login: Function
+  errors: string
+  setErrors: Function
 }
 
-const Login = ({ login }: IProps) => {
+const Login = ({ login, errors, setErrors }: IProps) => {
   const history = useHistory()
   const [user, setUser]: [ILogin, Function] = useState(initialState)
 
@@ -35,11 +38,26 @@ const Login = ({ login }: IProps) => {
     })
   }
 
-  const attemptLogin = (e: any) => {
-    if (user.username && user.password) {
-      login(user)
-      history.push('/home')
+  const attemptLogin = async (e: any) => {
+    try {
+      if (user.username && user.password) {
+        await login(user)
+        history.push('/home')
+      } else if (!user.username && user.password) {
+        setErrors('Please enter a username')
+      } else if (user.username && !user.password) {
+        setErrors('Please enter a password')
+      } else {
+        setErrors('Please enter a username and password')
+      }
+    } catch (e) {
+      setErrors(e)
+      console.log(e)
     }
+  }
+
+  const toggleAlert = () => {
+    clearErrors()
   }
 
   return (
@@ -47,7 +65,11 @@ const Login = ({ login }: IProps) => {
       <Card>
         <h2 style={{ textAlign: 'center' }}>Login</h2>
         <CardBody>
-          <Alert display={false} text={''} />
+          {!!errors && (
+            <Alert color='danger' display={!!errors} toggle={toggleAlert}>
+              {errors}
+            </Alert>
+          )}
           <Form>
             <FormGroup>
               <Label for='username'>Username</Label>
@@ -69,10 +91,13 @@ const Login = ({ login }: IProps) => {
 
 Login.propTypes = {}
 
-const mapStateToProps = (state: any) => ({})
+const mapStateToProps = (state: any) => ({
+  errors: state.error.msg
+})
 
 const mapDispatchToProps = {
-  login
+  login,
+  setErrors
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login)

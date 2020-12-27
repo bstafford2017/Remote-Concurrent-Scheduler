@@ -6,9 +6,9 @@ import {
   CardBody,
   CardFooter,
   FormText,
-  Button
+  Button,
+  Alert
 } from 'reactstrap'
-import Alert from '../common/CustomAlert'
 import CreateBuilding from './CreateBuilding'
 import Building from './Building'
 import { IBuilding } from '../../types'

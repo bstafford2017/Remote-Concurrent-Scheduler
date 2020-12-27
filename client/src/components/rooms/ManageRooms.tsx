@@ -8,9 +8,9 @@ import {
   FormGroup,
   FormText,
   Label,
-  Input
+  Input,
+  Alert
 } from 'reactstrap'
-import Alert from '../common/CustomAlert'
 import CreateRoom from '../rooms/CreateRoom'
 import Room from '../rooms/Room'
 import { IRoom, IBuilding } from '../../types'

@@ -1,5 +1,5 @@
 import { gql, useQuery, useMutation } from '@apollo/client'
-import { returnErrors } from './error'
+import { setErrors } from './error'
 import {
   LOADING,
   LOADED,
@@ -31,7 +31,7 @@ export const loadRooms = (id: number) => async (dispatch: Function) => {
       payload: response
     })
   } catch (err) {
-    dispatch(returnErrors(err))
+    dispatch(setErrors(err))
   }
 }
 
@@ -56,7 +56,7 @@ export const createRoom = (room: IRoom) => async (dispatch: Function) => {
       payload: response
     })
   } catch (err) {
-    dispatch(returnErrors(err))
+    dispatch(setErrors(err))
   }
 }
 
@@ -81,7 +81,7 @@ export const updateRoom = (room: IRoom) => async (dispatch: Function) => {
       payload: response
     })
   } catch (err) {
-    dispatch(returnErrors(err))
+    dispatch(setErrors(err))
   }
 }
 

@@ -94,3 +94,10 @@ export const deleteUser = async (
     console.log(e)
   }
 }
+
+export const resolveUser = async (parent: any) => {
+  console.log(`Selecting userId=${parent.createdBy}`)
+  const response: any = await User.find({ username: parent.createdBy })
+  console.log(`Selected user=${JSON.stringify(response)}`)
+  return response
+}

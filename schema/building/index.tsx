@@ -84,3 +84,10 @@ export const deleteBuilding = async (
     console.log(e)
   }
 }
+
+export const resolveBuilding = async (parent: any) => {
+  console.log(`Selecting buildingId=${parent.building}`)
+  const response: any = await Building.findById(parent.building)
+  console.log(`Selected building=${JSON.stringify(response)}`)
+  return response
+}

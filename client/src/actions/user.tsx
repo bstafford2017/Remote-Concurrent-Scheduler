@@ -1,5 +1,5 @@
-import { gql, useQuery, useMutation } from '@apollo/client'
-import { returnErrors } from './error'
+import { gql, useQuery, useMutation, QueryResult } from '@apollo/client'
+import { setErrors } from './error'
 import {
   LOADING,
   LOADED,
@@ -30,27 +30,27 @@ const tokenConfig = (getState: Function) => {
 
 // TODO: Add token
 export const login = (user: ILogin) => async (dispatch: Function) => {
-  try {
-    dispatch({
-      type: LOADING
-    })
-    const response = await useQuery(gql`
+  dispatch({
+    type: LOADING
+  })
+  const { error, data } = useQuery(gql`
       query {
         selectUser(username: ${user.username}, password: ${user.password}) {
           username
         }
       }
     `)
+  if (error) {
+    console.warn(JSON.stringify(error))
+    setErrors(error.message)
+  } else {
     dispatch({
       type: LOADED
     })
     dispatch({
       type: LOADED_USER,
-      payload: response.data
+      payload: data
     })
-  } catch (err) {
-    console.log(err.toString())
-    dispatch(returnErrors(err))
   }
 }
 
@@ -77,7 +77,7 @@ export const createUser = (user: IUser) => async (dispatch: Function) => {
       payload: response
     })
   } catch (err) {
-    dispatch(returnErrors(err))
+    dispatch(setErrors(err))
     dispatch({
       type: REGISTER_FAIL
     })

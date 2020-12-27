@@ -116,3 +116,10 @@ export const deleteEvent = (
     console.log(e)
   }
 }
+
+export const resolveEvents = async (parent: any) => {
+  console.log(`Selecting events for username=${parent.createdBy}`)
+  const response: any = await Event.find({ createdBy: parent.createdBy })
+  console.log(`Selected events=${JSON.stringify(response)}`)
+  return response
+}

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import Room from '../../models/Room'
 import Building from '../../models/Building'
+import User from '../../models/User'
 
 export const selectRoom = async (
   parent: any,
@@ -97,4 +98,11 @@ export const deleteRoom = async (
   } catch (e) {
     console.log(e)
   }
+}
+
+export const resolveRoom = async (parent: any) => {
+  console.log(`Selecting userId=${parent.createdBy}`)
+  const response: any = await User.findOne({ username: parent.createdBy })
+  console.log(`Selected user=${JSON.stringify(response)}`)
+  return response
 }

@@ -1,5 +1,5 @@
 import { gql, useQuery, useMutation } from '@apollo/client'
-import { returnErrors } from './error'
+import { setErrors } from './error'
 import {
   LOADING,
   LOADED,
@@ -29,7 +29,7 @@ export const loadBuildings = () => async (dispatch: Function) => {
       payload: response
     })
   } catch (err) {
-    dispatch(returnErrors(err))
+    dispatch(setErrors(err))
   }
 }
 
@@ -49,7 +49,7 @@ export const createBuilding = (building: IBuilding) => async (
       payload: response
     })
   } catch (err) {
-    dispatch(returnErrors(err))
+    dispatch(setErrors(err))
   }
 }
 
@@ -69,7 +69,7 @@ export const updateBuilding = (building: IBuilding) => async (
       payload: response
     })
   } catch (err) {
-    dispatch(returnErrors(err))
+    dispatch(setErrors(err))
   }
 }
 
@@ -87,6 +87,6 @@ export const deleteBuilding = (id: number) => async (dispatch: Function) => {
       payload: response
     })
   } catch (err) {
-    dispatch(returnErrors(err))
+    dispatch(setErrors(err))
   }
 }
