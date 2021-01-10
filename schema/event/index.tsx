@@ -1,7 +1,8 @@
 import mongoose from 'mongoose'
 import Event from '../../models/Event'
-import Room from '../../models/Event'
+import Room from '../../models/Room'
 import User from '../../models/User'
+import Building from '../../models/Building'
 
 export const selectEvent = async (
   parent: any,
@@ -37,37 +38,51 @@ export const addEvent = async (
   info: any
 ) => {
   try {
-    console.log(`Looking for roomId=${input.room}`)
-    const room = await Room.findById(input.room)
+    const roomId: string = input.room.id
+    console.log(`Looking for roomId=${roomId}`)
+    const room: any = await Room.findById(roomId)
     console.log(`Selected for room=${JSON.stringify(room)}`)
-    console.log(`Looking for username=${input.createdBy}`)
-    const user = await User.findById(input.createdBy)
-    console.log(`Selected for user=${JSON.stringify(user)}`)
-    if (room && user) {
-      console.log(`Adding event=${JSON.stringify(input)}`)
-      const event = new Event({
-        _id: mongoose.Types.ObjectId(),
-        title: input.title,
-        startDate: input.startDate,
-        endDate: input.endDate,
-        startTime: input.startTime,
-        endTime: input.endTime,
-        weekdays: input.weekdays,
-        room: input.room,
-        createdBy: input.createdBy
-      })
-      const response: any = await event.save()
-      console.log(`Added event=${JSON.stringify(response)}`)
-      return response
-    } else if (!room && user) {
-      console.log(`No room exists for roomId=${input.room}`)
-    } else if (room && !user) {
-      console.log(`No user exists for userId=${input.createdBy}`)
-    } else {
-      console.log(
-        `No room and user exists for userId=${input.createdBy} and roomId=${input.room}`
-      )
+
+    if (!room) {
+      console.log(`No room exists for roomId=${roomId}`)
+      return
     }
+
+    const buildingId: string = room.building
+    console.log(`Looking for buildingId=${buildingId}`)
+    const building: any = await Building.findById(buildingId)
+    console.log(`Selected for building=${JSON.stringify(building)}`)
+
+    if (!building) {
+      console.log(`No building exists for buildingId=${buildingId}`)
+      return
+    }
+
+    const username: string = input.createdBy.username
+    console.log(`Looking for username=${username}`)
+    const user: any = await User.findOne({ username })
+    console.log(`Selected for user=${JSON.stringify(user)}`)
+
+    if (!user) {
+      console.log(`No user exists for userId=${username}`)
+      return
+    }
+
+    console.log(`Adding event=${JSON.stringify(input)}`)
+    const event = new Event({
+      _id: mongoose.Types.ObjectId(),
+      title: input.title,
+      startDate: input.startDate,
+      endDate: input.endDate,
+      startTime: input.startTime,
+      endTime: input.endTime,
+      weekdays: input.weekdays,
+      room: room._id,
+      createdBy: user._id
+    })
+    const response: any = await event.save()
+    console.log(`Added event=${JSON.stringify(response)}`)
+    return response
   } catch (e) {
     console.log(e)
   }

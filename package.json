@@ -4,8 +4,8 @@
   "description": "Co-creator: Nancy Nettum Professor Advisor: John Nordlie Created by: Benjamin Stafford, and Jonathan Schmitz",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "start:dev": "nodemon",
+    "start": "ts-node ./index.js",
+    "start:dev": "nodemon --watch './**/*.ts' --exec 'ts-node' ./index.ts",
     "app": "concurrently \"nodemon index.js\" \"npm run start --prefix ./client\""
   },
   "repository": {
@@ -24,7 +24,6 @@
     "@types/express": "^4.17.8",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/mongoose": "^5.7.36",
-    "@types/mysql": "^2.15.15",
     "apollo-server-express": "^2.19.0",
     "concurrently": "^5.3.0",
     "express": "^4.17.1",

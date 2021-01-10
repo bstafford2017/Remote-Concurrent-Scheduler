@@ -53,9 +53,17 @@ input UserInput {
   admin: Boolean!
 }
 
+input UserIDInput {
+  username: String!
+}
+
 input BuildingInput {
   id: String
   name: String!
+}
+
+input BuildingIDInput {
+  id: String!
 }
 
 input RoomInput {
@@ -63,7 +71,11 @@ input RoomInput {
   number: String!
   seats: Int!
   projector: Boolean!
-  building: BuildingInput!
+  building: BuildingIDInput!
+}
+
+input RoomIDInput {
+  id: String!
 }
 
 input EventInput {
@@ -75,8 +87,8 @@ input EventInput {
   endTime: String!
   recur: Boolean!
   weekdays: [Boolean]
-  room: RoomInput!
-  createdBy: UserInput!
+  room: RoomIDInput!
+  createdBy: UserIDInput!
 }
 
 type Mutation {

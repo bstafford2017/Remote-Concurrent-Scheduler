@@ -101,8 +101,8 @@ export const deleteRoom = async (
 }
 
 export const resolveRoom = async (parent: any) => {
-  console.log(`Selecting userId=${parent.createdBy}`)
-  const response: any = await User.findOne({ username: parent.createdBy })
-  console.log(`Selected user=${JSON.stringify(response)}`)
+  console.log(`Selecting roomId=${parent.room}`)
+  const response: any = await Room.findById(parent.room)
+  console.log(`Selected roomId=${JSON.stringify(response)}`)
   return response
 }
