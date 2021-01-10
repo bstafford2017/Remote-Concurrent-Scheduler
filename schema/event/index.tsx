@@ -68,6 +68,8 @@ export const addEvent = async (
       return
     }
 
+    // TODO: validate date & time with room
+
     console.log(`Adding event=${JSON.stringify(input)}`)
     const event = new Event({
       _id: mongoose.Types.ObjectId(),
@@ -95,6 +97,36 @@ export const updateEvent = async (
   info: any
 ) => {
   try {
+    const roomId: string = input.room.id
+    console.log(`Looking for roomId=${roomId}`)
+    const room: any = await Room.findById(roomId)
+    console.log(`Selected for room=${JSON.stringify(room)}`)
+
+    if (!room) {
+      console.log(`No room exists for roomId=${roomId}`)
+      return
+    }
+
+    const buildingId: string = room.building
+    console.log(`Looking for buildingId=${buildingId}`)
+    const building: any = await Building.findById(buildingId)
+    console.log(`Selected for building=${JSON.stringify(building)}`)
+
+    if (!building) {
+      console.log(`No building exists for buildingId=${buildingId}`)
+      return
+    }
+
+    const username: string = input.createdBy.username
+    console.log(`Looking for username=${username}`)
+    const user: any = await User.findOne({ username })
+    console.log(`Selected for user=${JSON.stringify(user)}`)
+
+    if (!user) {
+      console.log(`No user exists for userId=${username}`)
+      return
+    }
+
     console.log(`Updating event=${JSON.stringify(input)}`)
     const response: any = await Event.updateOne(
       { _id: input.id },

@@ -36,8 +36,18 @@ export const addUser = async (
   info: any
 ) => {
   try {
+    const username: string = input.username
+    console.log(`Looking for username=${username}`)
+    const user: any = await User.findOne({ username })
+    console.log(`Selected for user=${JSON.stringify(user)}`)
+
+    if (user) {
+      console.log(`User already exists for username=${username}`)
+      return
+    }
+
     console.log(`Adding user=${JSON.stringify(input)}`)
-    const user = new User({
+    const newUser = new User({
       _id: mongoose.Types.ObjectId(),
       username: input.username,
       password: input.password,
@@ -46,7 +56,7 @@ export const addUser = async (
       admin: input.admin,
       events: []
     })
-    const response: any = await user.save()
+    const response: any = await newUser.save()
     console.log(`Added user=${JSON.stringify(response)}`)
     return response
   } catch (e) {
@@ -61,6 +71,16 @@ export const updateUser = async (
   info: any
 ) => {
   try {
+    const username: string = input.username
+    console.log(`Looking for username=${username}`)
+    const user: any = await User.findOne({ username })
+    console.log(`Selected for user=${JSON.stringify(user)}`)
+
+    if (user) {
+      console.log(`User already exists for username=${username}`)
+      return
+    }
+
     console.log(`Updating user=${JSON.stringify(input)}`)
     const response: any = await User.updateOne(
       { _id: input.id },

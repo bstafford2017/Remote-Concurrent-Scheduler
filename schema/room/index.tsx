@@ -37,24 +37,29 @@ export const addRoom = async (
   info: any
 ) => {
   try {
-    console.log(`Looking for buildingId=${JSON.stringify(input.building.id)}`)
-    const building = await Building.findById(input.building.id)
+    // TODO: validation room number and building
+
+    const buildingId = input.building.id
+    console.log(`Looking for buildingId=${buildingId}`)
+    const building = await Building.findById(buildingId)
     console.log(`Selected building=${JSON.stringify(building)}`)
-    if (building) {
-      console.log(`Adding room=${JSON.stringify(input)}`)
-      const room = new Room({
-        _id: mongoose.Types.ObjectId(),
-        number: input.number,
-        seats: input.seats,
-        projector: input.projector,
-        building: input.building.id
-      })
-      const response: any = await room.save()
-      console.log(`Added room=${JSON.stringify(response)}`)
-      return response
-    } else {
-      console.log(`No building exists for buildingId=${input.building}`)
+
+    if (!building) {
+      console.log(`No building exists for buildingId=${buildingId}`)
+      return
     }
+
+    console.log(`Adding room=${JSON.stringify(input)}`)
+    const newRoom = new Room({
+      _id: mongoose.Types.ObjectId(),
+      number: input.number,
+      seats: input.seats,
+      projector: input.projector,
+      building: input.building.id
+    })
+    const response: any = await newRoom.save()
+    console.log(`Added room=${JSON.stringify(response)}`)
+    return response
   } catch (e) {
     console.log(e)
   }
@@ -67,6 +72,16 @@ export const updateRoom = async (
   info: any
 ) => {
   try {
+    const buildingId = input.building.id
+    console.log(`Looking for buildingId=${buildingId}`)
+    const building = await Building.findById(buildingId)
+    console.log(`Selected building=${JSON.stringify(building)}`)
+
+    if (!building) {
+      console.log(`No building exists for buildingId=${buildingId}`)
+      return
+    }
+
     console.log(`Updating room=${JSON.stringify(input)}`)
     const response: any = await Room.updateOne(
       { _id: input.id },

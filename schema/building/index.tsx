@@ -35,12 +35,22 @@ export const addBuilding = async (
   info: any
 ) => {
   try {
+    const buildingName: string = input.name
+    console.log(`Looking for buildingName=${buildingName}`)
+    const building: any = await Building.findOne({ building: buildingName })
+    console.log(`Selected for building=${JSON.stringify(building)}`)
+
+    if (building) {
+      console.log(`Building already exists for buildingName=${buildingName}`)
+      return
+    }
+
     console.log(`Adding building=${JSON.stringify(input)}`)
-    const building = new Building({
+    const newBuilding = new Building({
       _id: mongoose.Types.ObjectId(),
       name: input.name
     })
-    const response: any = await building.save()
+    const response: any = await newBuilding.save()
     console.log(`Selected building=${JSON.stringify(response)}`)
     return response
   } catch (e) {
@@ -55,6 +65,15 @@ export const updateBuilding = async (
   info: any
 ) => {
   try {
+    const buildingName: string = input.name
+    console.log(`Looking for buildingName=${buildingName}`)
+    const building: any = await Building.findOne({ building: buildingName })
+    console.log(`Selected for building=${JSON.stringify(building)}`)
+
+    if (building) {
+      console.log(`Building already exists for buildingName=${buildingName}`)
+      return
+    }
     console.log(`Updating building=${JSON.stringify(input)}`)
     const response: any = await Building.updateOne(
       { _id: input.id },
