@@ -37,8 +37,6 @@ export const addRoom = async (
   info: any
 ) => {
   try {
-    // TODO: validation room number and building
-
     const buildingId = input.building.id
     console.log(`Looking for buildingId=${buildingId}`)
     const building = await Building.findById(buildingId)
@@ -47,6 +45,16 @@ export const addRoom = async (
     if (!building) {
       console.log(`No building exists for buildingId=${buildingId}`)
       return
+    }
+
+    const existingRoom = Room.find({
+      $and: [{ number: input.number }, { building: buildingId }]
+    })
+
+    if (existingRoom) {
+      console.log(
+        `This room in the specified building already exists for roomNumber=${input.number} and buildingId=${buildingId}`
+      )
     }
 
     console.log(`Adding room=${JSON.stringify(input)}`)

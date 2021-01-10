@@ -68,7 +68,21 @@ export const addEvent = async (
       return
     }
 
-    // TODO: validate date & time with room
+    const conflictingEvent = Event.find({
+      $and: [
+        { startDate: { $gt: input.startDate } },
+        { endDate: { $lt: input.endDate } },
+        { room: roomId },
+        { building: buildingId }
+      ]
+    })
+
+    if (conflictingEvent) {
+      console.log(
+        `Unable to schedule event due to conflict for startDate=${input.endDate} and endDate=${input.startDate}`
+      )
+      return
+    }
 
     console.log(`Adding event=${JSON.stringify(input)}`)
     const event = new Event({
