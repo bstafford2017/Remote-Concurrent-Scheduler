@@ -1,17 +1,11 @@
 import mongoose from 'mongoose'
-import Room from '../../models/Room'
-import Building from '../../models/Building'
-import User from '../../models/User'
+import Room, { RoomModel } from '../models/Room'
+import Building, { BuildingModel } from '../models/Building'
 
-export const selectRoom = async (
-  parent: any,
-  { id }: { id: string },
-  context: any,
-  info: any
-) => {
+export const selectRoom = async (_, { id }): Promise<Room> => {
   try {
     console.log(`Selecting roomId=${id}`)
-    const response: any = await Room.findById(id)
+    const response: Room = await RoomModel.findById(id)
     console.log(`Selected room=${JSON.stringify(response)}`)
     return response
   } catch (e) {
@@ -19,10 +13,10 @@ export const selectRoom = async (
   }
 }
 
-export const selectRooms = async () => {
+export const selectRooms = async (): Promise<Room[]> => {
   try {
     console.log(`Selecting all rooms`)
-    const response: any = await Room.find()
+    const response: Room[] = await RoomModel.find()
     console.log(`Selected room=${JSON.stringify(response)}`)
     return response
   } catch (e) {
@@ -30,16 +24,11 @@ export const selectRooms = async () => {
   }
 }
 
-export const addRoom = async (
-  parent: any,
-  { input }: { input: any },
-  context: any,
-  info: any
-) => {
+export const addRoom = async (_, { input }): Promise<Room> => {
   try {
     const buildingId = input.building.id
     console.log(`Looking for buildingId=${buildingId}`)
-    const building = await Building.findById(buildingId)
+    const building: Building = await BuildingModel.findById(buildingId)
     console.log(`Selected building=${JSON.stringify(building)}`)
 
     if (!building) {
@@ -47,7 +36,7 @@ export const addRoom = async (
       return
     }
 
-    const existingRoom = Room.find({
+    const existingRoom = RoomModel.find({
       $and: [{ number: input.number }, { building: buildingId }]
     })
 
@@ -58,14 +47,14 @@ export const addRoom = async (
     }
 
     console.log(`Adding room=${JSON.stringify(input)}`)
-    const newRoom = new Room({
+    const newRoom = new RoomModel({
       _id: mongoose.Types.ObjectId(),
       number: input.number,
       seats: input.seats,
       projector: input.projector,
       building: input.building.id
     })
-    const response: any = await newRoom.save()
+    const response: Room = await newRoom.save()
     console.log(`Added room=${JSON.stringify(response)}`)
     return response
   } catch (e) {
@@ -73,16 +62,11 @@ export const addRoom = async (
   }
 }
 
-export const updateRoom = async (
-  parent: any,
-  { input }: { input: any },
-  context: any,
-  info: any
-) => {
+export const updateRoom = async (_, { input }): Promise<Room> => {
   try {
     const buildingId = input.building.id
     console.log(`Looking for buildingId=${buildingId}`)
-    const building = await Building.findById(buildingId)
+    const building: Building = await BuildingModel.findById(buildingId)
     console.log(`Selected building=${JSON.stringify(building)}`)
 
     if (!building) {
@@ -91,7 +75,7 @@ export const updateRoom = async (
     }
 
     console.log(`Updating room=${JSON.stringify(input)}`)
-    const response: any = await Room.updateOne(
+    const response: Room = await RoomModel.updateOne(
       { _id: input.id },
       {
         number: input.number,
@@ -107,15 +91,10 @@ export const updateRoom = async (
   }
 }
 
-export const deleteRoom = async (
-  parent: any,
-  id: string,
-  context: any,
-  info: any
-) => {
+export const deleteRoom = async (_, id: string): Promise<Room> => {
   try {
     console.log(`Removing roomId=${id}`)
-    const response: any = await Room.findByIdAndDelete(id)
+    const response: Room = await RoomModel.findByIdAndDelete(id)
     console.log(`Removed room=${response}`)
     return response
   } catch (e) {
@@ -123,9 +102,9 @@ export const deleteRoom = async (
   }
 }
 
-export const resolveRoom = async (parent: any) => {
-  console.log(`Selecting roomId=${parent.room}`)
-  const response: any = await Room.findById(parent.room)
+export const resolveRoom = async ({ room }) => {
+  console.log(`Selecting roomId=${room}`)
+  const response: any = await RoomModel.findById(room)
   console.log(`Selected roomId=${JSON.stringify(response)}`)
   return response
 }

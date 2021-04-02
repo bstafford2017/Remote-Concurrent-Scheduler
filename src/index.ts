@@ -27,7 +27,7 @@ import {
   updateRoom,
   deleteRoom,
   resolveRoom
-} from './schema/Room'
+} from './schema/room'
 import {
   selectEvent,
   selectEvents,
@@ -40,7 +40,9 @@ import {
   try {
     let port = process.env.PORT || 5000
 
-    const typeDefs: string = readFileSync('schema.graphql').toString()
+    const typeDefs: string = readFileSync(
+      __dirname + '/schema.graphql'
+    ).toString()
 
     // Resolver map
     const resolvers = {
@@ -72,7 +74,7 @@ import {
         building: resolveBuilding
       },
       Event: {
-        createdBy: resolveUser,
+        user: resolveUser,
         room: resolveRoom
       },
       User: {

@@ -1,9 +1,10 @@
 type User {
-  username: String
-  password: String
-  firstName: String
-  lastName: String
-  admin: Boolean
+  id: String!
+  username: String!
+  password: String!
+  firstName: String!
+  lastName: String!
+  admin: Boolean!
   events: [Event]
 }
 
@@ -24,13 +25,13 @@ type Event {
   id: String!
   title: String!
   startDate: String!
-  endDate: String
+  endDate: String!
   startTime: String!
   endTime: String!
   recur: Boolean!
   weekdays: [Boolean]
   room: Room!
-  createdBy: User!
+  user: User!
 }
 
 type Query {
@@ -45,7 +46,6 @@ type Query {
 }
 
 input UserInput {
-  id: String
   username: String!
   password: String!
   firstName: String!
@@ -58,7 +58,6 @@ input UserIDInput {
 }
 
 input BuildingInput {
-  id: String
   name: String!
 }
 
@@ -67,7 +66,6 @@ input BuildingIDInput {
 }
 
 input RoomInput {
-  id: String
   number: String!
   seats: Int!
   projector: Boolean!
@@ -79,7 +77,6 @@ input RoomIDInput {
 }
 
 input EventInput {
-  id: String
   title: String!
   startDate: String!
   endDate: String
@@ -88,7 +85,7 @@ input EventInput {
   recur: Boolean!
   weekdays: [Boolean]
   room: RoomIDInput!
-  createdBy: UserIDInput!
+  user: UserIDInput!
 }
 
 type Mutation {

@@ -1,18 +1,13 @@
 import mongoose from 'mongoose'
-import Event from '../../models/Event'
-import Room from '../../models/Room'
-import User from '../../models/User'
-import Building from '../../models/Building'
+import Event, { EventModel } from '../models/Event'
+import Room, { RoomModel } from '../models/Room'
+import User, { UserModel } from '../models/User'
+import Building, { BuildingModel } from '../models/Building'
 
-export const selectEvent = async (
-  parent: any,
-  { id }: { id: any },
-  context: any,
-  info: any
-) => {
+export const selectEvent = async (_, { id }): Promise<Event> => {
   try {
     console.log(`Selecting eventId=${id}`)
-    const response: any = await Event.findById(id)
+    const response: any = await EventModel.findById(id)
     console.log(`Selected event=${JSON.stringify(response)}`)
     return response
   } catch (e) {
@@ -20,10 +15,10 @@ export const selectEvent = async (
   }
 }
 
-export const selectEvents = async () => {
+export const selectEvents = async (): Promise<Event> => {
   try {
     console.log(`Selecting all events`)
-    const response: any = await Event.find()
+    const response: any = await EventModel.find()
     console.log(`Selected events=${JSON.stringify(response)}`)
     return response
   } catch (e) {
@@ -31,16 +26,11 @@ export const selectEvents = async () => {
   }
 }
 
-export const addEvent = async (
-  parent: any,
-  { input }: { input: any },
-  context: any,
-  info: any
-) => {
+export const addEvent = async (_, { input }): Promise<Event> => {
   try {
     const roomId: string = input.room.id
     console.log(`Looking for roomId=${roomId}`)
-    const room: any = await Room.findById(roomId)
+    const room: any = await RoomModel.findById(roomId)
     console.log(`Selected for room=${JSON.stringify(room)}`)
 
     if (!room) {
@@ -50,7 +40,7 @@ export const addEvent = async (
 
     const buildingId: string = room.building
     console.log(`Looking for buildingId=${buildingId}`)
-    const building: any = await Building.findById(buildingId)
+    const building: any = await BuildingModel.findById(buildingId)
     console.log(`Selected for building=${JSON.stringify(building)}`)
 
     if (!building) {
@@ -58,9 +48,9 @@ export const addEvent = async (
       return
     }
 
-    const username: string = input.createdBy.username
+    const username: string = input.user.username
     console.log(`Looking for username=${username}`)
-    const user: any = await User.findOne({ username })
+    const user: any = await UserModel.findOne({ username })
     console.log(`Selected for user=${JSON.stringify(user)}`)
 
     if (!user) {
@@ -68,10 +58,12 @@ export const addEvent = async (
       return
     }
 
-    const conflictingEvent = Event.find({
+    const conflictingEvent = EventModel.find({
       $and: [
         { startDate: { $gt: input.startDate } },
         { endDate: { $lt: input.endDate } },
+        { startTime: { $gt: input.startTime } },
+        { endTime: { $lt: input.endTime } },
         { room: roomId },
         { building: buildingId }
       ]
@@ -85,7 +77,7 @@ export const addEvent = async (
     }
 
     console.log(`Adding event=${JSON.stringify(input)}`)
-    const event = new Event({
+    const event = new EventModel({
       _id: mongoose.Types.ObjectId(),
       title: input.title,
       startDate: input.startDate,
@@ -94,7 +86,7 @@ export const addEvent = async (
       endTime: input.endTime,
       weekdays: input.weekdays,
       room: room._id,
-      createdBy: user._id
+      user: user._id
     })
     const response: any = await event.save()
     console.log(`Added event=${JSON.stringify(response)}`)
@@ -105,15 +97,13 @@ export const addEvent = async (
 }
 
 export const updateEvent = async (
-  parent: any,
-  { input }: { input: any },
-  context: any,
-  info: any
-) => {
+  _,
+  { input }: { input: any }
+): Promise<Event> => {
   try {
     const roomId: string = input.room.id
     console.log(`Looking for roomId=${roomId}`)
-    const room: any = await Room.findById(roomId)
+    const room: any = await RoomModel.findById(roomId)
     console.log(`Selected for room=${JSON.stringify(room)}`)
 
     if (!room) {
@@ -123,7 +113,7 @@ export const updateEvent = async (
 
     const buildingId: string = room.building
     console.log(`Looking for buildingId=${buildingId}`)
-    const building: any = await Building.findById(buildingId)
+    const building: Building = await BuildingModel.findById(buildingId)
     console.log(`Selected for building=${JSON.stringify(building)}`)
 
     if (!building) {
@@ -131,9 +121,9 @@ export const updateEvent = async (
       return
     }
 
-    const username: string = input.createdBy.username
+    const username: string = input.user.username
     console.log(`Looking for username=${username}`)
-    const user: any = await User.findOne({ username })
+    const user: User = await UserModel.findOne({ username })
     console.log(`Selected for user=${JSON.stringify(user)}`)
 
     if (!user) {
@@ -142,7 +132,7 @@ export const updateEvent = async (
     }
 
     console.log(`Updating event=${JSON.stringify(input)}`)
-    const response: any = await Event.updateOne(
+    const response: Event = await EventModel.updateOne(
       { _id: input.id },
       {
         title: input.title,
@@ -152,7 +142,7 @@ export const updateEvent = async (
         endTime: input.endTime,
         weekends: input.weekends,
         room: input.room,
-        createdBy: input.createdBy
+        user: input.user
       }
     )
     console.log(`Updated event=${JSON.stringify(response)}`)
@@ -162,15 +152,10 @@ export const updateEvent = async (
   }
 }
 
-export const deleteEvent = (
-  parent: any,
-  id: string,
-  context: any,
-  info: any
-) => {
+export const deleteEvent = async (_, id: string): Promise<Event> => {
   try {
     console.log(`Removing eventId=${id}`)
-    const response: any = Event.findByIdAndDelete(id)
+    const response: Event = await EventModel.findByIdAndDelete(id)
     console.log(`Removed event=${JSON.stringify(response)}`)
     return response
   } catch (e) {
@@ -178,9 +163,9 @@ export const deleteEvent = (
   }
 }
 
-export const resolveEvents = async (parent: any) => {
-  console.log(`Selecting events for username=${parent.createdBy}`)
-  const response: any = await Event.find({ createdBy: parent.createdBy })
+export const resolveEvents = async ({ user }): Promise<Event[]> => {
+  console.log(`Selecting events for username=${user}`)
+  const response: Event[] = await EventModel.find({ user })
   console.log(`Selected events=${JSON.stringify(response)}`)
   return response
 }

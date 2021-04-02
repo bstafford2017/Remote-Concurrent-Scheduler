@@ -6,10 +6,11 @@
     "allowJs": true,
     "outDir": "build",
     "rootDir": "./",
-    "strict": true,
-    "noImplicitAny": true,
+    "strict": false,
+    "noImplicitAny": false,
     "esModuleInterop": true,
     "resolveJsonModule": true,
+    "experimentalDecorators": true,
     "jsx": "react"
   }
 }
