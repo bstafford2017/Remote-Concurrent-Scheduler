@@ -1,88 +1,31 @@
-import express from 'express'
+import 'reflect-metadata'
+import express, { Request, Response } from 'express'
 import mongoose from 'mongoose'
-import { readFileSync } from 'fs'
 import { ApolloServer } from 'apollo-server-express'
 import cors from 'cors'
 import config from './config'
-import {
-  selectUser,
-  selectUsers,
-  addUser,
-  updateUser,
-  deleteUser,
-  resolveUser
-} from './schema/user'
-import {
-  selectBuilding,
-  selectBuildings,
-  addBuilding,
-  updateBuilding,
-  deleteBuilding,
-  resolveBuilding
-} from './schema/building'
-import {
-  selectRoom,
-  selectRooms,
-  addRoom,
-  updateRoom,
-  deleteRoom,
-  resolveRoom
-} from './schema/room'
-import {
-  selectEvent,
-  selectEvents,
-  addEvent,
-  updateEvent,
-  deleteEvent,
-  resolveEvents
-} from './schema/event'
+import BuildingResolver from './resolvers/building.resolver'
+import RoomResolver from './resolvers/room.resolver'
+import UserResolver from './resolvers/user.resolver'
+import EventResolver from './resolvers/event.resolver'
+import { buildSchema } from 'type-graphql'
 ;(async () => {
   try {
     let port = process.env.PORT || 5000
 
-    const typeDefs: string = readFileSync(
-      __dirname + '/schema.graphql'
-    ).toString()
+    const schema = await buildSchema({
+      resolvers: [BuildingResolver, RoomResolver, UserResolver, EventResolver],
+      nullableByDefault: false
+    })
 
-    // Resolver map
-    const resolvers = {
-      Query: {
-        selectUser,
-        selectUsers,
-        selectBuilding,
-        selectBuildings,
-        selectRoom,
-        selectRooms,
-        selectEvent,
-        selectEvents
-      },
-      Mutation: {
-        addUser,
-        addBuilding,
-        addRoom,
-        addEvent,
-        updateUser,
-        updateBuilding,
-        updateRoom,
-        updateEvent,
-        deleteUser,
-        deleteBuilding,
-        deleteRoom,
-        deleteEvent
-      },
-      Room: {
-        building: resolveBuilding
-      },
-      Event: {
-        user: resolveUser,
-        room: resolveRoom
-      },
-      User: {
-        events: resolveEvents
-      }
-    }
-
-    const server: ApolloServer = new ApolloServer({ typeDefs, resolvers })
+    const server: ApolloServer = new ApolloServer({
+      schema,
+      playground: true,
+      context: ({ req: Request, res: Response }) => ({
+        req: Request,
+        res: Response
+      })
+    })
 
     const app: express.Application = express()
 

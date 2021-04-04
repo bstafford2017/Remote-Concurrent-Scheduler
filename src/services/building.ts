@@ -1,10 +1,12 @@
 import mongoose from 'mongoose'
 import Building, { BuildingModel } from '../models/Building'
 
-export const selectBuilding = async (_, { id }): Promise<Building> => {
+export const selectBuilding = async (id: string): Promise<any> => {
   try {
     console.log(`Selecting buildingId=${id}`)
-    const response: Building = await BuildingModel.findById(id)
+    const response: any = await BuildingModel.findOne({
+      id
+    })
     console.log(`Selected building=${JSON.stringify(response)}`)
     return response
   } catch (e) {
@@ -12,30 +14,16 @@ export const selectBuilding = async (_, { id }): Promise<Building> => {
   }
 }
 
-export const selectBuildings = async (): Promise<Building[]> => {
-  try {
-    console.log(`Selecting all buildings`)
-    const response: Building[] = await BuildingModel.find()
-    console.log(`Selected buildings=${JSON.stringify(response)}`)
-    return response
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-export const addBuilding = async (
-  _,
-  { input: { name } }
-): Promise<Building> => {
+export const addBuilding = async (_, { input: { name } }): Promise<any> => {
   try {
     console.log(`Looking for buildingName=${name}`)
-    const building: Building = await BuildingModel.findOne({
+    const building: any = await BuildingModel.findOne({
       building: name
     })
     console.log(`Selected for building=${JSON.stringify(building)}`)
 
     if (building) {
-      console.log(`Building already exists for buildingName=${name}`)
+      console.log(`any already exists for buildingName=${name}`)
       return
     }
 
@@ -52,16 +40,16 @@ export const addBuilding = async (
   }
 }
 
-export const updateBuilding = async (_, { id, name }): Promise<Building> => {
+export const updateBuilding = async (_, { id, name }): Promise<any> => {
   try {
     console.log(`Looking for buildingName=${name}`)
-    const building: Building = await BuildingModel.findOne({
+    const building: any = await BuildingModel.findOne({
       building: name
     })
     console.log(`Selected for building=${JSON.stringify(building)}`)
 
     if (building) {
-      console.log(`Building already exists for buildingName=${name}`)
+      console.log(`any already exists for buildingName=${name}`)
       return
     }
     console.log(`Updating buildingName=${JSON.stringify(name)}`)
@@ -78,10 +66,10 @@ export const updateBuilding = async (_, { id, name }): Promise<Building> => {
   }
 }
 
-export const deleteBuilding = async (_, id: string): Promise<Building> => {
+export const deleteBuilding = async (_, id: string): Promise<any> => {
   try {
     console.log(`Removing buildingId=${id}`)
-    const response: Building = await BuildingModel.findByIdAndDelete(id)
+    const response: any = await BuildingModel.findByIdAndRemove(id)
     console.log(`Removed building=${JSON.stringify(response)}`)
     return response
   } catch (e) {
@@ -89,9 +77,9 @@ export const deleteBuilding = async (_, id: string): Promise<Building> => {
   }
 }
 
-export const resolveBuilding = async ({ building }): Promise<Building> => {
+export const resolveBuilding = async ({ building }): Promise<any> => {
   console.log(`Selecting buildingId=${building}`)
-  const response: Building = await BuildingModel.findById(building)
+  const response: any = await BuildingModel.findById(building)
   console.log(`Selected building=${JSON.stringify(response)}`)
   return response
 }

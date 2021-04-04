@@ -2,10 +2,12 @@ import mongoose from 'mongoose'
 import Room, { RoomModel } from '../models/Room'
 import Building, { BuildingModel } from '../models/Building'
 
-export const selectRoom = async (_, { id }): Promise<Room> => {
+export const selectRoom = async (id: string): Promise<any> => {
   try {
     console.log(`Selecting roomId=${id}`)
-    const response: Room = await RoomModel.findById(id)
+    const response: any = await RoomModel.findOne({
+      id
+    })
     console.log(`Selected room=${JSON.stringify(response)}`)
     return response
   } catch (e) {
@@ -13,18 +15,7 @@ export const selectRoom = async (_, { id }): Promise<Room> => {
   }
 }
 
-export const selectRooms = async (): Promise<Room[]> => {
-  try {
-    console.log(`Selecting all rooms`)
-    const response: Room[] = await RoomModel.find()
-    console.log(`Selected room=${JSON.stringify(response)}`)
-    return response
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-export const addRoom = async (_, { input }): Promise<Room> => {
+export const addRoom = async (_, { input }): Promise<any> => {
   try {
     const buildingId = input.building.id
     console.log(`Looking for buildingId=${buildingId}`)
@@ -54,7 +45,7 @@ export const addRoom = async (_, { input }): Promise<Room> => {
       projector: input.projector,
       building: input.building.id
     })
-    const response: Room = await newRoom.save()
+    const response: any = await newRoom.save()
     console.log(`Added room=${JSON.stringify(response)}`)
     return response
   } catch (e) {
@@ -62,7 +53,7 @@ export const addRoom = async (_, { input }): Promise<Room> => {
   }
 }
 
-export const updateRoom = async (_, { input }): Promise<Room> => {
+export const updateRoom = async (_, { input }): Promise<any> => {
   try {
     const buildingId = input.building.id
     console.log(`Looking for buildingId=${buildingId}`)
@@ -75,7 +66,7 @@ export const updateRoom = async (_, { input }): Promise<Room> => {
     }
 
     console.log(`Updating room=${JSON.stringify(input)}`)
-    const response: Room = await RoomModel.updateOne(
+    const response: any = await RoomModel.updateOne(
       { _id: input.id },
       {
         number: input.number,
@@ -91,10 +82,10 @@ export const updateRoom = async (_, { input }): Promise<Room> => {
   }
 }
 
-export const deleteRoom = async (_, id: string): Promise<Room> => {
+export const deleteRoom = async (_, id: string): Promise<any> => {
   try {
     console.log(`Removing roomId=${id}`)
-    const response: Room = await RoomModel.findByIdAndDelete(id)
+    const response: any = await RoomModel.findByIdAndRemove(id)
     console.log(`Removed room=${response}`)
     return response
   } catch (e) {

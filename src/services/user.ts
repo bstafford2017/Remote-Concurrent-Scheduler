@@ -2,21 +2,13 @@ import mongoose from 'mongoose'
 import User, { UserModel } from '../models/User'
 
 // TODO: add bcrypt
-export const selectUser = async (_, { username, password }): Promise<User> => {
+export const selectUser = async (
+  username: string,
+  password: string
+): Promise<User> => {
   try {
     console.log(`Selecting username=${username} and password=${password}`)
     const response: User = await UserModel.findOne({ username, password })
-    console.log(`Selected response=${JSON.stringify(response)}`)
-    return response
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-export const selectUsers = async (): Promise<User[]> => {
-  try {
-    console.log(`Selecting all users`)
-    const response: User[] = await UserModel.find()
     console.log(`Selected response=${JSON.stringify(response)}`)
     return response
   } catch (e) {
@@ -66,7 +58,7 @@ export const updateUser = async (_, { input }): Promise<User> => {
     }
 
     console.log(`Updating UserModel=${JSON.stringify(input)}`)
-    const response: User = await UserModel.updateOne(
+    const response: any = await UserModel.updateOne(
       { _id: input.id },
       {
         username: input.username,
@@ -86,7 +78,7 @@ export const updateUser = async (_, { input }): Promise<User> => {
 export const deleteUser = async (_, id: string): Promise<User> => {
   try {
     console.log(`Removing userId=${id}`)
-    const response: User = await UserModel.findByIdAndDelete(id)
+    const response: User = await UserModel.findByIdAndRemove(id)
     console.log(`Removed UserModel=${JSON.stringify(response)}`)
     return response
   } catch (e) {

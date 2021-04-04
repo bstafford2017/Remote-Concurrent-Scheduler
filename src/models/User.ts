@@ -1,4 +1,5 @@
-import { ObjectType, Field } from 'type-graphql'
+import mongoose from 'mongoose'
+import { ObjectType, Field, InputType } from 'type-graphql'
 import { prop, Typegoose } from 'typegoose'
 
 @ObjectType()
@@ -28,4 +29,25 @@ export default class User extends Typegoose {
   admin: boolean
 }
 
-export const UserModel = new User().getModelForClass(User)
+@InputType()
+export class UserInput {
+  @Field()
+  username: string
+
+  @Field()
+  password: string
+
+  @Field()
+  fname: string
+
+  @Field()
+  lname: string
+
+  @Field()
+  admin: boolean
+}
+
+export const UserModel = new User().getModelForClass(User, {
+  existingMongoose: mongoose,
+  schemaOptions: { collection: 'User' }
+})

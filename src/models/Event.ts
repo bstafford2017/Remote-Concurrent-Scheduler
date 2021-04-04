@@ -1,3 +1,4 @@
+import mongoose from 'mongoose'
 import { ObjectType, Field } from 'type-graphql'
 import { prop, Typegoose } from 'typegoose'
 
@@ -5,7 +6,7 @@ import { prop, Typegoose } from 'typegoose'
 export default class Event extends Typegoose {
   @Field()
   @prop()
-  id: number
+  id: string
 
   @Field()
   @prop()
@@ -36,4 +37,7 @@ export default class Event extends Typegoose {
   user: string
 }
 
-export const EventModel = new Event().getModelForClass(Event)
+export const EventModel = new Event().getModelForClass(Event, {
+  existingMongoose: mongoose,
+  schemaOptions: { collection: 'Event' }
+})

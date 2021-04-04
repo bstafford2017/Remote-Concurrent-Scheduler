@@ -4,22 +4,11 @@ import Room, { RoomModel } from '../models/Room'
 import User, { UserModel } from '../models/User'
 import Building, { BuildingModel } from '../models/Building'
 
-export const selectEvent = async (_, { id }): Promise<Event> => {
+export const selectEvent = async (id: string): Promise<Event> => {
   try {
     console.log(`Selecting eventId=${id}`)
     const response: any = await EventModel.findById(id)
     console.log(`Selected event=${JSON.stringify(response)}`)
-    return response
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-export const selectEvents = async (): Promise<Event> => {
-  try {
-    console.log(`Selecting all events`)
-    const response: any = await EventModel.find()
-    console.log(`Selected events=${JSON.stringify(response)}`)
     return response
   } catch (e) {
     console.log(e)
@@ -123,7 +112,7 @@ export const updateEvent = async (
 
     const username: string = input.user.username
     console.log(`Looking for username=${username}`)
-    const user: User = await UserModel.findOne({ username })
+    const user: any = await UserModel.findOne({ username })
     console.log(`Selected for user=${JSON.stringify(user)}`)
 
     if (!user) {
@@ -132,7 +121,7 @@ export const updateEvent = async (
     }
 
     console.log(`Updating event=${JSON.stringify(input)}`)
-    const response: Event = await EventModel.updateOne(
+    const response: any = await EventModel.updateOne(
       { _id: input.id },
       {
         title: input.title,
@@ -155,7 +144,7 @@ export const updateEvent = async (
 export const deleteEvent = async (_, id: string): Promise<Event> => {
   try {
     console.log(`Removing eventId=${id}`)
-    const response: Event = await EventModel.findByIdAndDelete(id)
+    const response: Event = await EventModel.findByIdAndRemove(id)
     console.log(`Removed event=${JSON.stringify(response)}`)
     return response
   } catch (e) {
