@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import User, { UserModel } from '../models/User'
+import log from '../config/logger'
 
 // TODO: add bcrypt
 export const selectUser = async (
@@ -7,12 +8,12 @@ export const selectUser = async (
   password: string
 ): Promise<User> => {
   try {
-    console.log(`Selecting username=${username} and password=${password}`)
+    log.info(`Selecting username=${username} and password=${password}`)
     const response: User = await UserModel.findOne({ username, password })
-    console.log(`Selected response=${JSON.stringify(response)}`)
+    log.info(`Selected response=${JSON.stringify(response)}`)
     return response
   } catch (e) {
-    console.log(e)
+    log.error(`Error selecting user exception=${e}`)
   }
 }
 

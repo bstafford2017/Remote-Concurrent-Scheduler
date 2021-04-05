@@ -3,15 +3,16 @@ import Event, { EventModel } from '../models/Event'
 import Room, { RoomModel } from '../models/Room'
 import User, { UserModel } from '../models/User'
 import Building, { BuildingModel } from '../models/Building'
+import log from '../config/logger'
 
 export const selectEvent = async (id: string): Promise<Event> => {
   try {
-    console.log(`Selecting eventId=${id}`)
-    const response: any = await EventModel.findById(id)
-    console.log(`Selected event=${JSON.stringify(response)}`)
+    log.info(`Selecting eventId=${id}`)
+    const response: any = await EventModel.findOne({ id })
+    log.info(`Selected event=${JSON.stringify(response)}`)
     return response
   } catch (e) {
-    console.log(e)
+    log.error(`Error selecting event exception=${e}`)
   }
 }
 

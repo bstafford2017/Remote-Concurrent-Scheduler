@@ -1,17 +1,18 @@
 import mongoose from 'mongoose'
 import Room, { RoomModel } from '../models/Room'
 import Building, { BuildingModel } from '../models/Building'
+import log from '../config/logger'
 
 export const selectRoom = async (id: string): Promise<any> => {
   try {
-    console.log(`Selecting roomId=${id}`)
+    log.info(`Selecting roomId=${id}`)
     const response: any = await RoomModel.findOne({
       id
     })
-    console.log(`Selected room=${JSON.stringify(response)}`)
+    log.info(`Selected room=${JSON.stringify(response)}`)
     return response
   } catch (e) {
-    console.log(e)
+    log.error(`Error selecting room exception=${e}`)
   }
 }
 
