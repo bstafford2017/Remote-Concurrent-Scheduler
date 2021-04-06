@@ -8,7 +8,7 @@ import log from '../config/logger'
 export const selectEvent = async (id: string): Promise<Event> => {
   try {
     log.info(`Selecting eventId=${id}`)
-    const response: any = await EventModel.findOne({ id })
+    const response: Event = await EventModel.findOne({ id })
     log.info(`Selected event=${JSON.stringify(response)}`)
     return response
   } catch (e) {

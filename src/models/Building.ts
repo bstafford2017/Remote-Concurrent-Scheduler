@@ -1,9 +1,8 @@
-import mongoose from 'mongoose'
-import { prop, Typegoose, ModelType, InstanceType } from 'typegoose'
 import { ObjectType, Field } from 'type-graphql'
+import { prop, getModelForClass } from '@typegoose/typegoose'
 
 @ObjectType()
-export default class Building extends Typegoose {
+export default class Building {
   @Field()
   @prop()
   id: string
@@ -13,7 +12,4 @@ export default class Building extends Typegoose {
   name: string
 }
 
-export const BuildingModel = new Building().getModelForClass(Building, {
-  existingMongoose: mongoose,
-  schemaOptions: { collection: 'Building' }
-})
+export const BuildingModel = getModelForClass(Building)

@@ -3,10 +3,10 @@ import Room, { RoomModel } from '../models/Room'
 import Building, { BuildingModel } from '../models/Building'
 import log from '../config/logger'
 
-export const selectRoom = async (id: string): Promise<any> => {
+export const selectRoom = async (id: string): Promise<Room> => {
   try {
     log.info(`Selecting roomId=${id}`)
-    const response: any = await RoomModel.findOne({
+    const response = await RoomModel.findOne({
       id
     })
     log.info(`Selected room=${JSON.stringify(response)}`)

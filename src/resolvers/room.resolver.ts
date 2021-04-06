@@ -1,11 +1,18 @@
-import { Resolver, Query, Arg } from 'type-graphql'
+import { Resolver, Query, Arg, Root, FieldResolver } from 'type-graphql'
 import Room from '../models/Room'
 import { selectRoom } from '../services/room'
+import Building from '../models/Building'
+import { selectBuilding } from '../services/building'
 
 @Resolver(() => Room)
 export default class RoomResolver {
   @Query(() => Room)
   async room(@Arg('id') id: string): Promise<Room> {
     return await selectRoom(id)
+  }
+
+  @FieldResolver(() => Building)
+  async building(@Root() room: Room): Promise<Building> {
+    return await selectBuilding(room.buildingId)
   }
 }

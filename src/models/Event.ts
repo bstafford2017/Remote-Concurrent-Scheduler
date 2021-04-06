@@ -1,9 +1,8 @@
-import mongoose from 'mongoose'
 import { ObjectType, Field } from 'type-graphql'
-import { prop, Typegoose } from 'typegoose'
+import { prop, getModelForClass } from '@typegoose/typegoose'
 
 @ObjectType()
-export default class Event extends Typegoose {
+export default class Event {
   @Field()
   @prop()
   id: string
@@ -37,7 +36,4 @@ export default class Event extends Typegoose {
   user: string
 }
 
-export const EventModel = new Event().getModelForClass(Event, {
-  existingMongoose: mongoose,
-  schemaOptions: { collection: 'Event' }
-})
+export const EventModel = getModelForClass(Event)

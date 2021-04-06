@@ -3,13 +3,29 @@ import User, { UserModel } from '../models/User'
 import log from '../config/logger'
 
 // TODO: add bcrypt
+export const selectUserById = async (id: string): Promise<User> => {
+  try {
+    log.info(`Selecting userId=${id}`)
+    const response: User = await UserModel.findOne({
+      id
+    })
+    log.info(`Selected response=${JSON.stringify(response)}`)
+    return response
+  } catch (e) {
+    log.error(`Error selecting user exception=${e}`)
+  }
+}
+
+// TODO: add bcrypt
 export const selectUser = async (
   username: string,
   password: string
 ): Promise<User> => {
   try {
     log.info(`Selecting username=${username} and password=${password}`)
-    const response: User = await UserModel.findOne({ username, password })
+    const response: User = await UserModel.findOne({
+      username
+    })
     log.info(`Selected response=${JSON.stringify(response)}`)
     return response
   } catch (e) {
