@@ -1,3 +1,4 @@
+import { gql, useQuery, QueryResult } from '@apollo/client'
 import axios from 'axios'
 import { setErrors } from './error'
 import {
@@ -10,16 +11,42 @@ import {
 } from '.'
 import { IEvent } from '../types'
 
-export const loadEvents = () => async (dispatch: Function) => {
+export const loadEvents = (id: string) => async (dispatch: Function) => {
   try {
     dispatch({ type: LOADING })
-    const response = await axios.get('/api/event')
+    const { error, data }: QueryResult = await useQuery(gql`
+      query {
+        event(id: ${id}) {
+          id
+          startTime
+          endTime
+          room {
+            id
+            number
+            seats
+            building {
+              id
+              name
+            }
+          }
+          user {
+            id
+            username
+            password
+          }
+        }
+      }
+    `)
+    if (error) {
+      console.warn(JSON.stringify(error))
+      dispatch(setErrors(error.message))
+    }
     dispatch({
       type: LOADED
     })
     dispatch({
       type: LOADED_EVENT,
-      payload: response.data
+      payload: data
     })
   } catch (err) {
     dispatch(setErrors(err))

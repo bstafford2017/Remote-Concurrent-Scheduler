@@ -1,4 +1,4 @@
-import { gql, useQuery, useMutation } from '@apollo/client'
+import { gql, useQuery, useMutation, QueryResult } from '@apollo/client'
 import { setErrors } from './error'
 import {
   LOADING,
@@ -15,20 +15,29 @@ export const loadRooms = (id: number) => async (dispatch: Function) => {
     dispatch({
       type: LOADING
     })
-    const response = await useQuery(gql`
+    const { error, data }: QueryResult = await useQuery(gql`
       query {
-        selectRooms {
+        room(id: ${id}) {
+          id
           number
-          projector
+          seats
+          building {
+            id
+            name
+          }
         }
       }
     `)
+    if (error) {
+      console.warn(JSON.stringify(error))
+      dispatch(setErrors(error.message))
+    }
     dispatch({
       type: LOADED
     })
     dispatch({
       type: LOADED_ROOM,
-      payload: response
+      payload: data
     })
   } catch (err) {
     dispatch(setErrors(err))

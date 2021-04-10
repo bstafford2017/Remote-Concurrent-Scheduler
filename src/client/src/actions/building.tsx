@@ -1,4 +1,4 @@
-import { gql, useQuery, useMutation } from '@apollo/client'
+import { gql, useQuery, useMutation, QueryResult } from '@apollo/client'
 import { setErrors } from './error'
 import {
   LOADING,
@@ -10,23 +10,27 @@ import {
 } from '.'
 import { IBuilding } from '../types'
 
-export const loadBuildings = () => async (dispatch: Function) => {
+export const loadBuildings = (id: string) => async (dispatch: Function) => {
   try {
     dispatch({
       type: LOADING
     })
-    const response = await useQuery(gql`
-      query selectBuildings {
+    const { error, data }: QueryResult = await useQuery(gql`
+      query building(id: ${id}) {
         id
         name
       }
     `)
+    if (error) {
+      console.warn(JSON.stringify(error))
+      dispatch(setErrors(error.message))
+    }
     dispatch({
       type: LOADED
     })
     dispatch({
       type: LOADED_BUILDING,
-      payload: response
+      payload: data
     })
   } catch (err) {
     dispatch(setErrors(err))

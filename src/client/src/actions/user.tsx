@@ -6,43 +6,31 @@ import {
   LOADED_USER,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
-  LOGIN_SUCCESS,
-  LOGIN_FAIL,
   LOGOUT_SUCCESS
 } from '.'
-import { ILogin, IUser, IConfigHeaders } from '../types'
-
-const tokenConfig = (getState: Function) => {
-  const token = getState().user.token
-
-  const config: IConfigHeaders = {
-    headers: {
-      'Content-type': 'application/json'
-    }
-  }
-
-  if (token) {
-    config.headers['x-auth-token'] = token
-  }
-
-  return config
-}
+import { ILogin, IUser } from '../types'
 
 // TODO: Add token
-export const login = (user: ILogin) => async (dispatch: Function) => {
+export const login = ({ username, password }: ILogin) => async (
+  dispatch: Function
+) => {
   dispatch({
     type: LOADING
   })
-  const { error, data } = useQuery(gql`
+  const { error, data }: QueryResult = useQuery(gql`
       query {
-        selectUser(username: ${user.username}, password: ${user.password}) {
-          username
+        user (username: ${username}, password: ${password}) {
+          id,
+          username,
+          fname,
+          lname,
+          admin
         }
       }
     `)
   if (error) {
     console.warn(JSON.stringify(error))
-    setErrors(error.message)
+    dispatch(setErrors(error.message))
   } else {
     dispatch({
       type: LOADED
