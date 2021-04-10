@@ -9,7 +9,11 @@ export const selectBuilding = async (id: string): Promise<Building> => {
       id
     })
     log.info(`Selected building=${JSON.stringify(response)}`)
-    return response
+    const { name } = response
+    return {
+      id,
+      name
+    }
   } catch (e) {
     console.log(e)
     log.error(`Error selecting building exception=${e}`)

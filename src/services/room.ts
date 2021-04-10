@@ -6,11 +6,18 @@ import log from '../config/logger'
 export const selectRoom = async (id: string): Promise<Room> => {
   try {
     log.info(`Selecting roomId=${id}`)
-    const response = await RoomModel.findOne({
+    const response: Room = await RoomModel.findOne({
       id
     })
     log.info(`Selected room=${JSON.stringify(response)}`)
-    return response
+    const { number, seats, projector, buildingId } = response
+    return {
+      id,
+      number,
+      seats,
+      projector,
+      buildingId
+    }
   } catch (e) {
     log.error(`Error selecting room exception=${e}`)
   }

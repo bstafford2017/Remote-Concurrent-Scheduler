@@ -4,4 +4,3 @@ logs/
 .vscode/
 /.DS_Store
 dist/
-config/

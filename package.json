@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node ./src/index.ts",
-    "start:local": "nodemon --exec \"ts-node ./src/index.ts\"",
+    "start:local": "nodemon",
     "app": "concurrently \"nodemon index.js\" \"npm run start --prefix ./client\""
   },
   "repository": {

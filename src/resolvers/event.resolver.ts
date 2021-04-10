@@ -1,6 +1,5 @@
 import { Resolver, Query, Arg, Root, FieldResolver } from 'type-graphql'
 import Event from '../models/Event'
-import Building from '../models/Building'
 import User from '../models/User'
 import Room from '../models/Room'
 import { selectEvent } from '../services/event'
@@ -16,11 +15,11 @@ export default class EventResolver {
 
   @FieldResolver(() => Room)
   async room(@Root() event: Event): Promise<Room> {
-    return await selectRoom(event.room)
+    return await selectRoom(event.roomId)
   }
 
   @FieldResolver(() => User)
-  async user(@Root() room: Room): Promise<User> {
-    return await selectUserById(room.id)
+  async user(@Root() event: Event): Promise<User> {
+    return await selectUserById(event.userId)
   }
 }

@@ -20,10 +20,10 @@ export default class Room {
   @prop()
   projector: boolean
 
-  @Field()
-  @prop()
-  building: Building
+  @Field(() => Building)
+  building?: Building
 
+  @prop()
   buildingId: string
 }
 

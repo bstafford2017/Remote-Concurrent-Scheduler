@@ -1,5 +1,7 @@
 import { ObjectType, Field } from 'type-graphql'
 import { prop, getModelForClass } from '@typegoose/typegoose'
+import Room from '../models/Room'
+import User from '../models/User'
 
 @ObjectType()
 export default class Event {
@@ -27,13 +29,17 @@ export default class Event {
   @prop()
   recur: string
 
-  @Field()
   @prop()
-  room: string
+  roomId: string
 
-  @Field()
   @prop()
-  user: string
+  userId: string
+
+  @Field(() => Room)
+  room?: Room
+
+  @Field(() => User)
+  user?: User
 }
 
 export const EventModel = getModelForClass(Event)

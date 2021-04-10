@@ -10,7 +10,17 @@ export const selectEvent = async (id: string): Promise<Event> => {
     log.info(`Selecting eventId=${id}`)
     const response: Event = await EventModel.findOne({ id })
     log.info(`Selected event=${JSON.stringify(response)}`)
-    return response
+    const { title, date, startTime, endTime, recur, roomId, userId } = response
+    return {
+      id,
+      title,
+      date,
+      startTime,
+      endTime,
+      recur,
+      roomId,
+      userId
+    }
   } catch (e) {
     log.error(`Error selecting event exception=${e}`)
   }
@@ -54,8 +64,8 @@ export const addEvent = async (_, { input }): Promise<Event> => {
         { endDate: { $lt: input.endDate } },
         { startTime: { $gt: input.startTime } },
         { endTime: { $lt: input.endTime } },
-        { room: roomId },
-        { building: buildingId }
+        { roomId },
+        { buildingId }
       ]
     })
 
