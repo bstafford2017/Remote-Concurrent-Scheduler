@@ -11,12 +11,23 @@ import {
 } from '.'
 import { IEvent } from '../types'
 
-export const loadEvents = (id: string) => async (dispatch: Function) => {
+export const loadEvents = () => async (dispatch: Function) => {
   try {
     dispatch({ type: LOADING })
+    const current = new Date()
+    const start = new Date(
+      current.getFullYear(),
+      current.getMonth(),
+      1
+    ).toISOString()
+    const end = new Date(
+      current.getFullYear(),
+      current.getMonth() + 1,
+      0
+    ).toISOString()
     const { error, data }: QueryResult = await useQuery(gql`
       query {
-        event(id: ${id}) {
+        events(start: ${start}, end: ${end}) {
           id
           startTime
           endTime

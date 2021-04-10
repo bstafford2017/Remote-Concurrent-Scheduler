@@ -26,6 +26,45 @@ export const selectEvent = async (id: string): Promise<Event> => {
   }
 }
 
+export const selectEvents = async (
+  start: string,
+  end: string
+): Promise<Array<Event>> => {
+  try {
+    log.info(`Selecting events for start=${start} and end=${end}`)
+    const response: Array<Event> = await EventModel.find({
+      $and: [
+        {
+          date: {
+            $gt: start
+          }
+        },
+        {
+          date: {
+            $lt: end
+          }
+        }
+      ]
+    })
+    log.info(`Selected events=${JSON.stringify(response)}`)
+    return response.map((r) => {
+      const { id, title, date, startTime, endTime, recur, roomId, userId } = r
+      return {
+        id,
+        title,
+        date,
+        startTime,
+        endTime,
+        recur,
+        roomId,
+        userId
+      }
+    })
+  } catch (e) {
+    log.error(`Error selecting event exception=${e}`)
+  }
+}
+
 export const addEvent = async (_, { input }): Promise<Event> => {
   try {
     const roomId: string = input.room.id

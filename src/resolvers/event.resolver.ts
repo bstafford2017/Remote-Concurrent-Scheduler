@@ -2,7 +2,7 @@ import { Resolver, Query, Arg, Root, FieldResolver } from 'type-graphql'
 import Event from '../models/Event'
 import User from '../models/User'
 import Room from '../models/Room'
-import { selectEvent } from '../services/event'
+import { selectEvent, selectEvents } from '../services/event'
 import { selectRoom } from '../services/room'
 import { selectUserById } from '../services/user'
 
@@ -11,6 +11,14 @@ export default class EventResolver {
   @Query(() => Event)
   async event(@Arg('id') id: string): Promise<Event> {
     return await selectEvent(id)
+  }
+
+  @Query(() => [Event])
+  async events(
+    @Arg('start') start: string,
+    @Arg('end') end: string
+  ): Promise<Array<Event>> {
+    return await selectEvents(start, end)
   }
 
   @FieldResolver(() => Room)
