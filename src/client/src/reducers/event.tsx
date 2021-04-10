@@ -7,10 +7,11 @@ import {
 import { IAction } from '../types'
 
 const initialState = {
-  events: []
+  events: [],
+  dates: []
 }
 
-export default function (state = initialState, action: IAction) {
+const reducer = (state = initialState, action: IAction) => {
   switch (action.type) {
     case LOADED_EVENT:
       return { ...state, events: [action.payload] }
@@ -33,3 +34,5 @@ export default function (state = initialState, action: IAction) {
       return { ...state }
   }
 }
+
+export default reducer

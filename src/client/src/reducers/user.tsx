@@ -12,10 +12,11 @@ import { IAction } from '../types'
 const initialState = {
   token: localStorage.getItem('token'),
   isAuthenticated: false,
+  isAdmin: false,
   user: null
 }
 
-export default function (state = initialState, action: IAction) {
+const reducer = (state = initialState, action: IAction) => {
   switch (action.type) {
     case LOADED_USER:
       return { ...state, user: action.payload }
@@ -44,3 +45,4 @@ export default function (state = initialState, action: IAction) {
       return { ...state }
   }
 }
+export default reducer

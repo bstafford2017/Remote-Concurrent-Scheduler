@@ -53,8 +53,6 @@ const App = ({ isAuthenticated, isAdmin, isLoading }: IProps) => {
 
   const previous = (e: React.MouseEvent) => {}
 
-  if (isLoading) return <Spinner />
-
   return (
     <div className='content'>
       <Router>
@@ -84,6 +82,7 @@ const App = ({ isAuthenticated, isAdmin, isLoading }: IProps) => {
           </Switch>
         </div>
       </Router>
+      {isLoading && <Spinner />}
       <Footer />
     </div>
   )

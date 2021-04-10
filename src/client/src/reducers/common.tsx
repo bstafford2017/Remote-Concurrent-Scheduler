@@ -5,7 +5,7 @@ const initialState = {
   isLoading: false
 }
 
-export default function (state = initialState, action: IAction) {
+const reducer = (state = initialState, action: IAction) => {
   switch (action.type) {
     case LOADING:
       return {
@@ -19,3 +19,5 @@ export default function (state = initialState, action: IAction) {
       return { ...state }
   }
 }
+
+export default reducer

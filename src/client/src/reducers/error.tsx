@@ -5,7 +5,7 @@ const initialState = {
   msg: null
 }
 
-export default function (state = initialState, action: IAction) {
+const reducer = (state = initialState, action: IAction) => {
   switch (action.type) {
     case GET_ERRORS:
       return { ...state, msg: action.payload }
@@ -17,3 +17,5 @@ export default function (state = initialState, action: IAction) {
       return { ...state }
   }
 }
+
+export default reducer

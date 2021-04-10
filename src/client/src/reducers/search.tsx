@@ -4,7 +4,7 @@ import { IAction } from '../types'
 
 const initialState: IEvent[] = []
 
-export default function (state = initialState, action: IAction) {
+const reducer = (state = initialState, action: IAction) => {
   switch (action.type) {
     case SEARCH_EVENT:
       return [...state, action.payload]
@@ -12,3 +12,5 @@ export default function (state = initialState, action: IAction) {
       return [...state]
   }
 }
+
+export default reducer

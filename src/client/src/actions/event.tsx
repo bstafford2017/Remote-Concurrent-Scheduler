@@ -1,65 +1,56 @@
-import { gql, useQuery, QueryResult } from '@apollo/client'
+import { gql, ApolloQueryResult } from '@apollo/client'
 import axios from 'axios'
 import { setErrors } from './error'
-import {
-  LOADING,
-  LOADED,
-  CREATE_EVENT,
-  UPDATE_EVENT,
-  DELETE_EVENT,
-  LOADED_EVENT
-} from '.'
+import { CREATE_EVENT, UPDATE_EVENT, DELETE_EVENT, LOADED_EVENT } from '.'
 import { IEvent } from '../types'
+import ApolloClient from '../apollo'
 
-export const loadEvents = () => async (dispatch: Function) => {
+export const loadEvents = (start: string, end: string) => async (
+  dispatch: Function
+) => {
   try {
-    dispatch({ type: LOADING })
-    const current = new Date()
-    const start = new Date(
-      current.getFullYear(),
-      current.getMonth(),
-      1
-    ).toISOString()
-    const end = new Date(
-      current.getFullYear(),
-      current.getMonth() + 1,
-      0
-    ).toISOString()
-    const { error, data }: QueryResult = await useQuery(gql`
-      query {
-        events(start: ${start}, end: ${end}) {
-          id
-          startTime
-          endTime
-          room {
+    const {
+      error,
+      data
+    }: ApolloQueryResult<Array<IEvent>> = await ApolloClient.query({
+      query: gql`
+        query($start: String!, $end: String!) {
+          events(start: $start, end: $end) {
             id
-            number
-            seats
-            building {
+            startTime
+            endTime
+            room {
               id
-              name
+              number
+              seats
+              building {
+                id
+                name
+              }
+            }
+            user {
+              id
+              username
+              password
             }
           }
-          user {
-            id
-            username
-            password
-          }
         }
+      `,
+      variables: {
+        start,
+        end
       }
-    `)
+    })
     if (error) {
       console.warn(JSON.stringify(error))
       dispatch(setErrors(error.message))
     }
     dispatch({
-      type: LOADED
-    })
-    dispatch({
       type: LOADED_EVENT,
       payload: data
     })
   } catch (err) {
+    console.warn(JSON.stringify(err))
     dispatch(setErrors(err))
   }
 }

@@ -15,34 +15,44 @@ import { loadEvents } from '../../actions/event'
 import { IEvent } from '../../types'
 import Event from './Event'
 import MenuModal from './MenuModal'
+import { setHeader } from '../../actions/select'
 
 interface IProps {
   events: IEvent[]
   building: string
   room: string
   byMonth: boolean
+  loadEvents: Function
+  setHeader: Function
 }
 
-const Table = ({ events, byMonth, building, room }: IProps) => {
+const Table = ({ events, byMonth, loadEvents }: IProps) => {
   const [listOfDates, setListOfDates]: [Date[], Function] = useState([])
   const [displayModal, setDisplayModal]: [boolean, Function] = useState(false)
 
   useEffect(() => {
-    loadEvents()
+    const today = new Date()
+    // setHeader(today.toLocaleString('default', { month: 'long' }))
     if (byMonth) {
+      const start = startOfWeek(startOfMonth(today))
+      const end = addDays(lastDayOfWeek(lastDayOfMonth(today)), 1)
       setListOfDates(
         eachDayOfInterval({
-          start: startOfWeek(startOfMonth(new Date())),
-          end: addDays(lastDayOfWeek(lastDayOfMonth(new Date())), 1)
+          start,
+          end
         })
       )
+      loadEvents(start.toISOString(), end.toISOString())
     } else {
+      const start = startOfWeek(today)
+      const end = endOfWeek(today)
       setListOfDates(
         eachDayOfInterval({
-          start: startOfWeek(new Date()),
-          end: endOfWeek(new Date())
+          start,
+          end
         })
       )
+      loadEvents(start.toISOString(), end.toISOString())
     }
   }, [byMonth])
 
@@ -65,7 +75,7 @@ const Table = ({ events, byMonth, building, room }: IProps) => {
 
   return (
     <div className='calendar-table'>
-      {byMonth ? null : (
+      {!byMonth && (
         <div className='scale'>
           <div>6a</div>
           <div>7a</div>
@@ -147,7 +157,8 @@ const mapStateToProps = (state: any) => ({
 })
 
 const mapDispatchToProps = {
-  loadEvents
+  loadEvents,
+  setHeader
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Table)

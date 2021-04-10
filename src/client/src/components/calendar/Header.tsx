@@ -8,9 +8,10 @@ interface IProps {
   next: (event: React.MouseEvent) => void
   previous: (event: React.MouseEvent) => void
   selectByMonth: Function
+  month: string
 }
 
-const Header = ({ next, previous, selectByMonth }: IProps) => {
+const Header = ({ next, previous, selectByMonth, month }: IProps) => {
   const location: any = useLocation()
 
   const handleByWeek = (e: React.FormEvent<HTMLInputElement>) =>
@@ -25,7 +26,7 @@ const Header = ({ next, previous, selectByMonth }: IProps) => {
         <Banner absolute />
         <div className='month'>
           <ul>
-            <li id='month'>January</li>
+            <li id='month'>{month}</li>
             <li id='prev' className='change'>
               <Link to='#' onClick={previous}>
                 &#10094;
@@ -66,8 +67,12 @@ const Header = ({ next, previous, selectByMonth }: IProps) => {
   )
 }
 
+const mapStateToProps = (state: any) => ({
+  month: state.select.month
+})
+
 const mapDispatchToProps = {
   selectByMonth
 }
 
-export default connect(null, mapDispatchToProps)(Header)
+export default connect(mapStateToProps, mapDispatchToProps)(Header)

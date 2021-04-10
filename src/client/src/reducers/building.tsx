@@ -10,7 +10,7 @@ const initialState = {
   buildings: []
 }
 
-export default function (state = initialState, action: IAction) {
+const reducer = (state = initialState, action: IAction) => {
   switch (action.type) {
     case LOADED_BUILDING:
       return { ...state, buildings: [action.payload] }
@@ -33,3 +33,5 @@ export default function (state = initialState, action: IAction) {
       return { ...state }
   }
 }
+
+export default reducer

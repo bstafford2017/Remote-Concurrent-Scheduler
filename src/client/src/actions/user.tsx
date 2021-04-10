@@ -1,4 +1,4 @@
-import { gql, useQuery, useMutation, QueryResult } from '@apollo/client'
+import { gql, useMutation, ApolloQueryResult } from '@apollo/client'
 import { setErrors } from './error'
 import {
   LOADING,
@@ -9,6 +9,7 @@ import {
   LOGOUT_SUCCESS
 } from '.'
 import { ILogin, IUser } from '../types'
+import ApolloClient from '../apollo'
 
 // TODO: Add token
 export const login = ({ username, password }: ILogin) => async (
@@ -17,7 +18,12 @@ export const login = ({ username, password }: ILogin) => async (
   dispatch({
     type: LOADING
   })
-  const { error, data }: QueryResult = useQuery(gql`
+  try {
+    const {
+      error,
+      data
+    }: ApolloQueryResult<Array<IUser>> = await ApolloClient.query({
+      query: gql`
       query {
         user (username: ${username}, password: ${password}) {
           id,
@@ -27,18 +33,32 @@ export const login = ({ username, password }: ILogin) => async (
           admin
         }
       }
-    `)
-  if (error) {
-    console.warn(JSON.stringify(error))
-    dispatch(setErrors(error.message))
-  } else {
-    dispatch({
-      type: LOADED
+    `,
+      variables: {
+        username,
+        password
+      }
     })
-    dispatch({
-      type: LOADED_USER,
-      payload: data
-    })
+    console.log(error + ' ' + data)
+    if (error) {
+      console.warn(JSON.stringify(error))
+      dispatch(setErrors(error.message))
+    } else {
+      if (data.length === 0) {
+        dispatch(setErrors('Invalid credentials'))
+      } else {
+        dispatch({
+          type: LOADED
+        })
+        dispatch({
+          type: LOADED_USER,
+          payload: data
+        })
+      }
+    }
+  } catch (e) {
+    console.warn(e)
+    dispatch(setErrors('Invalid credentials. Please try again.'))
   }
 }
 

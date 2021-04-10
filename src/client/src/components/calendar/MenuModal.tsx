@@ -181,7 +181,7 @@ const MenuModal = ({ display, toggle }: IProps) => {
               </Form>
             </Route>
             <Route path={VIEW_MODAL_URL}>
-              <h3 className='view-header'></h3>
+              <h3 className='view-header'>View Modal</h3>
               <div id='event-list'></div>
             </Route>
           </Router>

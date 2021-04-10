@@ -30,6 +30,7 @@ interface IProps {
 const Login = ({ login, errors, setErrors }: IProps) => {
   const history = useHistory()
   const [user, setUser]: [ILogin, Function] = useState(initialState)
+  const [showAlert, setShowAlert] = useState(true)
 
   const onChange = (e: any) => {
     setUser({
@@ -39,6 +40,7 @@ const Login = ({ login, errors, setErrors }: IProps) => {
   }
 
   const attemptLogin = async (e: any) => {
+    e.preventDefault()
     try {
       if (user.username && user.password) {
         await login(user)
@@ -56,7 +58,8 @@ const Login = ({ login, errors, setErrors }: IProps) => {
     }
   }
 
-  const toggleAlert = () => {
+  const clearAlert = () => {
+    setShowAlert(false)
     clearErrors()
   }
 
@@ -65,11 +68,13 @@ const Login = ({ login, errors, setErrors }: IProps) => {
       <Card>
         <h2 style={{ textAlign: 'center' }}>Login</h2>
         <CardBody>
-          {!!errors && (
-            <Alert color='danger' display={!!errors} toggle={toggleAlert}>
-              {errors}
-            </Alert>
-          )}
+          <Alert
+            color='danger'
+            isOpen={showAlert && !!errors}
+            toggle={clearAlert}
+          >
+            {errors}
+          </Alert>
           <Form>
             <FormGroup>
               <Label for='username'>Username</Label>
