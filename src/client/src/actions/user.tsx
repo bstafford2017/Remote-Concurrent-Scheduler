@@ -4,6 +4,7 @@ import {
   LOADING,
   LOADED,
   LOADED_USER,
+  LOADED_USERS,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   LOGOUT_SUCCESS
@@ -47,6 +48,44 @@ export const login = ({ username, password }: ILogin) => async (
         dispatch({
           type: LOADED_USER,
           payload: data.user
+        })
+      } else {
+        dispatch(setErrors('Invalid credentials'))
+      }
+    }
+  } catch (e) {
+    console.warn(e)
+    dispatch(setErrors('Invalid credentials. Please try again.'))
+  }
+}
+
+// TODO: Add token
+export const loadUsers = () => async (dispatch: Function) => {
+  try {
+    const { error, data }: ApolloQueryResult<any> = await ApolloClient.query({
+      query: gql`
+        query {
+          users {
+            id
+            username
+            fname
+            lname
+            admin
+          }
+        }
+      `
+    })
+    if (error) {
+      console.warn(JSON.stringify(error))
+      dispatch(setErrors(error.message))
+    } else {
+      if (data) {
+        dispatch({
+          type: LOADED
+        })
+        dispatch({
+          type: LOADED_USERS,
+          payload: data.users
         })
       } else {
         dispatch(setErrors('Invalid credentials'))

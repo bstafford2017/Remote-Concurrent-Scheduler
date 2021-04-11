@@ -1,4 +1,4 @@
-import { gql, useQuery, useMutation, QueryResult } from '@apollo/client'
+import { gql, useMutation, ApolloQueryResult } from '@apollo/client'
 import { setErrors } from './error'
 import {
   LOADING,
@@ -6,34 +6,42 @@ import {
   CREATE_BUILDING,
   UPDATE_BUILDING,
   DELETE_BUILDING,
-  LOADED_BUILDING
+  LOADED_BUILDINGS
 } from '.'
 import { IBuilding } from '../types'
+import ApolloClient from '../apollo'
 
-export const loadBuildings = (id: string) => async (dispatch: Function) => {
+export const loadBuildings = () => async (dispatch: Function) => {
   try {
-    dispatch({
-      type: LOADING
+    const { error, data }: ApolloQueryResult<any> = await ApolloClient.query({
+      query: gql`
+        query {
+          buildings {
+            id
+            name
+          }
+        }
+      `
     })
-    const { error, data }: QueryResult = await useQuery(gql`
-      query building(id: ${id}) {
-        id
-        name
-      }
-    `)
     if (error) {
       console.warn(JSON.stringify(error))
       dispatch(setErrors(error.message))
+    } else {
+      if (data) {
+        dispatch({
+          type: LOADED
+        })
+        dispatch({
+          type: LOADED_BUILDINGS,
+          payload: data.buildings
+        })
+      } else {
+        dispatch(setErrors('Invalid credentials'))
+      }
     }
-    dispatch({
-      type: LOADED
-    })
-    dispatch({
-      type: LOADED_BUILDING,
-      payload: data
-    })
-  } catch (err) {
-    dispatch(setErrors(err))
+  } catch (e) {
+    console.warn(e)
+    dispatch(setErrors(e.message))
   }
 }
 

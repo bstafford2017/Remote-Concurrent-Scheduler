@@ -33,6 +33,27 @@ export const selectUser = async (
   }
 }
 
+export const selectUsers = async (): Promise<Array<User>> => {
+  try {
+    log.info(`Selecting all users`)
+    const response: Array<User> = await UserModel.find()
+    log.info(`Selected response=${JSON.stringify(response)}`)
+    return response.map((u) => {
+      const { id, username, password, fname, lname, admin } = u
+      return {
+        id,
+        username,
+        password,
+        fname,
+        lname,
+        admin
+      }
+    })
+  } catch (e) {
+    log.error(`Error selecting user exception=${e}`)
+  }
+}
+
 export const addUser = async (_, { input }): Promise<User> => {
   try {
     const username: string = input.username

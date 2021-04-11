@@ -17,7 +17,7 @@ export interface IRoom {
   number: string
   seats: number
   projector: boolean
-  building: string
+  building: IBuilding
 }
 
 export interface IRecur {

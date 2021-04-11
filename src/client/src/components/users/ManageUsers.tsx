@@ -1,27 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
 import { Row, Col, Card, CardBody, Table, FormText, Alert } from 'reactstrap'
 import CreateUser from './CreateUser'
 import User from './User'
 import { IUser } from '../../types'
+import { loadUsers } from '../../actions/user'
 
-const ManageUsers = (props: any) => {
-  // const { users } = props
-  const users: IUser[] = [
-    {
-      username: 'test',
-      password: 'test',
-      fname: 'test',
-      lname: 'test',
-      admin: false
-    },
-    {
-      username: 'test',
-      password: 'test',
-      fname: 'test',
-      lname: 'test',
-      admin: false
-    }
-  ]
+interface IProps {
+  users: []
+  loadUsers: Function
+}
+
+const ManageUsers = ({ users, loadUsers }: IProps) => {
+  useEffect(() => {
+    loadUsers()
+  }, [])
   return (
     <>
       <Alert isOpen={false} text={''} />
@@ -60,4 +53,12 @@ const ManageUsers = (props: any) => {
   )
 }
 
-export default ManageUsers
+const mapStateToProps = (state: any) => ({
+  users: state.user.users
+})
+
+const mapDispatchToProps = {
+  loadUsers
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ManageUsers)

@@ -1,4 +1,4 @@
-import { LOADED_ROOM, CREATE_ROOM, UPDATE_ROOM, DELETE_ROOM } from '../actions'
+import { LOADED_ROOMS, CREATE_ROOM, UPDATE_ROOM, DELETE_ROOM } from '../actions'
 import { IAction } from '../types'
 
 const initialState = {
@@ -7,8 +7,8 @@ const initialState = {
 
 const reducer = (state = initialState, action: IAction) => {
   switch (action.type) {
-    case LOADED_ROOM:
-      return { ...state, rooms: [action.payload] }
+    case LOADED_ROOMS:
+      return { ...state, rooms: action.payload }
     case CREATE_ROOM:
       return { ...state, rooms: [...state.rooms, action.payload] }
     case UPDATE_ROOM:

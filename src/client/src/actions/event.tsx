@@ -1,7 +1,7 @@
 import { gql, ApolloQueryResult } from '@apollo/client'
 import axios from 'axios'
 import { setErrors } from './error'
-import { CREATE_EVENT, UPDATE_EVENT, DELETE_EVENT, LOADED_EVENT } from '.'
+import { CREATE_EVENT, UPDATE_EVENT, DELETE_EVENT, LOADED_EVENTS } from '.'
 import { IEvent } from '../types'
 import ApolloClient from '../apollo'
 
@@ -9,10 +9,7 @@ export const loadEvents = (start: string, end: string) => async (
   dispatch: Function
 ) => {
   try {
-    const {
-      error,
-      data
-    }: ApolloQueryResult<Array<IEvent>> = await ApolloClient.query({
+    const { error, data }: ApolloQueryResult<any> = await ApolloClient.query({
       query: gql`
         query($start: String!, $end: String!) {
           events(start: $start, end: $end) {
@@ -46,8 +43,8 @@ export const loadEvents = (start: string, end: string) => async (
       dispatch(setErrors(error.message))
     }
     dispatch({
-      type: LOADED_EVENT,
-      payload: data
+      type: LOADED_EVENTS,
+      payload: data.events
     })
   } catch (err) {
     console.warn(JSON.stringify(err))

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { connect } from 'react-redux'
 import {
   Row,
   Col,
@@ -11,15 +12,20 @@ import {
   Input,
   Button
 } from 'reactstrap'
+import { IUser } from '../../types'
 
-const Settings = () => {
+interface IProps {
+  loggedUser: IUser
+}
+
+const Settings = ({ loggedUser }: IProps) => {
   const [user, setUser] = useState({
-    username: '',
-    password: '',
-    confirmPassword: '',
-    fname: '',
-    lname: '',
-    admin: false
+    username: loggedUser.username,
+    password: loggedUser.password,
+    confirmPassword: loggedUser.password,
+    fname: loggedUser.fname,
+    lname: loggedUser.lname,
+    admin: loggedUser.admin
   })
 
   const onChange = (e: any) => {
@@ -48,7 +54,7 @@ const Settings = () => {
                   <Label for='username'>Username</Label>
                   <Input
                     type='text'
-                    placeholder={username}
+                    value={username}
                     id='username'
                     onChange={onChange}
                   />
@@ -61,7 +67,7 @@ const Settings = () => {
                   <Label for='password'>Password</Label>
                   <Input
                     type='password'
-                    placeholder={password}
+                    value={password}
                     id='password'
                     onChange={onChange}
                   />
@@ -72,7 +78,7 @@ const Settings = () => {
                   <Label for='confirmPassword'>Confirm Password</Label>
                   <Input
                     type='password'
-                    placeholder={password}
+                    value={password}
                     id='confirmPassword'
                     onChange={onChange}
                   />
@@ -85,7 +91,7 @@ const Settings = () => {
                   <Label for='fname'>First Name</Label>
                   <Input
                     type='text'
-                    placeholder={fname}
+                    value={fname}
                     id='fname'
                     onChange={onChange}
                   />
@@ -96,7 +102,7 @@ const Settings = () => {
                   <Label for='lname'>Last Name</Label>
                   <Input
                     type='text'
-                    placeholder={lname}
+                    value={lname}
                     id='lname'
                     onChange={onChange}
                   />
@@ -122,4 +128,10 @@ const Settings = () => {
   )
 }
 
-export default Settings
+const mapStateToProps = (state: any) => ({
+  loggedUser: state.user.user
+})
+
+const mapDispatchToProps = {}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Settings)

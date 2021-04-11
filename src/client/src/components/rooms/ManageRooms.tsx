@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
 import {
   Col,
   Card,
@@ -14,31 +15,17 @@ import {
 import CreateRoom from '../rooms/CreateRoom'
 import Room from '../rooms/Room'
 import { IRoom, IBuilding } from '../../types'
+import { loadRooms } from '../../actions/room'
 
-const ManageRooms = (props: any) => {
-  // const { rooms, buildings } = props
-  const rooms: IRoom[] = [
-    {
-      number: '21',
-      seats: 2,
-      projector: true,
-      building: 'sas'
-    },
-    {
-      number: '22',
-      seats: 2,
-      projector: true,
-      building: 'as'
-    }
-  ]
-  const buildings: IBuilding[] = [
-    {
-      name: 'test'
-    },
-    {
-      name: 'test'
-    }
-  ]
+interface IProps {
+  rooms: Array<IRoom>
+  loadRooms: Function
+}
+
+const ManageRooms = ({ rooms, loadRooms }: IProps) => {
+  useEffect(() => {
+    loadRooms()
+  }, [])
   return (
     <>
       <Alert isOpen={false} text={''} />
@@ -55,9 +42,12 @@ const ManageRooms = (props: any) => {
                 <FormGroup>
                   <Label for='building'>Building</Label>
                   <Input type='select' id='building'>
-                    {buildings.map((b: IBuilding) => (
-                      <option>{b.name}</option>
-                    ))}
+                    {rooms
+                      .map((r: IRoom) => r.building)
+                      .map((b: IBuilding) => b.name)
+                      .map((name: string) => (
+                        <option>{name}</option>
+                      ))}
                   </Input>
                 </FormGroup>
               </Col>
@@ -74,7 +64,7 @@ const ManageRooms = (props: any) => {
               </thead>
               <tbody>
                 {rooms.map((r: IRoom) => (
-                  <Room room={r} />
+                  <Room key={r.id} room={r} />
                 ))}
               </tbody>
             </Table>
@@ -85,4 +75,12 @@ const ManageRooms = (props: any) => {
   )
 }
 
-export default ManageRooms
+const mapStateToProps = (state: any) => ({
+  rooms: state.room.rooms
+})
+
+const mapDispatchToProps = {
+  loadRooms
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ManageRooms)

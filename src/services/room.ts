@@ -23,6 +23,26 @@ export const selectRoom = async (id: string): Promise<Room> => {
   }
 }
 
+export const selectRooms = async (): Promise<Array<Room>> => {
+  try {
+    log.info(`Selecting all rooms`)
+    const response: Array<Room> = await RoomModel.find()
+    log.info(`Selected room=${JSON.stringify(response)}`)
+    return response.map((r) => {
+      const { id, number, seats, projector, buildingId } = r
+      return {
+        id,
+        number,
+        seats,
+        projector,
+        buildingId
+      }
+    })
+  } catch (e) {
+    log.error(`Error selecting all rooms exception=${e}`)
+  }
+}
+
 export const addRoom = async (_, { input }): Promise<any> => {
   try {
     const buildingId = input.building.id

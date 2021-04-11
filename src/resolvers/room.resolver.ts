@@ -7,7 +7,7 @@ import {
   ResolverInterface
 } from 'type-graphql'
 import Room from '../models/Room'
-import { selectRoom } from '../services/room'
+import { selectRoom, selectRooms } from '../services/room'
 import Building from '../models/Building'
 import { selectBuilding } from '../services/building'
 
@@ -16,6 +16,11 @@ export default class RoomResolver implements ResolverInterface<Room> {
   @Query(() => Room)
   async room(@Arg('id') id: string): Promise<Room> {
     return await selectRoom(id)
+  }
+
+  @Query(() => [Room])
+  async rooms(): Promise<Array<Room>> {
+    return await selectRooms()
   }
 
   @FieldResolver(() => Building)

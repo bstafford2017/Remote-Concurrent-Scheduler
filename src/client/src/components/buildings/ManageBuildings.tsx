@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
 import {
   Row,
   Col,
@@ -12,17 +13,18 @@ import {
 import CreateBuilding from './CreateBuilding'
 import Building from './Building'
 import { IBuilding } from '../../types'
+import { loadBuildings } from '../../actions/building'
 
-const ManageBuildings = (props: any) => {
-  // const { buildings } = props
-  const buildings: IBuilding[] = [
-    {
-      name: 'test'
-    },
-    {
-      name: 'test'
-    }
-  ]
+interface IProps {
+  buildings: Array<IBuilding>
+  loadBuildings: Function
+}
+
+const ManageBuildings = ({ buildings, loadBuildings }: IProps) => {
+  useEffect(() => {
+    loadBuildings()
+  }, [])
+
   return (
     <>
       <Alert isOpen={false} text={''} />
@@ -36,7 +38,7 @@ const ManageBuildings = (props: any) => {
             </FormText>
             <CardBody>
               {buildings.map((b: IBuilding) => (
-                <Building building={b} />
+                <Building key={b.id} building={b} />
               ))}
             </CardBody>
             <CardFooter>
@@ -54,4 +56,12 @@ const ManageBuildings = (props: any) => {
   )
 }
 
-export default ManageBuildings
+const mapStateToProps = (state: any) => ({
+  buildings: state.building.buildings
+})
+
+const mapDispatchToProps = {
+  loadBuildings
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ManageBuildings)

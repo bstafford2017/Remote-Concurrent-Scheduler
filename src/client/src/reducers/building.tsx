@@ -1,5 +1,5 @@
 import {
-  LOADED_BUILDING,
+  LOADED_BUILDINGS,
   CREATE_BUILDING,
   UPDATE_BUILDING,
   DELETE_BUILDING
@@ -12,8 +12,8 @@ const initialState = {
 
 const reducer = (state = initialState, action: IAction) => {
   switch (action.type) {
-    case LOADED_BUILDING:
-      return { ...state, buildings: [action.payload] }
+    case LOADED_BUILDINGS:
+      return { ...state, buildings: action.payload }
     case CREATE_BUILDING:
       return { ...state, buildings: [...state.buildings, action.payload] }
     case UPDATE_BUILDING:

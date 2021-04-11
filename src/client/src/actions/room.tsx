@@ -1,46 +1,53 @@
-import { gql, useQuery, useMutation, QueryResult } from '@apollo/client'
+import { gql, useMutation, ApolloQueryResult } from '@apollo/client'
 import { setErrors } from './error'
 import {
   LOADING,
   LOADED,
-  LOADED_ROOM,
+  LOADED_ROOMS,
   CREATE_ROOM,
   UPDATE_ROOM,
   DELETE_ROOM
 } from '.'
 import { IRoom } from '../types'
+import ApolloClient from '../apollo'
 
 export const loadRooms = (id: number) => async (dispatch: Function) => {
   try {
-    dispatch({
-      type: LOADING
-    })
-    const { error, data }: QueryResult = await useQuery(gql`
-      query {
-        room(id: ${id}) {
-          id
-          number
-          seats
-          building {
+    const { error, data }: ApolloQueryResult<any> = await ApolloClient.query({
+      query: gql`
+        query {
+          rooms {
             id
-            name
+            number
+            seats
+            projector
+            building {
+              id
+              name
+            }
           }
         }
-      }
-    `)
+      `
+    })
     if (error) {
       console.warn(JSON.stringify(error))
       dispatch(setErrors(error.message))
+    } else {
+      if (data) {
+        dispatch({
+          type: LOADED
+        })
+        dispatch({
+          type: LOADED_ROOMS,
+          payload: data.rooms
+        })
+      } else {
+        dispatch(setErrors('Invalid credentials'))
+      }
     }
-    dispatch({
-      type: LOADED
-    })
-    dispatch({
-      type: LOADED_ROOM,
-      payload: data
-    })
-  } catch (err) {
-    dispatch(setErrors(err))
+  } catch (e) {
+    console.warn(e)
+    dispatch(setErrors(e.message))
   }
 }
 

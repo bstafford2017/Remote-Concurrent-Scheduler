@@ -20,6 +20,24 @@ export const selectBuilding = async (id: string): Promise<Building> => {
   }
 }
 
+export const selectBuildings = async (): Promise<Array<Building>> => {
+  try {
+    log.info(`Selecting all buildings`)
+    const response: Array<Building> = await BuildingModel.find()
+    log.info(`Selected buildings=${JSON.stringify(response)}`)
+    return response.map((b) => {
+      const { id, name } = b
+      return {
+        id,
+        name
+      }
+    })
+  } catch (e) {
+    console.log(e)
+    log.error(`Error selecting all buildings exception=${e}`)
+  }
+}
+
 export const addBuilding = async (_, { input: { name } }): Promise<any> => {
   try {
     console.log(`Looking for buildingName=${name}`)

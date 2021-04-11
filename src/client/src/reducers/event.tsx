@@ -1,5 +1,5 @@
 import {
-  LOADED_EVENT,
+  LOADED_EVENTS,
   CREATE_EVENT,
   UPDATE_EVENT,
   DELETE_EVENT
@@ -13,8 +13,8 @@ const initialState = {
 
 const reducer = (state = initialState, action: IAction) => {
   switch (action.type) {
-    case LOADED_EVENT:
-      return { ...state, events: [action.payload] }
+    case LOADED_EVENTS:
+      return { ...state, events: action.payload }
     case CREATE_EVENT:
       return { ...state, events: [...state.events, action.payload] }
     case UPDATE_EVENT:

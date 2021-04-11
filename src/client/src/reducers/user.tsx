@@ -1,5 +1,6 @@
 import {
   LOADED_USER,
+  LOADED_USERS,
   LOGIN_FAIL,
   LOGIN_SUCCESS,
   LOGOUT_SUCCESS,
@@ -13,7 +14,8 @@ const initialState = {
   token: localStorage.getItem('token'),
   isAuthenticated: false,
   isAdmin: false,
-  user: null
+  user: null,
+  users: []
 }
 
 const reducer = (state = initialState, action: IAction) => {
@@ -24,6 +26,11 @@ const reducer = (state = initialState, action: IAction) => {
         user: action.payload,
         isAuthenticated: true,
         isAdmin: action.payload.user
+      }
+    case LOADED_USERS:
+      return {
+        ...state,
+        users: action.payload
       }
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
