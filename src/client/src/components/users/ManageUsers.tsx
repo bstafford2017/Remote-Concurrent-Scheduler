@@ -20,12 +20,9 @@ const ManageUsers = ({ users, loadUsers }: IProps) => {
       <Alert isOpen={false} text={''} />
       <Row>
         <CreateUser />
-        <Col lg={{ size: 6, offset: 1 }}>
+        <Col lg={{ size: 8, offset: 2 }}>
           <Card>
             <h2 style={{ textAlign: 'center' }}>Manage Users</h2>
-            <FormText color='muted' style={{ textAlign: 'center' }}>
-              Note: All special characters will be removed
-            </FormText>
             <CardBody>
               <Table responsive>
                 <thead>

@@ -33,9 +33,6 @@ const ManageRooms = ({ rooms, loadRooms }: IProps) => {
       <Col lg={{ size: 8, offset: 2 }}>
         <Card>
           <h2 style={{ textAlign: 'center' }}>Manage Rooms</h2>
-          <FormText color='muted' style={{ textAlign: 'center' }}>
-            Note: All special characters will be removed
-          </FormText>
           <CardBody>
             <Form>
               <Col xs={{ size: 5, offset: 4 }}>

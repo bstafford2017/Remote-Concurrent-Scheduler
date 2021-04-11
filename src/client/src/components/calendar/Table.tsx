@@ -69,9 +69,6 @@ const Table = ({ events, byMonth, loadEvents }: IProps) => {
     setDisplayModal(!displayModal)
   }
 
-  if (displayModal)
-    return <MenuModal display={displayModal} toggle={toggleModal} />
-
   const monthlyView = (
     <div className='month-by-month'>
       <div className='row'>
@@ -117,38 +114,41 @@ const Table = ({ events, byMonth, loadEvents }: IProps) => {
   )
 
   return (
-    <div className='calendar-table'>
-      {!byMonth && (
-        <div className='scale'>
-          <div>6a</div>
-          <div>7a</div>
-          <div>8a</div>
-          <div>9a</div>
-          <div>10a</div>
-          <div>11a</div>
-          <div>12p</div>
-          <div>1p</div>
-          <div>2p</div>
-          <div>3p</div>
-          <div>4p</div>
-          <div>5p</div>
-          <div>6p</div>
-          <div>7p</div>
+    <>
+      <MenuModal display={displayModal} toggle={toggleModal} />
+      <div className='calendar-table'>
+        {!byMonth && (
+          <div className='scale'>
+            <div>6a</div>
+            <div>7a</div>
+            <div>8a</div>
+            <div>9a</div>
+            <div>10a</div>
+            <div>11a</div>
+            <div>12p</div>
+            <div>1p</div>
+            <div>2p</div>
+            <div>3p</div>
+            <div>4p</div>
+            <div>5p</div>
+            <div>6p</div>
+            <div>7p</div>
+          </div>
+        )}
+        <div className='main-content'>
+          <div className='header'>
+            <div>Sunday</div>
+            <div>Monday</div>
+            <div>Tuesday</div>
+            <div>Wednesday</div>
+            <div>Thursday</div>
+            <div>Friday</div>
+            <div>Saturday</div>
+          </div>
+          {byMonth ? monthlyView : weeklyView}
         </div>
-      )}
-      <div className='main-content'>
-        <div className='header'>
-          <div>Sunday</div>
-          <div>Monday</div>
-          <div>Tuesday</div>
-          <div>Wednesday</div>
-          <div>Thursday</div>
-          <div>Friday</div>
-          <div>Saturday</div>
-        </div>
-        {byMonth ? monthlyView : weeklyView}
       </div>
-    </div>
+    </>
   )
 }
 

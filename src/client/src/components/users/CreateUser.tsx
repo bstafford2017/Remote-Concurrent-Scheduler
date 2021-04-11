@@ -14,12 +14,9 @@ import {
 
 const CreateUser = () => {
   return (
-    <Col lg={{ size: 4, offset: 1 }}>
+    <Col lg={{ size: 6, offset: 3 }}>
       <Card>
         <h2 style={{ textAlign: 'center' }}>Create User</h2>
-        <FormText color='muted' style={{ textAlign: 'center' }}>
-          Note: All special characters will be removed
-        </FormText>
         <CardBody>
           <Form>
             <Row>

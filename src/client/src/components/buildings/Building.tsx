@@ -1,25 +1,25 @@
 import React from 'react'
-import { Col, Form, FormGroup, Input } from 'reactstrap'
+import { Input, Button } from 'reactstrap'
 import PropTypes from 'prop-types'
 import { IBuilding } from '../../types'
 
-const Building = (props: any) => {
-  const { building }: { building: IBuilding } = props
+interface IProps {
+  building: IBuilding
+}
+
+const Building = ({ building }: IProps) => {
   return (
-    <div className='building'>
-      <Form>
-        <FormGroup>
-          <Col xs={1}>
-            <Input type='checkbox' />
-          </Col>
-        </FormGroup>
-        <FormGroup>
-          <Col xs={10}>
-            <Input type='text' value={building.name} />
-          </Col>
-        </FormGroup>
-      </Form>
-    </div>
+    <tr>
+      <td>
+        <Input type='text' value={building.name} />
+      </td>
+      <td>
+        <Button className='update-room'>Update</Button>
+      </td>
+      <td>
+        <Button className='delete-room'>Delete</Button>
+      </td>
+    </tr>
   )
 }
 

@@ -16,14 +16,11 @@ const CreateBuilding = () => {
     <Col lg={{ size: 4, offset: 1 }}>
       <Card>
         <h2 style={{ textAlign: 'center' }}>Create Building</h2>
-        <FormText color="muted">
-          Note: All special characters will be removed
-        </FormText>
         <CardBody>
           <Form>
             <FormGroup>
-              <Label for="name">Building Name</Label>
-              <Input type="text" id="name" />
+              <Label for='name'>Building Name</Label>
+              <Input type='text' id='name' />
             </FormGroup>
             <Col xs={{ size: 4, offset: 4 }}>
               <Button>Create</Button>

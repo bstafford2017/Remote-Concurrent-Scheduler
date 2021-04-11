@@ -17,16 +17,13 @@ const CreateRoom = () => {
     <Col lg={{ size: 8, offset: 2 }}>
       <Card>
         <h2 style={{ textAlign: 'center' }}>Create Room</h2>
-        <FormText color="muted" style={{ textAlign: 'center' }}>
-          Note: All special characters will be removed
-        </FormText>
         <CardBody>
           <Form>
             <Row>
               <Col xs={2}>
                 <FormGroup>
-                  <Label for="building">Building</Label>
-                  <Input type="select" id="building">
+                  <Label for='building'>Building</Label>
+                  <Input type='select' id='building'>
                     <option selected={true} disabled={true} hidden={true}>
                       Select
                     </option>
@@ -35,30 +32,30 @@ const CreateRoom = () => {
               </Col>
               <Col xs={2}>
                 <FormGroup>
-                  <Label for="number">Room #</Label>
-                  <Input type="text" id="number" />
+                  <Label for='number'>Room #</Label>
+                  <Input type='text' id='number' />
                 </FormGroup>
               </Col>
               <Col xs={2}>
                 <FormGroup>
-                  <Label for="seats">Seats</Label>
-                  <Input type="text" id="seats" />
+                  <Label for='seats'>Seats</Label>
+                  <Input type='text' id='seats' />
                 </FormGroup>
               </Col>
               <Col xs={2}>
                 <FormGroup>
-                  <Label for="projector">Projector</Label>
-                  <Input type="select" id="projector">
+                  <Label for='projector'>Projector</Label>
+                  <Input type='select' id='projector'>
                     <option disabled selected hidden>
                       Select
                     </option>
-                    <option value="0">False</option>
-                    <option value="1">True</option>
+                    <option value='0'>False</option>
+                    <option value='1'>True</option>
                   </Input>
                 </FormGroup>
               </Col>
               <Col xs={2}>
-                <Button id="create-room">Create</Button>
+                <Button id='create-room'>Create</Button>
               </Col>
             </Row>
           </Form>

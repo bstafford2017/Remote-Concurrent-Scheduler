@@ -64,7 +64,11 @@ const Login = ({ login, errors, setErrors }: IProps) => {
   }
 
   return (
-    <Col sm={{ size: 10, offset: 1 }} lg={{ size: 4, offset: 4 }}>
+    <Col
+      sm={{ size: 10, offset: 1 }}
+      md={{ size: 6, offset: 3 }}
+      lg={{ size: 4, offset: 4 }}
+    >
       <Card>
         <h2 style={{ textAlign: 'center' }}>Login</h2>
         <CardBody>
