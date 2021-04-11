@@ -41,7 +41,7 @@ const ManageUsers = ({ users, loadUsers }: IProps) => {
                 </thead>
                 <tbody>
                   {users.map((u: IUser) => (
-                    <User user={u} />
+                    <User key={u.id} user={u} />
                   ))}
                 </tbody>
               </Table>

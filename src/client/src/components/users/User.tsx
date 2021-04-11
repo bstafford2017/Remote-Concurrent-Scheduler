@@ -20,13 +20,9 @@ const User = (props: any) => {
         <Input type='text' placeholder={user.lname} />
       </td>
       <td>
-        <Input type='select'>
-          <option value='0' selected={!user.admin ? true : false}>
-            False
-          </option>
-          <option value='1' selected={user.admin ? true : false}>
-            True
-          </option>
+        <Input type='select' selected={!user.admin ? true : false}>
+          <option>False</option>
+          <option>True</option>
         </Input>
       </td>
       <td>

@@ -6,7 +6,6 @@ import {
   startOfWeek,
   lastDayOfWeek,
   endOfWeek,
-  addDays,
   isSameMonth
 } from 'date-fns'
 import { connect } from 'react-redux'
@@ -35,7 +34,7 @@ const Table = ({ events, byMonth, loadEvents }: IProps) => {
     // setHeader(today.toLocaleString('default', { month: 'long' }))
     if (byMonth) {
       const start = startOfWeek(startOfMonth(today))
-      const end = addDays(lastDayOfWeek(lastDayOfMonth(today)), 1)
+      const end = lastDayOfWeek(lastDayOfMonth(today))
       setListOfDates(
         eachDayOfInterval({
           start,
@@ -73,6 +72,50 @@ const Table = ({ events, byMonth, loadEvents }: IProps) => {
   if (displayModal)
     return <MenuModal display={displayModal} toggle={toggleModal} />
 
+  const monthlyView = (
+    <div className='month-by-month'>
+      <div className='row'>
+        {listOfDates
+          .filter((date, index) => index < 7)
+          .map((d) => printMonth(d))}
+      </div>
+      <div className='row'>
+        {listOfDates
+          .filter((date, index) => index < 14 && index >= 7)
+          .map((d) => printMonth(d))}
+      </div>
+      <div className='row'>
+        {listOfDates
+          .filter((date, index) => index < 21 && index >= 14)
+          .map((d) => printMonth(d))}
+      </div>
+      <div className='row'>
+        {listOfDates
+          .filter((date, index) => index < 28 && index >= 21)
+          .map((d) => printMonth(d))}
+      </div>
+      <div className='row'>
+        {listOfDates
+          .filter((date, index) => index >= 28)
+          .map((d) => printMonth(d))}
+      </div>
+      {events.map((e: IEvent) => (
+        <Event key={e.id} event={e} />
+      ))}
+    </div>
+  )
+
+  const weeklyView = (
+    <>
+      <Filter />
+      <div className='week-by-week'>
+        {events.map((e: IEvent) => (
+          <Event key={e.id} event={e} />
+        ))}
+      </div>
+    </>
+  )
+
   return (
     <div className='calendar-table'>
       {!byMonth && (
@@ -103,47 +146,7 @@ const Table = ({ events, byMonth, loadEvents }: IProps) => {
           <div>Friday</div>
           <div>Saturday</div>
         </div>
-        {byMonth ? (
-          <div className='month-by-month'>
-            <div className='row'>
-              {listOfDates
-                .filter((date, index) => index < 7)
-                .map((d) => printMonth(d))}
-            </div>
-            <div className='row'>
-              {listOfDates
-                .filter((date, index) => index <= 14 && index > 7)
-                .map((d) => printMonth(d))}
-            </div>
-            <div className='row'>
-              {listOfDates
-                .filter((date, index) => index <= 21 && index > 14)
-                .map((d) => printMonth(d))}
-            </div>
-            <div className='row'>
-              {listOfDates
-                .filter((date, index) => index <= 28 && index > 21)
-                .map((d) => printMonth(d))}
-            </div>
-            <div className='row'>
-              {listOfDates
-                .filter((date, index) => index > 28)
-                .map((d) => printMonth(d))}
-            </div>
-            {events.map((e: IEvent) => (
-              <Event key={e.id} event={e} />
-            ))}
-          </div>
-        ) : (
-          <>
-            <Filter />
-            <div className='week-by-week'>
-              {events.map((e: IEvent) => (
-                <Event key={e.id} event={e} />
-              ))}
-            </div>
-          </>
-        )}
+        {byMonth ? monthlyView : weeklyView}
       </div>
     </div>
   )

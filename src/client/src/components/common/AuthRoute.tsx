@@ -6,6 +6,13 @@ import { LOGIN_URL } from '../routes'
 // import { loadUser } from '../../actions/user'
 import { hasToken } from '../../utils'
 
+interface IProps {
+  loadUser: Function
+  isLoading: boolean
+  isAuthenticated: boolean
+  component: any
+}
+
 const AuthRoute = ({
   loadUser,
   isLoading,
