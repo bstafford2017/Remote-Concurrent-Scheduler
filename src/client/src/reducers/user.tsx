@@ -19,7 +19,12 @@ const initialState = {
 const reducer = (state = initialState, action: IAction) => {
   switch (action.type) {
     case LOADED_USER:
-      return { ...state, user: action.payload }
+      return {
+        ...state,
+        user: action.payload,
+        isAuthenticated: true,
+        isAdmin: action.payload.user
+      }
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
       localStorage.setItem('token', action.payload.token)

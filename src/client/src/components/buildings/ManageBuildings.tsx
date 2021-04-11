@@ -25,7 +25,7 @@ const ManageBuildings = (props: any) => {
   ]
   return (
     <>
-      <Alert display={false} text={''} />
+      <Alert isOpen={false} text={''} />
       <Row>
         <CreateBuilding />
         <Col lg={{ size: 6, offset: 1 }}>

@@ -24,7 +24,7 @@ const ManageUsers = (props: any) => {
   ]
   return (
     <>
-      <Alert display={false} text={''} />
+      <Alert isOpen={false} text={''} />
       <Row>
         <CreateUser />
         <Col lg={{ size: 6, offset: 1 }}>

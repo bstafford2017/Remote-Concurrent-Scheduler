@@ -41,7 +41,7 @@ const ManageRooms = (props: any) => {
   ]
   return (
     <>
-      <Alert display={false} text={''} />
+      <Alert isOpen={false} text={''} />
       <CreateRoom />
       <Col lg={{ size: 8, offset: 2 }}>
         <Card>

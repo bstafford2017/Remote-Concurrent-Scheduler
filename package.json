@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ts-node ./src/index.ts",
     "start:local": "nodemon",
-    "app": "concurrently \"nodemon index.js\" \"npm run start --prefix ./client\""
+    "app": "concurrently \"nodemon index.js\" \"npm run start --prefix ./src/client\""
   },
   "repository": {
     "type": "git",

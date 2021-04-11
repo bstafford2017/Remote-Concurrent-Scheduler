@@ -19,41 +19,37 @@ export const login = ({ username, password }: ILogin) => async (
     type: LOADING
   })
   try {
-    const {
-      error,
-      data
-    }: ApolloQueryResult<Array<IUser>> = await ApolloClient.query({
+    const { error, data }: ApolloQueryResult<any> = await ApolloClient.query({
       query: gql`
-      query {
-        user (username: ${username}, password: ${password}) {
-          id,
-          username,
-          fname,
-          lname,
-          admin
+        query($username: String!, $password: String!) {
+          user(username: $username, password: $password) {
+            id
+            username
+            fname
+            lname
+            admin
+          }
         }
-      }
-    `,
+      `,
       variables: {
         username,
         password
       }
     })
-    console.log(error + ' ' + data)
     if (error) {
       console.warn(JSON.stringify(error))
       dispatch(setErrors(error.message))
     } else {
-      if (data.length === 0) {
-        dispatch(setErrors('Invalid credentials'))
-      } else {
+      if (data) {
         dispatch({
           type: LOADED
         })
         dispatch({
           type: LOADED_USER,
-          payload: data
+          payload: data.user
         })
+      } else {
+        dispatch(setErrors('Invalid credentials'))
       }
     }
   } catch (e) {
