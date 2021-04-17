@@ -2,29 +2,37 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Banner from '../common/Banner'
 import { Link, useLocation } from 'react-router-dom'
-import { selectByMonth, setHeader } from '../../actions/select'
+import {
+  selectByMonth,
+  setHeader,
+  prevDates,
+  nextDates
+} from '../../actions/select'
 
 interface IProps {
   selectByMonth: Function
   month: string
-  setHeader: Function
+  prevDates: Function
+  nextDates: Function
 }
 
-const Header = ({ selectByMonth, month }: IProps) => {
+const Header = ({ selectByMonth, month, prevDates, nextDates }: IProps) => {
   const location: any = useLocation()
 
-  const handleByWeek = (e: React.FormEvent<HTMLInputElement>) =>
+  const handleByWeek = (e: React.FormEvent<HTMLInputElement>) => {
     selectByMonth(false)
+  }
 
-  const handleByMonth = (e: React.FormEvent<HTMLInputElement>) =>
+  const handleByMonth = (e: React.FormEvent<HTMLInputElement>) => {
     selectByMonth(true)
+  }
 
   const previous = (e: React.MouseEvent) => {
-    // setHeader()
+    prevDates()
   }
 
   const next = (e: React.MouseEvent) => {
-    // setHeader()
+    nextDates()
   }
 
   return location.pathname === '/home' ? (
@@ -80,7 +88,9 @@ const mapStateToProps = (state: any) => ({
 
 const mapDispatchToProps = {
   selectByMonth,
-  setHeader
+  setHeader,
+  prevDates,
+  nextDates
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header)

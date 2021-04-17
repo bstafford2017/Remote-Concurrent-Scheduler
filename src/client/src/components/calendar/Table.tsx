@@ -22,16 +22,25 @@ const Table = ({ events, byMonth, dates, loadEvents, setHeader }: IProps) => {
   const [displayModal, setDisplayModal]: [boolean, Function] = useState(false)
 
   useEffect(() => {
-    const start = dates[(dates.length - 1) / 2] // Get middle dat's month
-    const end = dates[0]
-    setHeader(start.toLocaleString('default', { month: 'long' }))
+    const start = dates[0]
+    const end = dates[dates.length - 1]
+    setHeader(
+      // Get middle date's month
+      dates[Math.floor((dates.length - 1) / 2)].toLocaleString('default', {
+        month: 'long'
+      })
+    )
     loadEvents(start.toISOString(), end.toISOString())
   }, [byMonth, dates])
 
   const printMonth = (d: Date) => (
     <div
       key={d.toISOString()}
-      className={isSameMonth(d, new Date()) ? 'valid' : 'invalid'}
+      className={
+        isSameMonth(d, dates[Math.floor((dates.length - 1) / 2)])
+          ? 'valid'
+          : 'invalid'
+      }
       onClick={() => setDisplayModal(!displayModal)}
     >
       {d.getDate()}
@@ -63,7 +72,12 @@ const Table = ({ events, byMonth, dates, loadEvents, setHeader }: IProps) => {
           .map((d) => printMonth(d))}
       </div>
       <div className='row'>
-        {dates.filter((_, index) => index >= 28).map((d) => printMonth(d))}
+        {dates
+          .filter((_, index) => index < 35 && index >= 28)
+          .map((d) => printMonth(d))}
+      </div>
+      <div className='row'>
+        {dates.filter((_, index) => index >= 35).map((d) => printMonth(d))}
       </div>
       {events.map((e: IEvent) => (
         <Event key={e.id} event={e} />
