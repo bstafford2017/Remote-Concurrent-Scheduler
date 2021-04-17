@@ -1,4 +1,12 @@
-import { SELECT_BUILDING, SELECT_ROOM, SELECT_BY_MONTH, SET_HEADER } from '.'
+import {
+  SELECT_BUILDING,
+  SELECT_ROOM,
+  SELECT_BY_MONTH,
+  SET_HEADER,
+  SET_DATES,
+  NEXT_DATES,
+  PREV_DATES
+} from '.'
 
 export const selectBuilding = (building: string) => ({
   type: SELECT_BUILDING,
@@ -18,4 +26,12 @@ export const selectByMonth = (byMonth: boolean) => ({
 export const setHeader = (month: string) => ({
   type: SET_HEADER,
   payload: month
+})
+
+export const nextDates = () => ({
+  type: NEXT_DATES
+})
+
+export const prevDates = () => ({
+  type: PREV_DATES
 })

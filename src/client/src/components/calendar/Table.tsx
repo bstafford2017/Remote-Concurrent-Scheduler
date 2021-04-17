@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {
-  eachDayOfInterval,
-  startOfMonth,
-  lastDayOfMonth,
-  startOfWeek,
-  lastDayOfWeek,
-  endOfWeek,
-  isSameMonth
-} from 'date-fns'
+import { isSameMonth } from 'date-fns'
 import { connect } from 'react-redux'
 import Filter from './Filter'
 import { loadEvents } from '../../actions/event'
@@ -21,39 +13,20 @@ interface IProps {
   building: string
   room: string
   byMonth: boolean
+  dates: Array<Date>
   loadEvents: Function
   setHeader: Function
 }
 
-const Table = ({ events, byMonth, loadEvents }: IProps) => {
-  const [listOfDates, setListOfDates]: [Date[], Function] = useState([])
+const Table = ({ events, byMonth, dates, loadEvents, setHeader }: IProps) => {
   const [displayModal, setDisplayModal]: [boolean, Function] = useState(false)
 
   useEffect(() => {
-    const today = new Date()
-    // setHeader(today.toLocaleString('default', { month: 'long' }))
-    if (byMonth) {
-      const start = startOfWeek(startOfMonth(today))
-      const end = lastDayOfWeek(lastDayOfMonth(today))
-      setListOfDates(
-        eachDayOfInterval({
-          start,
-          end
-        })
-      )
-      loadEvents(start.toISOString(), end.toISOString())
-    } else {
-      const start = startOfWeek(today)
-      const end = endOfWeek(today)
-      setListOfDates(
-        eachDayOfInterval({
-          start,
-          end
-        })
-      )
-      loadEvents(start.toISOString(), end.toISOString())
-    }
-  }, [byMonth])
+    const start = dates[(dates.length - 1) / 2] // Get middle dat's month
+    const end = dates[0]
+    setHeader(start.toLocaleString('default', { month: 'long' }))
+    loadEvents(start.toISOString(), end.toISOString())
+  }, [byMonth, dates])
 
   const printMonth = (d: Date) => (
     <div
@@ -72,29 +45,25 @@ const Table = ({ events, byMonth, loadEvents }: IProps) => {
   const monthlyView = (
     <div className='month-by-month'>
       <div className='row'>
-        {listOfDates
-          .filter((date, index) => index < 7)
+        {dates.filter((_, index) => index < 7).map((d) => printMonth(d))}
+      </div>
+      <div className='row'>
+        {dates
+          .filter((_, index) => index < 14 && index >= 7)
           .map((d) => printMonth(d))}
       </div>
       <div className='row'>
-        {listOfDates
-          .filter((date, index) => index < 14 && index >= 7)
+        {dates
+          .filter((_, index) => index < 21 && index >= 14)
           .map((d) => printMonth(d))}
       </div>
       <div className='row'>
-        {listOfDates
-          .filter((date, index) => index < 21 && index >= 14)
+        {dates
+          .filter((_, index) => index < 28 && index >= 21)
           .map((d) => printMonth(d))}
       </div>
       <div className='row'>
-        {listOfDates
-          .filter((date, index) => index < 28 && index >= 21)
-          .map((d) => printMonth(d))}
-      </div>
-      <div className='row'>
-        {listOfDates
-          .filter((date, index) => index >= 28)
-          .map((d) => printMonth(d))}
+        {dates.filter((_, index) => index >= 28).map((d) => printMonth(d))}
       </div>
       {events.map((e: IEvent) => (
         <Event key={e.id} event={e} />
@@ -156,7 +125,8 @@ const mapStateToProps = (state: any) => ({
   events: state.event.events,
   building: state.select.building,
   room: state.select.room,
-  byMonth: state.select.byMonth
+  byMonth: state.select.byMonth,
+  dates: state.select.listOfDates
 })
 
 const mapDispatchToProps = {

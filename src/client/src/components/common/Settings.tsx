@@ -112,7 +112,7 @@ const Settings = ({ loggedUser }: IProps) => {
             <Row>
               <Col xs={{ size: 6, offset: 3 }}>
                 <FormGroup check>
-                  <p>Admininstrator: {admin}</p>
+                  <p>Admininstrator: {admin ? 'True' : 'False'}</p>
                 </FormGroup>
               </Col>
             </Row>

@@ -29,7 +29,7 @@ const ManageRooms = ({ rooms, loadRooms }: IProps) => {
   return (
     <>
       <Alert isOpen={false} text={''} />
-      <CreateRoom />
+      <CreateRoom buildings={rooms.map((r: IRoom) => r.building)} />
       <Col lg={{ size: 8, offset: 2 }}>
         <Card>
           <h2 style={{ textAlign: 'center' }}>Manage Rooms</h2>

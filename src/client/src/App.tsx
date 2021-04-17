@@ -49,10 +49,6 @@ const App = ({ isAuthenticated, isAdmin, isLoading }: IProps) => {
   //   loadUser()
   // }, [])
 
-  const next = (e: React.MouseEvent) => {}
-
-  const previous = (e: React.MouseEvent) => {}
-
   return (
     <div className='content'>
       <Router>
@@ -61,7 +57,7 @@ const App = ({ isAuthenticated, isAdmin, isLoading }: IProps) => {
             path={LOGIN_URL}
             component={() => (
               <>
-                <Header next={next} previous={previous} />
+                <Header />
                 <Navigation
                   isAdmin={isAdmin}
                   isAuthenticated={isAuthenticated}

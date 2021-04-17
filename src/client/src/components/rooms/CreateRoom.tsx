@@ -6,13 +6,17 @@ import {
   CardBody,
   Form,
   FormGroup,
-  FormText,
   Label,
   Input,
   Button
 } from 'reactstrap'
+import { IBuilding } from '../../types/index'
 
-const CreateRoom = () => {
+interface IProps {
+  buildings: Array<IBuilding>
+}
+
+const CreateRoom = ({ buildings }: IProps) => {
   return (
     <Col lg={{ size: 8, offset: 2 }}>
       <Card>
@@ -27,6 +31,11 @@ const CreateRoom = () => {
                     <option selected={true} disabled={true} hidden={true}>
                       Select
                     </option>
+                    {buildings
+                      .map((b: IBuilding) => b.name)
+                      .map((name: string) => (
+                        <option>{name}</option>
+                      ))}
                   </Input>
                 </FormGroup>
               </Col>
