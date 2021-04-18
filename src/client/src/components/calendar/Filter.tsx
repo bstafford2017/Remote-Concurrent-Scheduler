@@ -36,7 +36,7 @@ const Filter = ({ loadBuildings, buildings, loadRooms, rooms }: IProps) => {
       style={{ margin: 0, background: 'black', color: '#00aa4f' }}
     >
       <Col xs={{ size: 3, offset: 3 }}>
-        <FormGroup>
+        <FormGroup row>
           <Label for='filter-building'>Building</Label>
           <Input
             type='select'
@@ -53,7 +53,7 @@ const Filter = ({ loadBuildings, buildings, loadRooms, rooms }: IProps) => {
         </FormGroup>
       </Col>
       <Col xs={{ size: 3, offset: 1 }}>
-        <FormGroup>
+        <FormGroup row>
           <Label for='filter-room'>Room</Label>
           <Input
             type='select'

@@ -1,6 +1,55 @@
 import mongoose from 'mongoose'
 import User, { UserModel } from '../models/User'
 import log from '../config/logger'
+import Context from '../context'
+import jwt from 'jsonwebtoken'
+
+interface Params {
+  context: Context
+}
+
+const nullUser: User = {
+  id: null,
+  username: null,
+  password: null,
+  fname: null,
+  lname: null,
+  admin: null
+}
+
+export const isAuthenticated = ({ context }: Params): boolean => {
+  log.info(`Attempting authentication`)
+  const token = context.req.cookies.token
+  if (!token) {
+    log.info(`Failed authentication`)
+    return false
+  }
+  const user: any = jwt.decode(token)
+  if (user) {
+    log.info(`Sucessfully authentication userId=${user.id}`)
+    return true
+  } else {
+    log.info(`Failed authentication`)
+    return false
+  }
+}
+
+export const getUserFromToken = (context: Context): User => {
+  log.info(`Getting user from token`)
+  const token = context.req.cookies.token
+  if (!token) {
+    log.info(`Failed retrieved token`)
+    return nullUser
+  }
+  const user: any = jwt.decode(token)
+  if (user) {
+    log.info(`Sucessfully retrieved token for userId=${user.id}`)
+    return user
+  } else {
+    log.info(`Failed retrieved token`)
+    return nullUser
+  }
+}
 
 // TODO: add bcrypt
 export const selectUserById = async (id: string): Promise<User> => {
@@ -30,6 +79,7 @@ export const selectUser = async (
     return response
   } catch (e) {
     log.error(`Error selecting user exception=${e}`)
+    return nullUser
   }
 }
 

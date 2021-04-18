@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Input, Button } from 'reactstrap'
 import PropTypes from 'prop-types'
 import { IBuilding } from '../../types'
@@ -8,10 +8,16 @@ interface IProps {
 }
 
 const Building = ({ building }: IProps) => {
+  const [name, setName] = useState(building.name)
+
+  const onChange = (e: any) => {
+    setName(e.target.value)
+  }
+
   return (
     <tr>
       <td>
-        <Input type='text' value={building.name} />
+        <Input type='text' value={name} onChange={onChange} />
       </td>
       <td>
         <Button className='update-room'>Update</Button>

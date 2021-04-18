@@ -1,18 +1,28 @@
-import { Resolver, Query, Arg, Root, FieldResolver } from 'type-graphql'
+import {
+  Resolver,
+  Query,
+  Arg,
+  Root,
+  FieldResolver,
+  Authorized
+} from 'type-graphql'
 import Event from '../models/Event'
 import User from '../models/User'
 import Room from '../models/Room'
 import { selectEvent, selectEvents } from '../services/event'
 import { selectRoom } from '../services/room'
 import { selectUserById } from '../services/user'
+import { isAuthenticated } from '../services/user'
 
 @Resolver(() => Event)
 export default class EventResolver {
+  @Authorized(isAuthenticated)
   @Query(() => Event)
   async event(@Arg('id') id: string): Promise<Event> {
     return await selectEvent(id)
   }
 
+  @Authorized(isAuthenticated)
   @Query(() => [Event])
   async events(
     @Arg('start') start: string,

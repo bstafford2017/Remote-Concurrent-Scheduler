@@ -12,6 +12,43 @@ import {
 import { ILogin, IUser } from '../types'
 import ApolloClient from '../apollo'
 
+export const authenticated = () => async (dispatch: Function) => {
+  dispatch({ type: LOADING })
+  try {
+    const { error, data }: ApolloQueryResult<any> = await ApolloClient.query({
+      query: gql`
+        query {
+          auth {
+            id
+            username
+            fname
+            lname
+            admin
+          }
+        }
+      `
+    })
+    if (error) {
+      console.warn(JSON.stringify(error))
+    } else {
+      if (data) {
+        dispatch({
+          type: LOADED
+        })
+        dispatch({
+          type: LOADED_USER,
+          payload: data.auth
+        })
+      }
+    }
+  } catch (e) {
+    console.warn(e)
+    dispatch({
+      type: LOADED
+    })
+  }
+}
+
 // TODO: Add token
 export const login = ({ username, password }: ILogin) => async (
   dispatch: Function

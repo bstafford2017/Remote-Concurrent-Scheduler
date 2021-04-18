@@ -5,27 +5,27 @@ import { prop, getModelForClass } from '@typegoose/typegoose'
 export default class User {
   @Field()
   @prop()
-  id: string
+  id: string | null
 
   @Field()
   @prop()
-  username: string
+  username: string | null
 
   @Field()
   @prop()
-  password: string
+  password: string | null
 
   @Field()
   @prop()
-  fname: string
+  fname: string | null
 
   @Field()
   @prop()
-  lname: string
+  lname: string | null
 
   @Field()
   @prop()
-  admin: boolean
+  admin: boolean | null
 }
 
 @InputType()

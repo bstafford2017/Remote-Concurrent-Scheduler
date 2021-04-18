@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import {
   Col,
@@ -11,8 +11,8 @@ import {
   Button,
   Alert
 } from 'reactstrap'
-import { ILogin } from '../../types'
-import { login } from '../../actions/user'
+import { ILogin, IUser } from '../../types'
+import { login, authenticated } from '../../actions/user'
 import { useHistory } from 'react-router-dom'
 import { setErrors, clearErrors } from '../../actions/error'
 
@@ -25,12 +25,24 @@ interface IProps {
   login: Function
   errors: string
   setErrors: Function
+  authenticated: Function
+  tokenUser: IUser
 }
 
-const Login = ({ login, errors, setErrors }: IProps) => {
+const Login = ({
+  login,
+  errors,
+  setErrors,
+  authenticated,
+  tokenUser
+}: IProps) => {
   const history = useHistory()
   const [user, setUser]: [ILogin, Function] = useState(initialState)
   const [showAlert, setShowAlert] = useState(true)
+
+  useEffect(() => {
+    authenticated()
+  }, [])
 
   const onChange = (e: any) => {
     setUser({
@@ -61,6 +73,10 @@ const Login = ({ login, errors, setErrors }: IProps) => {
   const clearAlert = () => {
     setShowAlert(false)
     clearErrors()
+  }
+  console.log(tokenUser)
+  if (tokenUser) {
+    history.push('/home')
   }
 
   return (
@@ -101,12 +117,14 @@ const Login = ({ login, errors, setErrors }: IProps) => {
 Login.propTypes = {}
 
 const mapStateToProps = (state: any) => ({
-  errors: state.error.msg
+  errors: state.error.msg,
+  tokenUser: state.user.user
 })
 
 const mapDispatchToProps = {
   login,
-  setErrors
+  setErrors,
+  authenticated
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login)

@@ -1,21 +1,30 @@
 import 'reflect-metadata'
+import dotenv from 'dotenv'
 import express, { Request, Response } from 'express'
 import mongoose from 'mongoose'
 import { ApolloServer } from 'apollo-server-express'
-import cors from 'cors'
 import config from './config'
 import BuildingResolver from './resolvers/building.resolver'
 import RoomResolver from './resolvers/room.resolver'
 import UserResolver from './resolvers/user.resolver'
 import EventResolver from './resolvers/event.resolver'
 import { buildSchema } from 'type-graphql'
+import { isAuthenticated } from './services/user'
+import cookieParser from 'cookie-parser'
+import log from './config/logger'
 ;(async () => {
   try {
+    log.info('Loading environment variables')
+    const result = dotenv.config()
+    if (result.error) {
+      log.info('Failed to load environment variables')
+    }
+    log.info('Loaded environment variables')
     let port = process.env.PORT || 5000
 
     const schema = await buildSchema({
       resolvers: [BuildingResolver, RoomResolver, UserResolver, EventResolver],
-      nullableByDefault: false
+      authChecker: isAuthenticated
     })
 
     const server: ApolloServer = new ApolloServer({
@@ -35,14 +44,22 @@ import { buildSchema } from 'type-graphql'
       useCreateIndex: true
     })
 
-    console.log('MongoDB connected...')
+    log.info('MongoDB connected...')
 
-    server.applyMiddleware({ app, path: '/graphql' })
+    app.use(cookieParser())
 
-    app.use(cors())
+    server.applyMiddleware({
+      app,
+      path: '/graphql',
+      cors: {
+        credentials: true,
+        origin: true
+      }
+    })
+
     app.listen(port)
 
-    console.log(`Server listening on port ${port}`)
+    log.info(`Server listening on port ${port}`)
   } catch (e) {
     console.error(e)
   }
