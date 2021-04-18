@@ -167,8 +167,32 @@ export const updateUser = () => {}
 
 export const deleteUser = () => {}
 
-export const logout = () => {
-  return {
-    type: LOGOUT_SUCCESS
+export const logout = () => async (dispatch: Function) => {
+  try {
+    const { error, data }: ApolloQueryResult<any> = await ApolloClient.query({
+      query: gql`
+        query {
+          signOut
+        }
+      `
+    })
+    if (error) {
+      console.warn(JSON.stringify(error))
+      dispatch(setErrors(error.message))
+    } else {
+      if (data) {
+        dispatch({
+          type: LOADED
+        })
+        dispatch({
+          type: LOGOUT_SUCCESS
+        })
+      } else {
+        dispatch(setErrors('Failed to logout'))
+      }
+    }
+  } catch (e) {
+    console.warn(e)
+    dispatch(setErrors('Failed to logout'))
   }
 }

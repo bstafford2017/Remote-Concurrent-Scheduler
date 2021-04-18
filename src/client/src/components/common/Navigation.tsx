@@ -18,15 +18,18 @@ import {
   NavLink
 } from 'reactstrap'
 import { NavLink as RRNavLink } from 'react-router-dom'
+import { logout } from '../../actions/user'
 
-const Navigation = (props: any) => {
-  const {
-    isAuthenticated,
-    isAdmin
-  }: { isAuthenticated: boolean; isAdmin: boolean } = props
+interface IProps {
+  isAuthenticated: boolean
+  isAdmin: boolean
+  logout: Function
+}
 
+const Navigation = ({ isAuthenticated, isAdmin, logout }: IProps) => {
   const [collapsed, setCollapsed]: [boolean, Function] = useState(true)
   const toggleNavbar = () => setCollapsed(!collapsed)
+  const signOut = () => logout()
   return (
     <>
       {isAuthenticated ? (
@@ -71,7 +74,9 @@ const Navigation = (props: any) => {
             </Nav>
             <Nav className='ml-auto'>
               <NavItem>
-                <NavLink to='#'>Sign Out</NavLink>
+                <NavLink to={LOGIN_URL} onClick={signOut} tag={RRNavLink}>
+                  Sign Out
+                </NavLink>
               </NavItem>
             </Nav>
           </Collapse>
@@ -99,4 +104,8 @@ const mapStateToProps = (state: any) => ({
   isAdmin: state.user.user?.admin
 })
 
-export default connect(mapStateToProps)(Navigation)
+const mapDispatchToPros = {
+  logout
+}
+
+export default connect(mapStateToProps, mapDispatchToPros)(Navigation)

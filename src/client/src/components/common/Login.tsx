@@ -74,7 +74,7 @@ const Login = ({
     setShowAlert(false)
     clearErrors()
   }
-  console.log(tokenUser)
+
   if (tokenUser) {
     history.push('/home')
   }

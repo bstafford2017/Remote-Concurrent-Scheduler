@@ -42,6 +42,12 @@ export default class UserResolver {
     return await selectUsers()
   }
 
+  @Query(() => Boolean)
+  async signOut(@Ctx() context: Context): Promise<boolean> {
+    context.res.clearCookie('token')
+    return true
+  }
+
   // @Mutation()
   // async user(@Arg('input') user: UserInput) {}
 }

@@ -58,10 +58,7 @@ const App = ({ isAuthenticated, isAdmin, isLoading }: IProps) => {
             component={() => (
               <>
                 <Header />
-                <Navigation
-                  isAdmin={isAdmin}
-                  isAuthenticated={isAuthenticated}
-                />
+                <Navigation />
               </>
             )}
           />
