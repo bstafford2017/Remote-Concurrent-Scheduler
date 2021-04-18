@@ -15,8 +15,8 @@ export const loadRooms = (id: number) => async (dispatch: Function) => {
   try {
     const { error, data }: ApolloQueryResult<any> = await ApolloClient.query({
       query: gql`
-        query {
-          rooms {
+        query($id: String!) {
+          room(id: $id) {
             id
             number
             seats
@@ -27,7 +27,10 @@ export const loadRooms = (id: number) => async (dispatch: Function) => {
             }
           }
         }
-      `
+      `,
+      variables: {
+        id
+      }
     })
     if (error) {
       console.warn(JSON.stringify(error))

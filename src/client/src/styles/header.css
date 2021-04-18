@@ -1,6 +1,6 @@
 /* Month */
 #month {
-  font-size: 35px;  
+  font-size: 35px;
 }
 
 .month {
@@ -36,7 +36,7 @@ ul {
   padding-left: 20px;
 }
 
-.change a{
+.change a {
   text-decoration: none;
   color: white;
 }
@@ -48,11 +48,11 @@ ul {
 
 /* Change radio button color */
 input[type='radio']:checked:after {
-  width: 15px;
-  height: 15px;
+  width: 13px;
+  height: 13px;
   border-radius: 15px;
-  top: -4px;
-  left: -1px;
+  top: -7px;
+  left: 0px;
   position: relative;
   background-color: #00aa4f;
   content: '';

@@ -1,10 +1,9 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Button,
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter,
   Nav,
   NavItem,
   NavLink,
@@ -15,17 +14,27 @@ import {
   Row,
   Col
 } from 'reactstrap'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
-import { CREATE_MODAL_URL, VIEW_MODAL_URL } from '../routes'
+import { connect } from 'react-redux'
 import { IRoom, IBuilding } from '../../types'
 
 interface IProps {
   display: boolean
   toggle: (e: React.MouseEvent) => void
+  buildings: Array<IBuilding>
 }
 
-const MenuModal = ({ display, toggle }: IProps) => {
-  const buildings: IBuilding[] = []
+const MenuModal = ({ display, toggle, buildings }: IProps) => {
+  const [displayCreate, setDisplayCreate] = useState(true)
+  const [recur, setRecur] = useState(false)
+
+  const toggleCreate = () => setDisplayCreate(true)
+  const toggleView = () => setDisplayCreate(false)
+  const toggleRecur = () => setRecur(!recur)
+
+  useEffect(() => {
+    // load
+  }, [])
+
   const rooms: IRoom[] = []
 
   const dates = (
@@ -57,7 +66,7 @@ const MenuModal = ({ display, toggle }: IProps) => {
           <Nav>
             <NavItem>
               <NavLink
-                href={CREATE_MODAL_URL}
+                onClick={toggleCreate}
                 style={{ color: '#009a44', cursor: 'pointer' }}
               >
                 Create
@@ -65,7 +74,7 @@ const MenuModal = ({ display, toggle }: IProps) => {
             </NavItem>
             <NavItem>
               <NavLink
-                href={VIEW_MODAL_URL}
+                onClick={toggleView}
                 style={{ color: '#009a44', cursor: 'pointer' }}
               >
                 View
@@ -74,122 +83,128 @@ const MenuModal = ({ display, toggle }: IProps) => {
           </Nav>
         </ModalHeader>
         <ModalBody>
-          <Router>
-            <Route path={CREATE_MODAL_URL}>
-              <small className='form-text text-muted text-center'>
-                Note: All special characters will be removed
-              </small>
-              <Form>
-                <Row form>
-                  <Col md={12}>
-                    <FormGroup>
-                      <Label for='title'>Title</Label>
-                      <Input type='text' id='title' />
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <Row form>
-                  <Col md={6}>
-                    <FormGroup>
-                      <Label for='building'>Building</Label>
-                      <Input type='select' id='building'>
-                        {buildings.map((b) => null)}
-                      </Input>
-                    </FormGroup>
-                  </Col>
-                  <Col md={5}>
-                    <FormGroup>
-                      <Label for='room'>Room</Label>
-                      <Input type='select' id='room'>
-                        {rooms.map((r) => null)}
-                      </Input>
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <Row form>
-                  <Col md={6}>
-                    <FormGroup>
-                      <Label for='date'>Date</Label>
-                      <Input type='date' id='date' />
-                    </FormGroup>
-                  </Col>
-                  <Col md={3}>
-                    <FormGroup>
-                      <Label for='startTime'>Start Time</Label>
-                      <Input type='select' id='startTime'>
-                        {dates}
-                      </Input>
-                    </FormGroup>
-                  </Col>
-                  <Col md={3}>
-                    <FormGroup>
-                      <Label for='endTime'>End Time</Label>
-                      <Input type='select' id='endTiem'>
-                        {dates}
-                      </Input>
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <Row form>
-                  <FormGroup check inline>
-                    <Label check>
-                      <Input type='checkbox' /> Recurrance
-                    </Label>
-                  </FormGroup>
-                  <FormGroup check inline>
-                    <Label check>
-                      <Input type='checkbox' /> Sun
-                    </Label>
-                  </FormGroup>
-                  <FormGroup check inline>
-                    <Label check>
-                      <Input type='checkbox' /> Mon
-                    </Label>
-                  </FormGroup>
-                  <FormGroup check inline>
-                    <Label check>
-                      <Input type='checkbox' /> Tues
-                    </Label>
-                  </FormGroup>
-                  <FormGroup check inline>
-                    <Label check>
-                      <Input type='checkbox' /> Wed
-                    </Label>
-                  </FormGroup>
-                  <FormGroup check inline>
-                    <Label check>
-                      <Input type='checkbox' /> Thurs
-                    </Label>
-                  </FormGroup>
-                  <FormGroup check inline>
-                    <Label check>
-                      <Input type='checkbox' /> Fri
-                    </Label>
-                  </FormGroup>
-                  <FormGroup check inline>
-                    <Label check>
-                      <Input type='checkbox' /> Sat
-                    </Label>
-                  </FormGroup>
+          {displayCreate && (
+            <Form>
+              <Row form>
+                <Col md={12}>
                   <FormGroup>
-                    <Label for='recurEnd'>End Recur Date</Label>
-                    <Input type='date' id='recurEnd' />
+                    <Label for='title'>Title</Label>
+                    <Input type='text' id='title' />
                   </FormGroup>
-                </Row>
-                <Button>Close</Button>
-                <Button>Create Event</Button>
-              </Form>
-            </Route>
-            <Route path={VIEW_MODAL_URL}>
+                </Col>
+              </Row>
+              <Row form>
+                <Col md={6}>
+                  <FormGroup>
+                    <Label for='building'>Building</Label>
+                    <Input type='select' id='building'>
+                      {buildings.map((b: IBuilding) => (
+                        <option key={b.id}>{b.name}</option>
+                      ))}
+                    </Input>
+                  </FormGroup>
+                </Col>
+                <Col md={5}>
+                  <FormGroup>
+                    <Label for='room'>Room</Label>
+                    <Input type='select' id='room'>
+                      {rooms.map((r) => null)}
+                    </Input>
+                  </FormGroup>
+                </Col>
+              </Row>
+              <Row form>
+                <Col md={6}>
+                  <FormGroup>
+                    <Label for='date'>Date</Label>
+                    <Input type='date' id='date' />
+                  </FormGroup>
+                </Col>
+                <Col md={3}>
+                  <FormGroup>
+                    <Label for='startTime'>Start Time</Label>
+                    <Input type='select' id='startTime'>
+                      {dates}
+                    </Input>
+                  </FormGroup>
+                </Col>
+                <Col md={3}>
+                  <FormGroup>
+                    <Label for='endTime'>End Time</Label>
+                    <Input type='select' id='endTiem'>
+                      {dates}
+                    </Input>
+                  </FormGroup>
+                </Col>
+              </Row>
+              <Row form>
+                <FormGroup check inline>
+                  <Label check>
+                    <Input type='checkbox' onClick={toggleRecur} /> Recurrance
+                  </Label>
+                </FormGroup>
+              </Row>
+              <Row form>
+                <FormGroup check inline>
+                  <Label check>
+                    <Input type='checkbox' disabled={!recur} /> Sun
+                  </Label>
+                </FormGroup>
+                <FormGroup check inline>
+                  <Label check>
+                    <Input type='checkbox' disabled={!recur} /> Mon
+                  </Label>
+                </FormGroup>
+                <FormGroup check inline>
+                  <Label check>
+                    <Input type='checkbox' disabled={!recur} /> Tues
+                  </Label>
+                </FormGroup>
+                <FormGroup check inline>
+                  <Label check>
+                    <Input type='checkbox' disabled={!recur} /> Wed
+                  </Label>
+                </FormGroup>
+                <FormGroup check inline>
+                  <Label check>
+                    <Input type='checkbox' disabled={!recur} /> Thurs
+                  </Label>
+                </FormGroup>
+                <FormGroup check inline>
+                  <Label check>
+                    <Input type='checkbox' disabled={!recur} /> Fri
+                  </Label>
+                </FormGroup>
+                <FormGroup check inline>
+                  <Label check>
+                    <Input type='checkbox' disabled={!recur} /> Sat
+                  </Label>
+                </FormGroup>
+                <FormGroup>
+                  <Label for='recurEnd'>End Recur Date</Label>
+                  <Input type='date' id='recurEnd' disabled={!recur} />
+                </FormGroup>
+              </Row>
+              <Button>Close</Button>
+              <Button>Create Event</Button>
+            </Form>
+          )}
+          {!displayCreate && (
+            <>
               <h3 className='view-header'>View Modal</h3>
               <div id='event-list'></div>
-            </Route>
-          </Router>
+            </>
+          )}
         </ModalBody>
-        <ModalFooter></ModalFooter>
       </Modal>
     </>
   )
 }
 
-export default MenuModal
+const mapStateToProps = (state: any) => ({
+  buildings: state.building.buildings
+})
+
+const mapDispatchToProps = {}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MenuModal)

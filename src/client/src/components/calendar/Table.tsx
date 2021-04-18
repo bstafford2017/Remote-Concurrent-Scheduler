@@ -41,7 +41,7 @@ const Table = ({ events, byMonth, dates, loadEvents, setHeader }: IProps) => {
           ? 'valid'
           : 'invalid'
       }
-      onClick={() => setDisplayModal(!displayModal)}
+      onClick={toggleModal}
     >
       {d.getDate()}
     </div>
@@ -86,14 +86,20 @@ const Table = ({ events, byMonth, dates, loadEvents, setHeader }: IProps) => {
   )
 
   const weeklyView = (
-    <>
-      <Filter />
-      <div className='week-by-week'>
-        {events.map((e: IEvent) => (
-          <Event key={e.id} event={e} />
-        ))}
+    <div className='week-by-week'>
+      <div className='row'>
+        {dates
+          .filter((_, index) => index < 7)
+          .map((d: Date) => (
+            <div className='valid' onClick={toggleModal}>
+              {d.getDate()}
+            </div>
+          ))}
       </div>
-    </>
+      {events.map((e: IEvent) => (
+        <Event key={e.id} event={e} />
+      ))}
+    </div>
   )
 
   return (

@@ -43,9 +43,6 @@ const Settings = ({ loggedUser }: IProps) => {
     <Col lg={{ size: 6, offset: 3 }}>
       <Card>
         <h2 style={{ textAlign: 'center' }}>User Settings</h2>
-        <FormText color='muted' style={{ textAlign: 'center' }}>
-          Note: All special characters will be removed
-        </FormText>
         <CardBody>
           <Form>
             <Row>

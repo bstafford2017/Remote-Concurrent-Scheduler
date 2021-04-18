@@ -1,37 +1,54 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Col, FormGroup, Label, Input } from 'reactstrap'
 import { connect } from 'react-redux'
-import { selectBuilding, selectRoom } from '../../actions/select'
+import { IBuilding, IRoom } from '../../types'
+import { loadBuildings } from '../../actions/building'
+import { loadRooms } from '../../actions/room'
 
 interface IProps {
-  selectBuilding: Function
-  selectRoom: Function
+  loadBuildings: Function
+  buildings: Array<IBuilding>
+  loadRooms: Function
+  rooms: Array<IRoom>
 }
 
-const Filter = ({ selectBuilding, selectRoom }: IProps) => {
+const Filter = ({ loadBuildings, buildings, loadRooms, rooms }: IProps) => {
+  const [selectedBuilding, setSelectedBuilding] = useState('')
+  const [selectedRoom, setSelectedRoom] = useState('')
+
   const handleBuildingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    selectBuilding(e.target.value)
+    setSelectedBuilding(e.target.value)
   }
 
   const handleRoomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    selectRoom(e.target.value)
+    setSelectedRoom(e.target.value)
   }
 
+  useEffect(() => {
+    loadBuildings()
+    loadRooms(selectedBuilding)
+  }, [selectedBuilding, selectedRoom])
+
   return (
-    <div id='filter' className='form-row pb-3' style={{ margin: 0 }}>
+    <div
+      id='filter'
+      className='form-row pb-3'
+      style={{ margin: 0, background: 'black', color: '#00aa4f' }}
+    >
       <Col xs={{ size: 3, offset: 3 }}>
         <FormGroup>
           <Label for='filter-building'>Building</Label>
           <Input
             type='select'
-            id='filter-building'
             defaultValue='default'
-            style={{ color: 'white' }}
             onChange={handleBuildingChange}
           >
-            <option value='default' disabled={true} hidden={true}>
-              All Buildings
-            </option>
+            <option>All Buildings</option>
+            {buildings.map((b) => (
+              <option key={b.id} value={b.id}>
+                {b.name}
+              </option>
+            ))}
           </Input>
         </FormGroup>
       </Col>
@@ -40,14 +57,15 @@ const Filter = ({ selectBuilding, selectRoom }: IProps) => {
           <Label for='filter-room'>Room</Label>
           <Input
             type='select'
-            id='filter-room'
             defaultValue='default'
-            style={{ color: 'white' }}
             onChange={handleRoomChange}
           >
-            <option value='default' disabled={true} hidden={true}>
-              All Rooms
-            </option>
+            <option>All Rooms</option>
+            {rooms.map((r) => (
+              <option key={r.id} value={r.id}>
+                {r.number}
+              </option>
+            ))}
           </Input>
         </FormGroup>
       </Col>
@@ -55,9 +73,14 @@ const Filter = ({ selectBuilding, selectRoom }: IProps) => {
   )
 }
 
-const mapDispathToProps = {
-  selectBuilding,
-  selectRoom
+const mapStateToProps = (state: any) => ({
+  buildings: state.building.buildings,
+  rooms: state.room.rooms
+})
+
+const mapDispatchToProps = {
+  loadBuildings,
+  loadRooms
 }
 
-export default connect(null, mapDispathToProps)(Filter)
+export default connect(mapStateToProps, mapDispatchToProps)(Filter)

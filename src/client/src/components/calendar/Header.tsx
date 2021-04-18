@@ -8,15 +8,23 @@ import {
   prevDates,
   nextDates
 } from '../../actions/select'
+import Filter from '../calendar/Filter'
 
 interface IProps {
   selectByMonth: Function
   month: string
+  byMonth: boolean
   prevDates: Function
   nextDates: Function
 }
 
-const Header = ({ selectByMonth, month, prevDates, nextDates }: IProps) => {
+const Header = ({
+  selectByMonth,
+  month,
+  byMonth,
+  prevDates,
+  nextDates
+}: IProps) => {
   const location: any = useLocation()
 
   const handleByWeek = (e: React.FormEvent<HTMLInputElement>) => {
@@ -53,6 +61,7 @@ const Header = ({ selectByMonth, month, prevDates, nextDates }: IProps) => {
                 type='radio'
                 name='selector'
                 value='week'
+                checked={!byMonth}
                 onClick={handleByWeek}
               />
               <label htmlFor='by-week'> By Week</label>
@@ -61,7 +70,7 @@ const Header = ({ selectByMonth, month, prevDates, nextDates }: IProps) => {
                 type='radio'
                 name='selector'
                 value='month'
-                defaultChecked
+                checked={byMonth}
                 onClick={handleByMonth}
               />
               <label htmlFor='by-month'> By Month</label>
@@ -74,6 +83,7 @@ const Header = ({ selectByMonth, month, prevDates, nextDates }: IProps) => {
           </ul>
         </div>
       </div>
+      {!byMonth && <Filter />}
     </>
   ) : (
     <div className='navbar-header'>
@@ -83,7 +93,8 @@ const Header = ({ selectByMonth, month, prevDates, nextDates }: IProps) => {
 }
 
 const mapStateToProps = (state: any) => ({
-  month: state.select.month
+  month: state.select.month,
+  byMonth: state.select.byMonth
 })
 
 const mapDispatchToProps = {

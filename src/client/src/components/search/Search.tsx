@@ -38,12 +38,7 @@ const Search = ({ results, searchEvent }: IProps) => {
     <>
       <Col lg={{ size: 8, offset: 2 }}>
         <Card>
-          <CardHeader style={{ textAlign: 'center' }}>
-            <h2>Search Events</h2>
-            <FormText color='muted'>
-              Note: All special characters will be removed
-            </FormText>
-          </CardHeader>
+          <h2 style={{ textAlign: 'center' }}>Search Events</h2>
           <CardBody>
             <Form>
               <Row>
